@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outlet Nearby Pro - NextGen Field Tool</title>
+    <title>Outlet Nearby Pro - Google Map Edition</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,10 +17,10 @@
     <style>
         :root {
             --bg-dark: #090d16;
-            --surface-glass: rgba(18, 24, 38, 0.75);
-            --surface-card: rgba(26, 34, 53, 0.7);
-            --border-glass: rgba(255, 255, 255, 0.08);
-            --border-highlight: rgba(255, 255, 255, 0.18);
+            --surface-glass: rgba(18, 24, 38, 0.85);
+            --surface-card: rgba(26, 34, 53, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --border-highlight: rgba(255, 255, 255, 0.2);
             
             --primary: #6366f1;
             --primary-glow: rgba(99, 102, 241, 0.35);
@@ -46,8 +46,7 @@
             background-color: var(--bg-dark);
             background-image: 
                 radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
@@ -57,7 +56,6 @@
             align-items: center;
         }
 
-        /* Top Header */
         header {
             width: 100%;
             max-width: 560px;
@@ -94,11 +92,7 @@
             box-shadow: 0 4px 14px var(--primary-glow);
         }
 
-        .brand-icon svg {
-            width: 18px;
-            height: 18px;
-            stroke: #fff;
-        }
+        .brand-icon svg { width: 18px; height: 18px; stroke: #fff; }
 
         h1 {
             font-size: 1.1rem;
@@ -106,7 +100,6 @@
             background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            letter-spacing: -0.02em;
         }
 
         .status-container {
@@ -147,7 +140,6 @@
             font-weight: 500;
         }
 
-        /* View Toggle Tabs */
         .view-toggle-container {
             width: 100%;
             max-width: 560px;
@@ -177,7 +169,7 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
         }
 
         .tab-btn svg { width: 16px; height: 16px; stroke: currentColor; }
@@ -188,7 +180,6 @@
             box-shadow: 0 2px 10px var(--primary-glow);
         }
 
-        /* Main Layout */
         .container {
             width: 100%;
             max-width: 560px;
@@ -198,7 +189,6 @@
             gap: 12px;
         }
 
-        /* Glass Cards & Controls */
         .glass-card {
             background: var(--surface-glass);
             backdrop-filter: blur(16px);
@@ -209,7 +199,6 @@
         }
 
         .upload-dropzone {
-            position: relative;
             border: 2px dashed rgba(99, 102, 241, 0.3);
             border-radius: 12px;
             padding: 12px;
@@ -236,16 +225,8 @@
             margin: 0 auto 6px;
         }
 
-        .upload-title {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .upload-sub {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .upload-title { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
+        .upload-sub { font-size: 0.7rem; color: var(--text-muted); }
 
         input[type="file"] { display: none; }
 
@@ -265,21 +246,14 @@
             gap: 8px;
         }
 
-        .filter-label {
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            font-weight: 600;
-            white-space: nowrap;
-        }
+        .filter-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
 
         .filter-chips {
             display: flex;
             gap: 6px;
             overflow-x: auto;
             scrollbar-width: none;
-            padding-bottom: 2px;
         }
-
         .filter-chips::-webkit-scrollbar { display: none; }
 
         .chip {
@@ -292,7 +266,7 @@
             color: var(--text-secondary);
             cursor: pointer;
             white-space: nowrap;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
         }
 
         .chip.active {
@@ -302,10 +276,7 @@
             box-shadow: 0 2px 10px var(--primary-glow);
         }
 
-        /* Search Box */
-        .search-box {
-            position: relative;
-        }
+        .search-box { position: relative; }
 
         .search-input {
             width: 100%;
@@ -334,7 +305,6 @@
             stroke: var(--text-muted);
         }
 
-        /* Outlet Cards */
         .outlet-card {
             background: var(--surface-card);
             border: 1px solid var(--border-glass);
@@ -343,58 +313,29 @@
             margin-bottom: 10px;
             position: relative;
             overflow: hidden;
-            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.2s ease, background 0.3s ease;
         }
 
-        .outlet-card:active {
-            transform: scale(0.985);
-        }
+        .outlet-card:active { transform: scale(0.985); }
 
         .outlet-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 4px;
-            height: 100%;
+            top: 0; left: 0;
+            width: 4px; height: 100%;
             background: var(--primary);
-            transition: background 0.3s ease;
         }
 
         .outlet-card.visited {
-            background: rgba(16, 185, 129, 0.04);
-            border-color: rgba(16, 185, 129, 0.15);
-            opacity: 0.85;
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
         }
 
-        .outlet-card.visited::before {
-            background: var(--accent-green);
-        }
+        .outlet-card.visited::before { background: var(--accent-green); }
 
-        .outlet-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 8px;
-        }
-
-        .outlet-title-area {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .outlet-code-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .outlet-code {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #38bdf8;
-        }
+        .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .outlet-code-row { display: flex; align-items: center; gap: 8px; }
+        .outlet-code { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
 
         .visited-badge {
             background: var(--accent-green);
@@ -406,14 +347,8 @@
             text-transform: uppercase;
         }
 
-        .rso-text {
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-        }
-
-        .rso-text strong {
-            color: var(--text-primary);
-        }
+        .rso-text { font-size: 0.78rem; color: var(--text-secondary); }
+        .rso-text strong { color: var(--text-primary); }
 
         .dist-pill {
             display: inline-flex;
@@ -446,7 +381,6 @@
             padding-top: 10px;
             border-top: 1px solid var(--border-glass);
             gap: 6px;
-            flex-wrap: wrap;
         }
 
         .check-container {
@@ -457,7 +391,6 @@
             font-weight: 600;
             color: var(--text-secondary);
             cursor: pointer;
-            user-select: none;
         }
 
         .custom-check {
@@ -485,15 +418,11 @@
             stroke: #090d16;
             stroke-width: 3;
             opacity: 0;
-            transition: opacity 0.2s ease;
         }
 
         .check-container input:checked ~ .custom-check svg { opacity: 1; }
 
-        .btn-action-group {
-            display: flex;
-            gap: 6px;
-        }
+        .btn-action-group { display: flex; gap: 6px; }
 
         .btn-sm {
             background: rgba(255, 255, 255, 0.05);
@@ -510,27 +439,12 @@
             transition: all 0.2s ease;
         }
 
-        .btn-sm:hover {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-primary);
-        }
+        .btn-sm:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
 
         .btn-nav {
             background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
             color: #38bdf8;
             border: 1px solid rgba(56, 189, 248, 0.3);
-        }
-
-        .notes-preview {
-            margin-top: 8px;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            background: rgba(0,0,0,0.2);
-            padding: 6px 10px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
         }
 
         /* Map View Container */
@@ -545,13 +459,9 @@
             position: relative;
         }
 
-        #map {
-            width: 100%;
-            height: 100%;
-            background: #090d16;
-        }
+        #map { width: 100%; height: 100%; background: #e5e3df; }
 
-        /* GPS Pulse & User Heading Icon */
+        /* GPS Marker Styling */
         .user-gps-container {
             position: relative;
             width: 24px;
@@ -563,8 +473,7 @@
 
         .user-heading-cone {
             position: absolute;
-            width: 0;
-            height: 0;
+            width: 0; height: 0;
             border-left: 10px solid transparent;
             border-right: 10px solid transparent;
             border-bottom: 24px solid rgba(99, 102, 241, 0.4);
@@ -583,49 +492,7 @@
             z-index: 2;
         }
 
-        /* Cluster Styling Override */
-        .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
-            background-color: rgba(99, 102, 241, 0.4) !important;
-        }
-        .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
-            background-color: rgba(18, 24, 38, 0.9) !important;
-            color: #fff !important;
-            font-weight: 800 !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-        }
-
-        /* Leaflet Dark Customization */
-        .leaflet-popup-content-wrapper {
-            background: rgba(18, 24, 38, 0.95) !important;
-            color: #f8fafc !important;
-            border: 1px solid var(--border-highlight);
-            backdrop-filter: blur(10px);
-            border-radius: 12px !important;
-        }
-
-        .leaflet-popup-tip {
-            background: rgba(18, 24, 38, 0.95) !important;
-        }
-
-        .leaflet-popup-content {
-            margin: 12px 14px !important;
-            font-family: 'Plus Jakarta Sans', sans-serif !important;
-        }
-
-        .map-popup-btn {
-            width: 100%;
-            margin-top: 6px;
-            padding: 6px;
-            border-radius: 6px;
-            border: none;
-            background: var(--primary);
-            color: #fff;
-            font-weight: 700;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
-
-        /* Bottom Bar */
+        /* Bottom Control Bar */
         .bottom-bar {
             position: fixed;
             bottom: 16px;
@@ -650,10 +517,7 @@
         .counter-num { font-size: 0.88rem; font-weight: 800; color: var(--text-primary); }
         .counter-label { font-size: 0.68rem; color: var(--text-muted); }
 
-        .btn-group-bottom {
-            display: flex;
-            gap: 6px;
-        }
+        .btn-group-bottom { display: flex; gap: 6px; }
 
         .btn-export {
             background: rgba(16, 185, 129, 0.15);
@@ -664,7 +528,6 @@
             font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
         .btn-reset-small {
@@ -678,7 +541,7 @@
             cursor: pointer;
         }
 
-        /* Modal Sheets */
+        /* Modals & Popups */
         .modal-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -693,10 +556,7 @@
             transition: opacity 0.3s ease;
         }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
 
         .modal-card {
             background: var(--bg-dark);
@@ -706,38 +566,19 @@
             max-width: 560px;
             padding: 20px;
             transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
 
-        .modal-overlay.active .modal-card {
-            transform: translateY(0);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .modal-overlay.active .modal-card { transform: translateY(0); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; }
         .modal-title { font-size: 1rem; font-weight: 800; color: var(--text-primary); }
 
-        .modal-close {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            font-size: 1.2rem;
-            cursor: pointer;
-        }
+        .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
 
-        .app-picker-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 8px;
-        }
+        .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
 
         .app-opt {
             background: var(--surface-card);
@@ -753,6 +594,19 @@
             color: var(--text-primary);
             font-size: 0.75rem;
             font-weight: 700;
+        }
+
+        .map-popup-btn {
+            width: 100%;
+            margin-top: 6px;
+            padding: 6px;
+            border-radius: 6px;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.75rem;
+            cursor: pointer;
         }
 
         .notes-input {
@@ -783,7 +637,7 @@
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s ease;
         }
 
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -817,7 +671,7 @@
         </button>
         <button id="mapViewTab" class="tab-btn" onclick="switchView('map')">
             <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-            Map View
+            Google Map
         </button>
     </div>
 </div>
@@ -886,7 +740,7 @@
     </div>
 </div>
 
-<!-- Navigation Modal Sheet -->
+<!-- Navigation Modal -->
 <div id="navModal" class="modal-overlay" onclick="closeModal('navModal')">
     <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-header">
@@ -912,7 +766,7 @@
     </div>
 </div>
 
-<!-- Notes Modal Sheet -->
+<!-- Notes Modal -->
 <div id="notesModal" class="modal-overlay" onclick="closeModal('notesModal')">
     <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-header">
@@ -941,7 +795,6 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <script>
-    // IndexedDB setup for Notes & Photos
     let db;
     const request = indexedDB.open("OutletProDB", 1);
     request.onupgradeneeded = e => {
@@ -962,18 +815,15 @@
     let lastRefreshTime = null;
     let activeView = 'list';
 
-    // Map State Variables
     let map = null, userMarker = null, userAccuracyCircle = null, storeClusterLayer = null;
     let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
     let selectedNavStore = null, activeNoteStoreCode = null, tempPhotoBase64 = null;
 
-    // Load Cached Retailers Data
     const savedData = localStorage.getItem('retailer_data');
     if (savedData) {
         try { retailers = JSON.parse(savedData); updateCounters(); } catch(e) {}
     }
 
-    // Refresh Sync Text
     setInterval(() => {
         if (!lastRefreshTime) return;
         const secondsAgo = Math.floor((Date.now() - lastRefreshTime) / 1000);
@@ -1011,16 +861,15 @@
 
         map = L.map('map', { zoomControl: false }).setView([startLat, startLon], 18);
 
-        // CartoDB Dark Matter Dark Styled Map Tiles
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        // DIRECT GOOGLE MAPS TILE PROVIDER (m = roadmap view)
+        L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
             maxZoom: 20,
-            subdomains: 'abcd',
-            attribution: '&copy; CartoDB'
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            attribution: '&copy; Google Maps'
         }).addTo(map);
 
         L.control.zoom({ position: 'topright' }).addTo(map);
 
-        // Leaflet Marker Cluster
         storeClusterLayer = L.markerClusterGroup({
             disableClusteringAtZoom: 17,
             spiderfyOnMaxZoom: true,
@@ -1134,7 +983,6 @@
         return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
     }
 
-    // GPS & Orientation Listening
     if ("geolocation" in navigator) {
         navigator.geolocation.watchPosition(
             (pos) => {
@@ -1156,12 +1004,10 @@
         );
     }
 
-    // Heading Device Motion fallback
     window.addEventListener('deviceorientationabsolute', e => {
         if (e.alpha !== null) currentHeading = 360 - e.alpha;
     }, true);
 
-    // Geofencing Auto-Check (15 meters trigger)
     function checkGeofenceAutoVisit() {
         if (!currentLat || !currentLon) return;
         retailers.forEach(item => {
@@ -1184,14 +1030,12 @@
             const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
             const isVisited = visitedSet.has(item.code);
 
-            // Filter Chips Logic
             if (statusFilter === 'VISITED' && !isVisited) continue;
             if (statusFilter === 'UNVISITED' && isVisited) continue;
             if (statusFilter === 'STATUS_Y' && item.status !== 'Y') continue;
             if (statusFilter === 'STATUS_N' && item.status !== 'N') continue;
 
             if (dist <= targetRadius) {
-                // Multi-field search
                 const matchesSearch = !searchVal || 
                     item.code.toLowerCase().includes(searchVal) || 
                     item.rsoCode.toLowerCase().includes(searchVal) ||
@@ -1291,7 +1135,6 @@
     function updateMapView(data) {
         if (!map) return;
 
-        // Render Smooth User GPS & Compass Bearing Icon
         if (currentLat !== null && currentLon !== null) {
             const userIcon = L.divIcon({
                 className: 'user-gps-marker',
@@ -1312,7 +1155,6 @@
                 userMarker.setIcon(userIcon);
             }
 
-            // Accuracy aura circle
             if (!userAccuracyCircle) {
                 userAccuracyCircle = L.circle([currentLat, currentLon], {
                     radius: currentAccuracy || 15,
@@ -1334,27 +1176,26 @@
 
         stores.forEach(item => {
             const isVisited = visitedSet.has(item.code);
-            const pinColor = isVisited ? '#10b981' : '#06b6d4';
+            const pinColor = isVisited ? '#10b981' : '#ea4335';
 
             const customPin = L.divIcon({
                 className: 'store-pin',
-                html: `<div style="background:${pinColor};width:22px;height:22px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.5);font-size:10px;font-weight:800;color:#000;">${isVisited ? '✓' : ''}</div>`,
-                iconSize: [22, 22]
+                html: `<div style="background:${pinColor};width:24px;height:24px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.4);font-size:11px;font-weight:800;color:#fff;">${isVisited ? '✓' : ''}</div>`,
+                iconSize: [24, 24]
             });
 
             const marker = L.marker([item.lat, item.lon], { icon: customPin });
             const popupContent = `
-                <div style="font-size:0.85rem; font-weight:800; color:#38bdf8; margin-bottom:2px;">${escapeHtml(item.code)}</div>
-                <div style="font-size:0.75rem; color:#cbd5e1; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
+                <div style="font-size:0.85rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)}</div>
+                <div style="font-size:0.75rem; color:#64748b; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
                 <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">${isVisited ? 'Unmark Visited' : 'Mark Visited'}</button>
-                <button class="map-popup-btn" style="background:rgba(6, 182, 212, 0.2); border:1px solid #06b6d4; color:#38bdf8;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
+                <button class="map-popup-btn" style="background:#06b6d4; color:#fff;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
             `;
             marker.bindPopup(popupContent);
             storeClusterLayer.addLayer(marker);
         });
     }
 
-    // Toggle Visited Status
     function toggleVisited(code, auto = false) {
         if (visitedSet.has(code)) {
             visitedSet.delete(code);
@@ -1374,7 +1215,6 @@
         if (activeView === 'map') updateMapView();
     }
 
-    // Modal Helpers
     function openNavModal(lat, lon, code) {
         selectedNavStore = { lat, lon, code };
         document.getElementById('navModalSub').innerText = `Target: ${code}`;
@@ -1389,7 +1229,6 @@
         document.getElementById('navModal').classList.add('active');
     }
 
-    // OSRM Polyline Path Drawing
     function drawOSRMRoute(destLat, destLon) {
         if (!currentLat || !currentLon) { showToast("GPS location missing!"); return; }
         switchView('map');
@@ -1401,15 +1240,14 @@
                 if (data.routes && data.routes.length > 0) {
                     if (osrmPolyline) map.removeLayer(osrmPolyline);
                     const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                    osrmPolyline = L.polyline(coords, { color: '#06b6d4', weight: 4, opacity: 0.8, dashArray: '8, 8' }).addTo(map);
+                    osrmPolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.8 }).addTo(map);
                     map.fitBounds(osrmPolyline.getBounds(), { padding: [40, 40] });
-                    showToast("Route drawn on map");
+                    showToast("Route drawn on Google Map");
                 }
             })
             .catch(() => showToast("Failed to fetch route"));
     }
 
-    // Notes & Photos Handlers
     function openNotesModal(code) {
         activeNoteStoreCode = code;
         document.getElementById('notesModalTitle').innerText = `Notes - ${code}`;
@@ -1461,7 +1299,6 @@
 
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // Export Daily CSV Report
     function exportVisitReport() {
         if (visitedSet.size === 0) { showToast("No visits to export!"); return; }
         let csvContent = "data:text/csv;charset=utf-8,Outlet Code,RSO Code,Status,Visit Timestamp\n";
