@@ -54,13 +54,13 @@
         header {
             width: 100%;
             max-width: 560px;
-            padding: 20px 16px 12px;
+            padding: 16px 16px 12px;
             position: sticky;
             top: 0;
             z-index: 40;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            background: rgba(9, 13, 22, 0.75);
+            background: rgba(9, 13, 22, 0.85);
             border-bottom: 1px solid var(--border-glass);
         }
 
@@ -77,9 +77,9 @@
         }
 
         .brand-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
             display: flex;
             align-items: center;
@@ -88,13 +88,13 @@
         }
 
         .brand-icon svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             stroke: #fff;
         }
 
         h1 {
-            font-size: 1.25rem;
+            font-size: 1.15rem;
             font-weight: 800;
             background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
@@ -102,37 +102,42 @@
             letter-spacing: -0.02em;
         }
 
+        .status-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 2px;
+        }
+
         .gps-status-pill {
             display: flex;
             align-items: center;
             gap: 6px;
-            padding: 6px 12px;
+            padding: 4px 10px;
             border-radius: 20px;
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--border-glass);
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: 600;
             color: var(--text-secondary);
         }
 
         .status-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: var(--accent-rose);
-            box-shadow: 0 0 10px var(--accent-rose);
         }
 
         .status-dot.active {
             background: var(--accent-green);
-            box-shadow: 0 0 10px var(--accent-green);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px var(--accent-green);
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        .last-sync {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         /* Main Layout */
@@ -154,53 +159,50 @@
             border-radius: 20px;
             padding: 18px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            transition: border-color 0.3s ease;
         }
 
         .upload-dropzone {
             position: relative;
             border: 2px dashed rgba(99, 102, 241, 0.3);
             border-radius: 14px;
-            padding: 20px 16px;
+            padding: 18px 16px;
             text-align: center;
             background: rgba(99, 102, 241, 0.03);
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s ease;
         }
 
         .upload-dropzone:hover {
             border-color: var(--primary);
             background: rgba(99, 102, 241, 0.08);
-            transform: translateY(-1px);
         }
 
         .upload-icon {
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: rgba(99, 102, 241, 0.15);
             color: var(--primary);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
+            margin: 0 auto 8px;
         }
 
         .upload-title {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: var(--text-primary);
         }
 
         .upload-sub {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
             color: var(--text-muted);
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
         input[type="file"] { display: none; }
 
-        /* Quick Filters & Radius Bar */
         .filter-bar {
             display: flex;
             align-items: center;
@@ -214,14 +216,10 @@
         .filter-chips {
             display: flex;
             gap: 6px;
-            overflow-x: auto;
-            scrollbar-width: none;
         }
 
-        .filter-chips::-webkit-scrollbar { display: none; }
-
         .chip {
-            padding: 6px 12px;
+            padding: 5px 12px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid var(--border-glass);
@@ -229,7 +227,6 @@
             font-weight: 600;
             color: var(--text-secondary);
             cursor: pointer;
-            white-space: nowrap;
             transition: all 0.2s ease;
         }
 
@@ -240,10 +237,9 @@
             box-shadow: 0 2px 10px var(--primary-glow);
         }
 
-        /* Search input inside list section */
+        /* Search input */
         .search-box {
             position: relative;
-            margin-bottom: 12px;
         }
 
         .search-input {
@@ -273,7 +269,7 @@
             stroke: var(--text-muted);
         }
 
-        /* Retailer Outlet Cards */
+        /* Outlet Cards */
         .outlet-card {
             background: var(--surface-card);
             backdrop-filter: blur(12px);
@@ -284,13 +280,7 @@
             margin-bottom: 12px;
             position: relative;
             overflow: hidden;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: cardAppear 0.3s ease-out forwards;
-        }
-
-        @keyframes cardAppear {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .outlet-card::before {
@@ -337,7 +327,6 @@
             font-size: 1.15rem;
             font-weight: 800;
             color: #38bdf8;
-            letter-spacing: 0.02em;
         }
 
         .visited-badge {
@@ -348,7 +337,6 @@
             padding: 2px 8px;
             border-radius: 20px;
             text-transform: uppercase;
-            letter-spacing: 0.04em;
         }
 
         .rso-text {
@@ -378,7 +366,6 @@
             font-weight: 700;
             padding: 2px 8px;
             border-radius: 6px;
-            letter-spacing: 0.03em;
         }
 
         .status-y { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
@@ -393,7 +380,7 @@
             border-top: 1px solid var(--border-glass);
         }
 
-        /* Checkbox Custom styling */
+        /* Custom Checkbox */
         .check-container {
             display: flex;
             align-items: center;
@@ -406,8 +393,8 @@
         }
 
         .custom-check {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             border-radius: 6px;
             border: 2px solid var(--border-highlight);
             display: flex;
@@ -422,32 +409,28 @@
         .check-container input:checked ~ .custom-check {
             background: var(--accent-green);
             border-color: var(--accent-green);
-            box-shadow: 0 0 10px var(--accent-green-glow);
         }
 
         .custom-check svg {
-            width: 14px;
-            height: 14px;
+            width: 12px;
+            height: 12px;
             stroke: #090d16;
             stroke-width: 3;
             opacity: 0;
-            transform: scale(0.5);
-            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.2s ease;
         }
 
         .check-container input:checked ~ .custom-check svg {
             opacity: 1;
-            transform: scale(1);
         }
 
-        /* Copy Button */
         .btn-copy {
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
             color: #38bdf8;
             border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 8px 16px;
-            border-radius: 10px;
-            font-size: 0.825rem;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
@@ -458,36 +441,17 @@
 
         .btn-copy:hover {
             background: var(--primary);
-            border-color: var(--primary);
             color: #fff;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
-        .btn-copy:active { transform: translateY(0); }
-
-        /* Empty State */
         .empty-card {
             text-align: center;
-            padding: 40px 20px;
+            padding: 32px 20px;
             background: var(--surface-glass);
             border: 1px dashed var(--border-glass);
             border-radius: 20px;
         }
 
-        .empty-illustration {
-            width: 56px;
-            height: 56px;
-            margin: 0 auto 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.03);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-        }
-
-        /* Floating Bottom Action Bar */
         .bottom-bar {
             position: fixed;
             bottom: 16px;
@@ -508,65 +472,40 @@
             z-index: 50;
         }
 
-        .counter-info {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .counter-num {
-            font-size: 0.95rem;
-            font-weight: 800;
-            color: var(--text-primary);
-        }
-
-        .counter-label {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-        }
+        .counter-info { display: flex; flex-direction: column; }
+        .counter-num { font-size: 0.9rem; font-weight: 800; color: var(--text-primary); }
+        .counter-label { font-size: 0.7rem; color: var(--text-muted); }
 
         .btn-reset-small {
             background: rgba(244, 63, 94, 0.1);
             color: var(--accent-rose);
             border: 1px solid rgba(244, 63, 94, 0.25);
-            padding: 8px 14px;
-            border-radius: 10px;
-            font-size: 0.78rem;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
-            transition: all 0.2s ease;
         }
 
-        .btn-reset-small:hover {
-            background: var(--accent-rose);
-            color: #fff;
-        }
-
-        /* Toast Notifications */
         .toast {
             position: fixed;
-            top: 80px;
+            top: 70px;
             left: 50%;
             transform: translateX(-50%) translateY(-20px);
             background: rgba(16, 185, 129, 0.95);
             color: #042f2e;
-            padding: 10px 20px;
+            padding: 8px 18px;
             border-radius: 30px;
             font-weight: 700;
-            font-size: 0.85rem;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            font-size: 0.825rem;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
             z-index: 100;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: all 0.3s ease;
         }
 
-        .toast.show {
-            opacity: 1;
-            transform: translateX(-50%) translateY(0);
-        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     </style>
 </head>
 <body>
@@ -579,22 +518,24 @@
             </div>
             <h1>Outlet Nearby</h1>
         </div>
-        <div class="gps-status-pill">
-            <span id="statusDot" class="status-dot"></span>
-            <span id="statusText">Locating...</span>
+        <div class="status-container">
+            <div class="gps-status-pill">
+                <span id="statusDot" class="status-dot"></span>
+                <span id="statusText">Awaiting GPS...</span>
+            </div>
+            <span id="lastSyncText" class="last-sync">Not updated yet</span>
         </div>
     </div>
 </header>
 
 <div class="container">
-    <!-- Dropzone Upload Card -->
     <div class="glass-card">
         <label for="csvFileInput" class="upload-dropzone">
             <div class="upload-icon">
-                <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
             </div>
             <div class="upload-title">Drop CSV file or tap to browse</div>
-            <div class="upload-sub">Supports automatic location & retailer column extraction</div>
+            <div class="upload-sub">Supports auto retailer column extraction</div>
         </label>
         <input type="file" id="csvFileInput" accept=".csv">
 
@@ -609,25 +550,19 @@
         </div>
     </div>
 
-    <!-- Search Input -->
     <div class="search-box">
         <svg class="search-icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         <input type="text" id="searchInput" class="search-input" placeholder="Search code or RSO..." oninput="updateNearbyList()">
     </div>
 
-    <!-- Retailers Outlet Container -->
     <div id="retailerList">
         <div class="empty-card">
-            <div class="empty-illustration">
-                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-            </div>
-            <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No Outlets Nearby</p>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Upload a CSV file and walk closer to your target stores.</p>
+            <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Upload a CSV file and enable GPS location.</p>
         </div>
     </div>
 </div>
 
-<!-- Floating Action Bar -->
 <div class="bottom-bar">
     <div class="counter-info">
         <span id="retailerCount" class="counter-num">0 Loaded</span>
@@ -636,18 +571,15 @@
     <button class="btn-reset-small" onclick="clearVisitHistory()">Reset Visits</button>
 </div>
 
-<!-- Toast -->
-<div id="toast" class="toast">
-    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-    <span id="toastMsg">Code copied!</span>
-</div>
+<div id="toast" class="toast"><span id="toastMsg">Copied!</span></div>
 
 <script>
     let retailers = [];
     let visitedSet = new Set(JSON.parse(localStorage.getItem('visited_retailers') || '[]'));
     let currentLat = null;
     let currentLon = null;
-    let targetRadius = 50; // default 50 meters
+    let targetRadius = 50;
+    let lastRefreshTime = null;
 
     // Load initial cached dataset
     const savedData = localStorage.getItem('retailer_data');
@@ -657,6 +589,14 @@
             updateCounters();
         } catch(e) {}
     }
+
+    // Refresh Time Counter
+    setInterval(() => {
+        if (!lastRefreshTime) return;
+        const secondsAgo = Math.floor((Date.now() - lastRefreshTime) / 1000);
+        document.getElementById('lastSyncText').innerText = 
+            secondsAgo < 2 ? 'Updated just now' : `Refreshed ${secondsAgo}s ago`;
+    }, 1000);
 
     function setRadius(meters, el) {
         targetRadius = meters;
@@ -768,8 +708,9 @@
             (pos) => {
                 currentLat = pos.coords.latitude;
                 currentLon = pos.coords.longitude;
+                lastRefreshTime = Date.now();
                 document.getElementById('statusDot').classList.add('active');
-                document.getElementById('statusText').innerText = "GPS Active";
+                document.getElementById('statusText').innerText = "GPS Live";
                 updateNearbyList();
             },
             () => { document.getElementById('statusText').innerText = "GPS Offline"; },
@@ -777,6 +718,7 @@
         );
     }
 
+    // Direct DOM Diffing Update (Prevents Flickering)
     function updateNearbyList() {
         if (currentLat === null || currentLon === null || retailers.length === 0) return;
 
@@ -803,32 +745,62 @@
         if (nearby.length === 0) {
             listContainer.innerHTML = `
                 <div class="empty-card">
-                    <div class="empty-illustration">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                    </div>
                     <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No stores within ${targetRadius}m</p>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Try expanding your search radius or walking closer.</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Walk closer or adjust your radius.</p>
                 </div>`;
             return;
         }
 
-        listContainer.innerHTML = nearby.map(item => {
-            const isVisited = visitedSet.has(item.code);
-            const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
+        // Clean out empty state card if present
+        if (listContainer.querySelector('.empty-card')) {
+            listContainer.innerHTML = '';
+        }
 
-            return `
-                <div class="outlet-card ${isVisited ? 'visited' : ''}">
+        const existingCards = new Map();
+        listContainer.querySelectorAll('.outlet-card').forEach(card => {
+            existingCards.set(card.getAttribute('data-code'), card);
+        });
+
+        nearby.forEach((item) => {
+            const isVisited = visitedSet.has(item.code);
+            let card = existingCards.get(item.code);
+
+            if (card) {
+                // Update existing element properties silently
+                const distEl = card.querySelector('.dist-val');
+                if (distEl) distEl.innerText = `${item.distance}m`;
+
+                const checkbox = card.querySelector('.visit-input');
+                if (checkbox && checkbox.checked !== isVisited) {
+                    checkbox.checked = isVisited;
+                }
+
+                if (isVisited) card.classList.add('visited');
+                else card.classList.remove('visited');
+
+                const badge = card.querySelector('.visited-badge');
+                if (badge) badge.style.display = isVisited ? 'inline-block' : 'none';
+
+                existingCards.delete(item.code);
+            } else {
+                // Create new card
+                const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
+                card = document.createElement('div');
+                card.className = `outlet-card ${isVisited ? 'visited' : ''}`;
+                card.setAttribute('data-code', item.code);
+
+                card.innerHTML = `
                     <div class="outlet-header">
                         <div class="outlet-title-area">
                             <div class="outlet-code-row">
                                 <span class="outlet-code">${escapeHtml(item.code)}</span>
-                                ${isVisited ? '<span class="visited-badge">Visited</span>' : ''}
+                                <span class="visited-badge" style="display: ${isVisited ? 'inline-block' : 'none'};">Visited</span>
                             </div>
                             <span class="rso-text">RSO Code: <strong>${escapeHtml(item.rsoCode)}</strong></span>
                         </div>
                         <div class="dist-pill">
                             <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                            ${item.distance}m
+                            <span class="dist-val">${item.distance}m</span>
                         </div>
                     </div>
                     <div>
@@ -836,7 +808,7 @@
                     </div>
                     <div class="card-footer">
                         <label class="check-container">
-                            <input type="checkbox" ${isVisited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
+                            <input type="checkbox" class="visit-input" ${isVisited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
                             <div class="custom-check">
                                 <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
                             </div>
@@ -847,9 +819,13 @@
                             Copy
                         </button>
                     </div>
-                </div>
-            `;
-        }).join('');
+                `;
+            }
+            listContainer.appendChild(card);
+        });
+
+        // Remove cards no longer in view
+        existingCards.forEach(card => card.remove());
     }
 
     function toggleVisited(code) {
@@ -890,7 +866,7 @@
         document.getElementById('toastMsg').innerText = msg;
         t.classList.add('show');
         clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+        toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
     }
 
     function escapeHtml(str) {
