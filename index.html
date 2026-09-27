@@ -15,30 +15,14 @@
         .dot.active { background-color: #22c55e; }
         input[type="file"] { display: none; }
         .btn-upload { display: block; background: #2563eb; color: #fff; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; width: 100%; font-size: 1rem; }
-        
-        .retailer-card { background: #2a2a2a; border-left: 5px solid #3b82f6; border-radius: 8px; padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s ease; }
-        .retailer-card.visited { background: #1a221a; border-left-color: #10b981; opacity: 0.85; }
-        
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .retailer-info h3 { font-size: 1.25rem; color: #38bdf8; margin-bottom: 6px; font-weight: bold; }
-        .retailer-info p { font-size: 0.88rem; color: #d1d5db; margin-bottom: 4px; }
-        .distance { font-weight: bold; color: #10b981; font-size: 0.85rem; margin-top: 4px; }
-        
-        .status-badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; display: inline-block; }
-        .status-y { background: #065f46; color: #34d399; }
-        .status-n { background: #991b1b; color: #fca5a5; }
-        .visited-badge { background: #10b981; color: #000; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; margin-left: 6px; }
-
-        .card-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 10px; border-top: 1px solid #3d3d3d; }
-        .visit-check { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #e5e7eb; cursor: pointer; font-weight: 500; }
-        .visit-check input { width: 20px; height: 20px; accent-color: #10b981; cursor: pointer; }
-
-        .btn-copy { background: #10b981; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.88rem; cursor: pointer; }
+        .retailer-card { background: #2a2a2a; border-left: 5px solid #3b82f6; border-radius: 8px; padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .retailer-info h3 { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
+        .retailer-info p { font-size: 0.85rem; color: #9ca3af; margin-bottom: 2px; }
+        .distance { font-weight: bold; color: #10b981; font-size: 0.9rem; }
+        .btn-copy { background: #10b981; color: #fff; border: none; padding: 10px 14px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
         .btn-copy:active { background: #059669; transform: scale(0.98); }
         .empty-state { text-align: center; color: #6b7280; margin-top: 24px; font-size: 0.95rem; }
-        .toast { position: fixed; bottom: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 99; }
-        
-        .btn-reset { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; margin-top: 10px; width: 100%; }
+        .toast { position: fixed; bottom: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
     </style>
 </head>
 <body>
@@ -53,7 +37,6 @@
             <span><span id="statusDot" class="dot"></span><span id="statusText">Awaiting GPS / CSV...</span></span>
             <span id="retailerCount">0 loaded</span>
         </div>
-        <button class="btn-reset" onclick="clearVisitHistory()">🧹 Clear All Visit Marks</button>
     </div>
 
     <div id="retailerList">
@@ -65,7 +48,6 @@
 
 <script>
     let retailers = [];
-    let visitedSet = new Set(JSON.parse(localStorage.getItem('visited_retailers') || '[]'));
     let currentLat = null;
     let currentLon = null;
 
@@ -76,23 +58,6 @@
             retailers = JSON.parse(savedData);
             document.getElementById('retailerCount').innerText = `${retailers.length} loaded`;
         } catch(e) {}
-    }
-
-    // Helper to robustly split CSV lines with quoted strings
-    function parseCSVLine(line) {
-        const result = [];
-        let cur = '';
-        let inQuotes = false;
-        for (let i = 0; i < line.length; i++) {
-            const c = line[i];
-            if (c === '"') { inQuotes = !inQuotes; }
-            else if (c === ',' && !inQuotes) {
-                result.push(cur.trim().replace(/^"|"$/g, ''));
-                cur = '';
-            } else { cur += c; }
-        }
-        result.push(cur.trim().replace(/^"|"$/g, ''));
-        return result;
     }
 
     // CSV File Reader
@@ -111,62 +76,33 @@
         const lines = text.split(/\r\n|\n/);
         if (lines.length < 2) return;
 
-        const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/['"]/g, ''));
+        
+        const codeIdx = headers.findIndex(h => h.includes('code') || h.includes('id'));
+        const nameIdx = headers.findIndex(h => h.includes('name') || h.includes('outlet') || h.includes('retailer'));
+        const latIdx = headers.findIndex(h => h.includes('lat'));
+        const lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
 
-        // Find latitude and longitude column indices dynamically
-        let latIdx = headers.findIndex(h => h.includes('lat'));
-        let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
+        if (codeIdx === -1 || latIdx === -1 || lonIdx === -1) {
+            alert('CSV must contain Retailer Code/ID, Latitude, and Longitude columns.');
+            return;
+        }
 
         retailers = [];
         for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
             
-            const cols = parseCSVLine(line);
-            if (cols.length < 3) continue;
+            const cols = line.split(',').map(c => c.trim().replace(/['"]/g, ''));
+            const lat = parseFloat(cols[latIdx]);
+            const lon = parseFloat(cols[lonIdx]);
 
-            // Find Retailer Code (starts with R followed by digits, e.g. R603640)
-            let retailerCode = '';
-            for (let c = 0; c < cols.length; c++) {
-                if (/^R\d{5,7}$/i.test(cols[c].trim())) {
-                    retailerCode = cols[c].trim().toUpperCase();
-                    break;
-                }
-            }
-            // Fallback: Check Column C (Index 2)
-            if (!retailerCode && cols[2]) retailerCode = cols[2].trim();
-
-            // RSO Code: Column B (Index 1)
-            const rsoCode = cols[1] ? cols[1].trim() : 'N/A';
-
-            // Status Y/N: Column H (Index 7) or last column fallback
-            let statusVal = 'N/A';
-            if (cols[7]) {
-                statusVal = cols[7].trim().toUpperCase();
-            } else if (cols.length >= 8) {
-                statusVal = cols[cols.length - 1].trim().toUpperCase();
-            }
-
-            // Coordinates detection
-            let lat = parseFloat(cols[latIdx !== -1 ? latIdx : 5]);
-            let lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 6]);
-
-            // Fallback coordinate search across all columns if lat/lon not found
-            if (isNaN(lat) || isNaN(lon)) {
-                for (let c = 0; c < cols.length; c++) {
-                    const val = parseFloat(cols[c]);
-                    if (!isNaN(val) && val > 20 && val < 27) lat = val; // Lat range for BD
-                    if (!isNaN(val) && val > 88 && val < 93) lon = val; // Lon range for BD
-                }
-            }
-
-            if (!isNaN(lat) && !isNaN(lon) && retailerCode) {
+            if (!isNaN(lat) && !isNaN(lon)) {
                 retailers.push({
-                    code: retailerCode,
-                    rsoCode: rsoCode,
+                    code: cols[codeIdx] || 'UNKNOWN',
+                    name: nameIdx !== -1 ? cols[nameIdx] : cols[codeIdx],
                     lat: lat,
-                    lon: lon,
-                    status: statusVal
+                    lon: lon
                 });
             }
         }
@@ -222,64 +158,23 @@
             }
         }
 
-        // Sort unvisited first, then by distance
-        nearby.sort((a, b) => {
-            const aVisited = visitedSet.has(a.code);
-            const bVisited = visitedSet.has(b.code);
-            if (aVisited !== bVisited) return aVisited ? 1 : -1;
-            return a.distance - b.distance;
-        });
+        nearby.sort((a, b) => a.distance - b.distance);
 
         if (nearby.length === 0) {
             listContainer.innerHTML = '<div class="empty-state">No outlets found within 50 meters. Walk closer to a store.</div>';
             return;
         }
 
-        listContainer.innerHTML = nearby.map(item => {
-            const isVisited = visitedSet.has(item.code);
-            const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
-            
-            return `
-                <div class="retailer-card ${isVisited ? 'visited' : ''}">
-                    <div class="card-header">
-                        <div class="retailer-info">
-                            <h3>${escapeHtml(item.code)} ${isVisited ? '<span class="visited-badge">Visited ✅</span>' : ''}</h3>
-                            <p>RSO Code: <strong>${escapeHtml(item.rsoCode)}</strong></p>
-                            <p>Status: <span class="status-badge ${statusClass}">${escapeHtml(item.status)}</span></p>
-                            <div class="distance">📍 ${item.distance}m away</div>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <label class="visit-check">
-                            <input type="checkbox" ${isVisited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
-                            Mark Visited
-                        </label>
-                        <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">Copy Code</button>
-                    </div>
+        listContainer.innerHTML = nearby.map(item => `
+            <div class="retailer-card">
+                <div class="retailer-info">
+                    <h3>${escapeHtml(item.name)}</h3>
+                    <p>Code: <strong>${escapeHtml(item.code)}</strong></p>
+                    <div class="distance">📍 ${item.distance}m away</div>
                 </div>
-            `;
-        }).join('');
-    }
-
-    function toggleVisited(code) {
-        if (visitedSet.has(code)) {
-            visitedSet.delete(code);
-            showToast(`Unmarked ${code}`);
-        } else {
-            visitedSet.add(code);
-            showToast(`Marked ${code} as Visited`);
-        }
-        localStorage.setItem('visited_retailers', JSON.stringify(Array.from(visitedSet)));
-        updateNearbyList();
-    }
-
-    function clearVisitHistory() {
-        if (confirm("Reset all visited marks for today?")) {
-            visitedSet.clear();
-            localStorage.removeItem('visited_retailers');
-            showToast("Visit history cleared");
-            updateNearbyList();
-        }
+                <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">Copy Code</button>
+            </div>
+        `).join('');
     }
 
     function copyCode(code) {
