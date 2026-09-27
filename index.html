@@ -20,20 +20,20 @@
         .retailer-card.visited { background: #1a221a; border-left-color: #10b981; opacity: 0.85; }
         
         .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .retailer-info h3 { font-size: 1.15rem; color: #fff; margin-bottom: 4px; }
-        .retailer-info p { font-size: 0.85rem; color: #9ca3af; margin-bottom: 3px; }
-        .distance { font-weight: bold; color: #10b981; font-size: 0.85rem; margin-top: 2px; }
+        .retailer-info h3 { font-size: 1.25rem; color: #38bdf8; margin-bottom: 6px; font-weight: bold; }
+        .retailer-info p { font-size: 0.88rem; color: #d1d5db; margin-bottom: 4px; }
+        .distance { font-weight: bold; color: #10b981; font-size: 0.85rem; margin-top: 4px; }
         
-        .status-badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; display: inline-block; margin-left: 4px; }
+        .status-badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; display: inline-block; }
         .status-y { background: #065f46; color: #34d399; }
         .status-n { background: #991b1b; color: #fca5a5; }
         .visited-badge { background: #10b981; color: #000; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; margin-left: 6px; }
 
-        .card-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 8px; border-top: 1px solid #3d3d3d; }
-        .visit-check { display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: #d1d5db; cursor: pointer; }
-        .visit-check input { width: 18px; height: 18px; accent-color: #10b981; cursor: pointer; }
+        .card-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 10px; border-top: 1px solid #3d3d3d; }
+        .visit-check { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #e5e7eb; cursor: pointer; font-weight: 500; }
+        .visit-check input { width: 20px; height: 20px; accent-color: #10b981; cursor: pointer; }
 
-        .btn-copy { background: #10b981; color: #fff; border: none; padding: 8px 14px; border-radius: 6px; font-weight: bold; font-size: 0.85rem; cursor: pointer; }
+        .btn-copy { background: #10b981; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.88rem; cursor: pointer; }
         .btn-copy:active { background: #059669; transform: scale(0.98); }
         .empty-state { text-align: center; color: #6b7280; margin-top: 24px; font-size: 0.95rem; }
         .toast { position: fixed; bottom: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 99; }
@@ -78,6 +78,23 @@
         } catch(e) {}
     }
 
+    // Helper to safely split CSV rows handling quotes
+    function parseCSVLine(text) {
+        const result = [];
+        let cur = '';
+        let inQuotes = false;
+        for (let i = 0; i < text.length; i++) {
+            const c = text[i];
+            if (c === '"') { inQuotes = !inQuotes; }
+            else if (c === ',' && !inQuotes) {
+                result.push(cur.trim().replace(/^"|"$/g, ''));
+                cur = '';
+            } else { cur += c; }
+        }
+        result.push(cur.trim().replace(/^"|"$/g, ''));
+        return result;
+    }
+
     // CSV File Reader
     document.getElementById('csvFileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
@@ -94,34 +111,49 @@
         const lines = text.split(/\r\n|\n/);
         if (lines.length < 2) return;
 
-        const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/['"]/g, ''));
+        const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
         
-        const codeIdx = headers.findIndex(h => h.includes('code') || h.includes('id') || h.includes('retailer'));
-        const nameIdx = headers.findIndex(h => h.includes('name') || h.includes('outlet'));
-        const latIdx = headers.findIndex(h => h.includes('lat'));
-        const lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
-        
-        // Find RSO Code or alternative second code column
-        let rsoIdx = headers.findIndex(h => h.includes('rso'));
-        if (rsoIdx === -1 && headers.length > 2) rsoIdx = 1; // Fallback to second column if available
+        // Dynamic column matching
+        let latIdx = headers.findIndex(h => h.includes('lat'));
+        let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
+        let nameIdx = headers.findIndex(h => h.includes('name') || h.includes('outlet'));
 
         retailers = [];
         for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
             
-            const cols = line.split(',').map(c => c.trim().replace(/['"]/g, ''));
-            const lat = parseFloat(cols[latIdx]);
-            const lon = parseFloat(cols[lonIdx]);
-            
-            // Extract last column for Status (Y/N)
-            const statusVal = cols[cols.length - 1] ? cols[cols.length - 1].toUpperCase() : 'N/A';
+            const cols = parseCSVLine(line);
+            if (cols.length < 3) continue;
+
+            // 1. Column B (Index 1) for RSO Code
+            const rsoCode = cols[1] || 'N/A';
+
+            // 2. Column H (Index 7) for Enable Status Y/N
+            const statusVal = cols[7] ? cols[7].toUpperCase() : 'N/A';
+
+            // 3. Find Retailer Code (Matches 'R' followed by digits, e.g. R603640)
+            let retailerCode = '';
+            for (let c = 0; c < cols.length; c++) {
+                if (/^R\d{5,7}$/i.test(cols[c].trim())) {
+                    retailerCode = cols[c].trim().toUpperCase();
+                    break;
+                }
+            }
+            // Fallback if regex pattern isn't exact
+            if (!retailerCode) {
+                retailerCode = cols[0] || `UNKNOWN_${i}`;
+            }
+
+            // 4. Coordinates
+            const lat = parseFloat(cols[latIdx !== -1 ? latIdx : 2]);
+            const lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 3]);
 
             if (!isNaN(lat) && !isNaN(lon)) {
                 retailers.push({
-                    code: cols[codeIdx] || 'UNKNOWN',
-                    rsoCode: (rsoIdx !== -1 && cols[rsoIdx]) ? cols[rsoIdx] : 'N/A',
-                    name: nameIdx !== -1 ? cols[nameIdx] : cols[codeIdx],
+                    code: retailerCode,
+                    rsoCode: rsoCode,
+                    name: nameIdx !== -1 && cols[nameIdx] ? cols[nameIdx] : retailerCode,
                     lat: lat,
                     lon: lon,
                     status: statusVal
@@ -201,8 +233,7 @@
                 <div class="retailer-card ${isVisited ? 'visited' : ''}">
                     <div class="card-header">
                         <div class="retailer-info">
-                            <h3>${escapeHtml(item.name)} ${isVisited ? '<span class="visited-badge">Visited ✅</span>' : ''}</h3>
-                            <p>Retailer Code: <strong>${escapeHtml(item.code)}</strong></p>
+                            <h3>${escapeHtml(item.code)} ${isVisited ? '<span class="visited-badge">Visited ✅</span>' : ''}</h3>
                             <p>RSO Code: <strong>${escapeHtml(item.rsoCode)}</strong></p>
                             <p>Status: <span class="status-badge ${statusClass}">${escapeHtml(item.status)}</span></p>
                             <div class="distance">📍 ${item.distance}m away</div>
