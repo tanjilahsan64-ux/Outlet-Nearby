@@ -750,16 +750,16 @@
     }
 
     function initMap() {
-        // Initialize Map centered around default or current location
         const startLat = currentLat || 23.8103;
         const startLon = currentLon || 90.4125;
 
         map = L.map('map', { zoomControl: false }).setView([startLat, startLon], 18);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            maxZoom: 19,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap & CartoDB'
+        // Google Maps Street View Layer (Free / No API Key required)
+        L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
+            attribution: '&copy; Google Maps'
         }).addTo(map);
 
         L.control.zoom({ position: 'topright' }).addTo(map);
@@ -990,7 +990,7 @@
                             Mark Visited
                         </label>
                         <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">
-                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2 2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
                             Copy
                         </button>
                     </div>
@@ -1008,7 +1008,7 @@
         const stores = data || getNearbyFilteredData();
 
         if (currentLat !== null && currentLon !== null) {
-            // User Location Pulse Marker
+            // User Location Marker
             if (!userMarker) {
                 const userIcon = L.divIcon({
                     className: 'user-pin',
@@ -1036,7 +1036,7 @@
             }
         }
 
-        // Re-draw store pins
+        // Draw Store Pins
         storeMarkersLayer.clearLayers();
 
         stores.forEach(item => {
