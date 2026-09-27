@@ -207,7 +207,7 @@
         document.getElementById('statusText').innerText = "Geolocation unsupported";
     }
 
-    // Filter and Render Outlets within 20 Meters
+    // Filter and Render Outlets within 50 Meters
     function updateNearbyList() {
         if (currentLat === null || currentLon === null || retailers.length === 0) return;
 
@@ -216,7 +216,7 @@
 
         for (const item of retailers) {
             const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
-            if (dist <= 20) { // 20 meters radius
+            if (dist <= 50) { // 50 meters radius
                 nearby.push({ ...item, distance: Math.round(dist) });
             }
         }
