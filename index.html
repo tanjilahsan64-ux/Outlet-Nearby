@@ -78,13 +78,13 @@
         } catch(e) {}
     }
 
-    // Helper to safely split CSV rows handling quotes
-    function parseCSVLine(text) {
+    // Helper to robustly split CSV lines with quoted strings
+    function parseCSVLine(line) {
         const result = [];
         let cur = '';
         let inQuotes = false;
-        for (let i = 0; i < text.length; i++) {
-            const c = text[i];
+        for (let i = 0; i < line.length; i++) {
+            const c = line[i];
             if (c === '"') { inQuotes = !inQuotes; }
             else if (c === ',' && !inQuotes) {
                 result.push(cur.trim().replace(/^"|"$/g, ''));
@@ -112,11 +112,10 @@
         if (lines.length < 2) return;
 
         const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
-        
-        // Dynamic column matching
+
+        // Find latitude and longitude column indices dynamically
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
-        let nameIdx = headers.findIndex(h => h.includes('name') || h.includes('outlet'));
 
         retailers = [];
         for (let i = 1; i < lines.length; i++) {
@@ -126,13 +125,7 @@
             const cols = parseCSVLine(line);
             if (cols.length < 3) continue;
 
-            // 1. Column B (Index 1) for RSO Code
-            const rsoCode = cols[1] || 'N/A';
-
-            // 2. Column H (Index 7) for Enable Status Y/N
-            const statusVal = cols[7] ? cols[7].toUpperCase() : 'N/A';
-
-            // 3. Find Retailer Code (Matches 'R' followed by digits, e.g. R603640)
+            // Find Retailer Code (starts with R followed by digits, e.g. R603640)
             let retailerCode = '';
             for (let c = 0; c < cols.length; c++) {
                 if (/^R\d{5,7}$/i.test(cols[c].trim())) {
@@ -140,20 +133,37 @@
                     break;
                 }
             }
-            // Fallback if regex pattern isn't exact
-            if (!retailerCode) {
-                retailerCode = cols[0] || `UNKNOWN_${i}`;
+            // Fallback: Check Column C (Index 2)
+            if (!retailerCode && cols[2]) retailerCode = cols[2].trim();
+
+            // RSO Code: Column B (Index 1)
+            const rsoCode = cols[1] ? cols[1].trim() : 'N/A';
+
+            // Status Y/N: Column H (Index 7) or last column fallback
+            let statusVal = 'N/A';
+            if (cols[7]) {
+                statusVal = cols[7].trim().toUpperCase();
+            } else if (cols.length >= 8) {
+                statusVal = cols[cols.length - 1].trim().toUpperCase();
             }
 
-            // 4. Coordinates
-            const lat = parseFloat(cols[latIdx !== -1 ? latIdx : 2]);
-            const lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 3]);
+            // Coordinates detection
+            let lat = parseFloat(cols[latIdx !== -1 ? latIdx : 5]);
+            let lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 6]);
 
-            if (!isNaN(lat) && !isNaN(lon)) {
+            // Fallback coordinate search across all columns if lat/lon not found
+            if (isNaN(lat) || isNaN(lon)) {
+                for (let c = 0; c < cols.length; c++) {
+                    const val = parseFloat(cols[c]);
+                    if (!isNaN(val) && val > 20 && val < 27) lat = val; // Lat range for BD
+                    if (!isNaN(val) && val > 88 && val < 93) lon = val; // Lon range for BD
+                }
+            }
+
+            if (!isNaN(lat) && !isNaN(lon) && retailerCode) {
                 retailers.push({
                     code: retailerCode,
                     rsoCode: rsoCode,
-                    name: nameIdx !== -1 && cols[nameIdx] ? cols[nameIdx] : retailerCode,
                     lat: lat,
                     lon: lon,
                     status: statusVal
