@@ -704,6 +704,8 @@
     let userMarker = null;
     let radiusCircle = null;
     let storeMarkersLayer = null;
+    let activePopupMarker = null;
+    let popupTimer = null;
 
     // Load initial cached dataset
     const savedData = localStorage.getItem('retailer_data');
@@ -755,7 +757,7 @@
 
         map = L.map('map', { zoomControl: false }).setView([startLat, startLon], 18);
 
-        // Google Maps Street View Layer (Free / No API Key required)
+        // Google Maps Street View Layer
         L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
             maxZoom: 20,
             subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
@@ -765,6 +767,22 @@
         L.control.zoom({ position: 'topright' }).addTo(map);
 
         storeMarkersLayer = L.layerGroup().addTo(map);
+
+        // Track active popup open state
+        map.on('popupopen', function(e) {
+            activePopupMarker = e.popup._source;
+            clearTimeout(popupTimer);
+            
+            // Auto-close popup after 10 seconds (change to 8000 for 8 seconds)
+            popupTimer = setTimeout(() => {
+                map.closePopup();
+            }, 10000);
+        });
+
+        map.on('popupclose', function() {
+            activePopupMarker = null;
+            clearTimeout(popupTimer);
+        });
     }
 
     function setRadius(meters, el) {
@@ -1005,10 +1023,9 @@
     // Map Render Engine
     function updateMapView(data) {
         if (!map) return;
-        const stores = data || getNearbyFilteredData();
-
+        
+        // Update user location pin and circle
         if (currentLat !== null && currentLon !== null) {
-            // User Location Marker
             if (!userMarker) {
                 const userIcon = L.divIcon({
                     className: 'user-pin',
@@ -1021,7 +1038,6 @@
                 userMarker.setLatLng([currentLat, currentLon]);
             }
 
-            // Radius Circle Overlay
             if (!radiusCircle) {
                 radiusCircle = L.circle([currentLat, currentLon], {
                     radius: targetRadius,
@@ -1035,6 +1051,13 @@
                 radiusCircle.setRadius(targetRadius);
             }
         }
+
+        // PREVENT REDRAWING IF POPUP IS OPEN TO AVOID CLOSING IT
+        if (activePopupMarker) {
+            return; 
+        }
+
+        const stores = data || getNearbyFilteredData();
 
         // Draw Store Pins
         storeMarkersLayer.clearLayers();
@@ -1078,6 +1101,9 @@
         }
         localStorage.setItem('visited_retailers', JSON.stringify(Array.from(visitedSet)));
         updateCounters();
+        
+        // Temporarily clear active popup marker so UI refreshes correctly
+        activePopupMarker = null;
         updateNearbyList();
         if (activeView === 'map') updateMapView();
     }
@@ -1088,6 +1114,7 @@
             localStorage.removeItem('visited_retailers');
             updateCounters();
             showToast("Visit history reset");
+            activePopupMarker = null;
             updateNearbyList();
             if (activeView === 'map') updateMapView();
         }
