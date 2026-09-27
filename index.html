@@ -1,1 +1,201 @@
-{ "name": "create_new_file", "arguments": { "filepath": "src/index.html", "contents": "\n<html lang="en">\n\n <meta charset="UTF-8">\n <meta name="viewport" content="width=device-width, initial-scale=1.0">\n Outlet Nearby\n \n /* Add your dark mode and mobile UI styles here */\n \n\n\n Outlet Nearby\n <input type="file" id="csvFileInput" accept=".csv" />\n <table id="retailerTable">\n \n // Add your JavaScript code here\n \n\n" } }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outlet Nearby</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: #121212; color: #ffffff; padding: 16px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+        .container { width: 100%; max-width: 480px; }
+        h1 { font-size: 1.5rem; text-align: center; margin-bottom: 16px; color: #3b82f6; }
+        .card { background: #1e1e1e; border: 1px solid #333; border-radius: 12px; padding: 16px; margin-bottom: 16px; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .status-box { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #aaa; margin-top: 8px; }
+        .dot { height: 10px; width: 10px; background-color: #ef4444; border-radius: 50%; display: inline-block; margin-right: 6px; }
+        .dot.active { background-color: #22c55e; }
+        input[type="file"] { display: none; }
+        .btn-upload { display: block; background: #2563eb; color: #fff; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; width: 100%; font-size: 1rem; }
+        .retailer-card { background: #2a2a2a; border-left: 5px solid #3b82f6; border-radius: 8px; padding: 14px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .retailer-info h3 { font-size: 1.1rem; color: #fff; margin-bottom: 4px; }
+        .retailer-info p { font-size: 0.85rem; color: #9ca3af; margin-bottom: 2px; }
+        .distance { font-weight: bold; color: #10b981; font-size: 0.9rem; }
+        .btn-copy { background: #10b981; color: #fff; border: none; padding: 10px 14px; border-radius: 6px; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
+        .btn-copy:active { background: #059669; transform: scale(0.98); }
+        .empty-state { text-align: center; color: #6b7280; margin-top: 24px; font-size: 0.95rem; }
+        .toast { position: fixed; bottom: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>📍 Outlet Nearby</h1>
+
+    <div class="card">
+        <label for="csvFileInput" class="btn-upload">📁 Upload Retailers CSV</label>
+        <input type="file" id="csvFileInput" accept=".csv">
+        <div class="status-box">
+            <span><span id="statusDot" class="dot"></span><span id="statusText">Awaiting GPS / CSV...</span></span>
+            <span id="retailerCount">0 loaded</span>
+        </div>
+    </div>
+
+    <div id="retailerList">
+        <div class="empty-state">Upload a CSV file and walk within 50m of an outlet to see nearby codes.</div>
+    </div>
+</div>
+
+<div id="toast" class="toast">Code copied!</div>
+
+<script>
+    let retailers = [];
+    let currentLat = null;
+    let currentLon = null;
+
+    // Load saved CSV data on startup
+    const savedData = localStorage.getItem('retailer_data');
+    if (savedData) {
+        try {
+            retailers = JSON.parse(savedData);
+            document.getElementById('retailerCount').innerText = `${retailers.length} loaded`;
+        } catch(e) {}
+    }
+
+    // CSV File Reader
+    document.getElementById('csvFileInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(evt) {
+            parseCSV(evt.target.result);
+        };
+        reader.readAsText(file);
+    });
+
+    function parseCSV(text) {
+        const lines = text.split(/\r\n|\n/);
+        if (lines.length < 2) return;
+
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/['"]/g, ''));
+        
+        const codeIdx = headers.findIndex(h => h.includes('code') || h.includes('id'));
+        const nameIdx = headers.findIndex(h => h.includes('name') || h.includes('outlet') || h.includes('retailer'));
+        const latIdx = headers.findIndex(h => h.includes('lat'));
+        const lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
+
+        if (codeIdx === -1 || latIdx === -1 || lonIdx === -1) {
+            alert('CSV must contain Retailer Code/ID, Latitude, and Longitude columns.');
+            return;
+        }
+
+        retailers = [];
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            
+            const cols = line.split(',').map(c => c.trim().replace(/['"]/g, ''));
+            const lat = parseFloat(cols[latIdx]);
+            const lon = parseFloat(cols[lonIdx]);
+
+            if (!isNaN(lat) && !isNaN(lon)) {
+                retailers.push({
+                    code: cols[codeIdx] || 'UNKNOWN',
+                    name: nameIdx !== -1 ? cols[nameIdx] : cols[codeIdx],
+                    lat: lat,
+                    lon: lon
+                });
+            }
+        }
+
+        localStorage.setItem('retailer_data', JSON.stringify(retailers));
+        document.getElementById('retailerCount').innerText = `${retailers.length} loaded`;
+        showToast(`Loaded ${retailers.length} outlets`);
+        updateNearbyList();
+    }
+
+    // Haversine Distance Calculation (Meters)
+    function getDistanceMeters(lat1, lon1, lat2, lon2) {
+        const R = 6371000;
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    // Live Location Tracking
+    if ("geolocation" in navigator) {
+        navigator.geolocation.watchPosition(
+            (pos) => {
+                currentLat = pos.coords.latitude;
+                currentLon = pos.coords.longitude;
+                document.getElementById('statusDot').classList.add('active');
+                document.getElementById('statusText').innerText = "GPS Live";
+                updateNearbyList();
+            },
+            (err) => {
+                document.getElementById('statusText').innerText = "GPS Error: Allow location access";
+            },
+            { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 }
+        );
+    } else {
+        document.getElementById('statusText').innerText = "Geolocation unsupported";
+    }
+
+    // Filter and Render Outlets within 50 Meters
+    function updateNearbyList() {
+        if (currentLat === null || currentLon === null || retailers.length === 0) return;
+
+        const listContainer = document.getElementById('retailerList');
+        const nearby = [];
+
+        for (const item of retailers) {
+            const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
+            if (dist <= 50) { // 50 meters radius
+                nearby.push({ ...item, distance: Math.round(dist) });
+            }
+        }
+
+        nearby.sort((a, b) => a.distance - b.distance);
+
+        if (nearby.length === 0) {
+            listContainer.innerHTML = '<div class="empty-state">No outlets found within 50 meters. Walk closer to a store.</div>';
+            return;
+        }
+
+        listContainer.innerHTML = nearby.map(item => `
+            <div class="retailer-card">
+                <div class="retailer-info">
+                    <h3>${escapeHtml(item.name)}</h3>
+                    <p>Code: <strong>${escapeHtml(item.code)}</strong></p>
+                    <div class="distance">📍 ${item.distance}m away</div>
+                </div>
+                <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">Copy Code</button>
+            </div>
+        `).join('');
+    }
+
+    function copyCode(code) {
+        navigator.clipboard.writeText(code).then(() => {
+            showToast(`Copied ${code}`);
+        });
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById('toast');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 2000);
+    }
+
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function(m) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+        });
+    }
+</script>
+
+</body>
+</html>
