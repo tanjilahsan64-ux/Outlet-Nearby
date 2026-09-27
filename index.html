@@ -3,351 +3,560 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outlet Nearby</title>
+    <title>Outlet Nearby Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --primary: #3b82f6;
-            --primary-hover: #2563eb;
+            --bg-dark: #090d16;
+            --surface-glass: rgba(18, 24, 38, 0.7);
+            --surface-card: rgba(26, 34, 53, 0.65);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(255, 255, 255, 0.18);
+            
+            --primary: #6366f1;
+            --primary-glow: rgba(99, 102, 241, 0.35);
+            --accent-cyan: #06b6d4;
             --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --glass-glow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --accent-green-glow: rgba(16, 185, 129, 0.25);
+            --accent-rose: #f43f5e;
+            
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
         }
 
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        body { 
-            background: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
-            color: var(--text-main); 
-            padding: 16px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            min-height: 100vh; 
-        }
-
-        .container { 
-            width: 100%; 
-            max-width: 520px; 
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        h1 { 
-            font-size: 1.75rem; 
-            font-weight: 800;
-            letter-spacing: -0.025em;
-            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card { 
-            background: var(--card-bg); 
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border); 
-            border-radius: 16px; 
-            padding: 20px; 
-            margin-bottom: 20px; 
-            width: 100%; 
-            box-shadow: var(--glass-glow); 
-        }
-
-        .upload-section {
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding-bottom: 90px;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            align-items: center;
+        }
+
+        /* Top Header */
+        header {
+            width: 100%;
+            max-width: 560px;
+            padding: 20px 16px 12px;
+            position: sticky;
+            top: 0;
+            z-index: 40;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(9, 13, 22, 0.75);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px var(--primary-glow);
+        }
+
+        .brand-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: #fff;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .gps-status-pill {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-glass);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-rose);
+            box-shadow: 0 0 10px var(--accent-rose);
+        }
+
+        .status-dot.active {
+            background: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        /* Main Layout */
+        .container {
+            width: 100%;
+            max-width: 560px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        /* Control Glass Card */
+        .glass-card {
+            background: var(--surface-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: border-color 0.3s ease;
+        }
+
+        .upload-dropzone {
+            position: relative;
+            border: 2px dashed rgba(99, 102, 241, 0.3);
+            border-radius: 14px;
+            padding: 20px 16px;
+            text-align: center;
+            background: rgba(99, 102, 241, 0.03);
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .upload-dropzone:hover {
+            border-color: var(--primary);
+            background: rgba(99, 102, 241, 0.08);
+            transform: translateY(-1px);
+        }
+
+        .upload-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+
+        .upload-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .upload-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
         }
 
         input[type="file"] { display: none; }
 
-        .btn-upload { 
+        /* Quick Filters & Radius Bar */
+        .filter-bar {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 8px;
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
-            color: #fff; 
-            padding: 14px; 
-            border-radius: 12px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            border: none; 
-            width: 100%; 
-            font-size: 0.95rem; 
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border-glass);
         }
 
-        .btn-upload:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.4);
-        }
-
-        .btn-upload:active { transform: translateY(0); }
-
-        .status-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 4px;
-        }
-
-        .status-card {
-            background: rgba(15, 23, 42, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 10px 12px;
-            border-radius: 10px;
+        .filter-chips {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.825rem;
-            color: var(--text-muted);
+            gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
 
-        .dot { 
-            height: 8px; 
-            width: 8px; 
-            background-color: var(--accent-red); 
-            border-radius: 50%; 
-            display: inline-block;
-            flex-shrink: 0;
-            box-shadow: 0 0 8px var(--accent-red);
-        }
+        .filter-chips::-webkit-scrollbar { display: none; }
 
-        .dot.active { 
-            background-color: var(--accent-green); 
-            box-shadow: 0 0 8px var(--accent-green);
-        }
-
-        .btn-reset { 
-            background: transparent; 
-            color: #f87171; 
-            border: 1px solid rgba(239, 68, 68, 0.3); 
-            padding: 10px; 
-            border-radius: 10px; 
-            font-size: 0.8rem; 
+        .chip {
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border-glass);
+            font-size: 0.75rem;
             font-weight: 600;
-            cursor: pointer; 
-            width: 100%; 
+            color: var(--text-secondary);
+            cursor: pointer;
+            white-space: nowrap;
             transition: all 0.2s ease;
         }
 
-        .btn-reset:hover {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.5);
+        .chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 10px var(--primary-glow);
         }
 
-        /* Retailer List & Cards */
-        .retailer-card { 
-            background: var(--card-bg); 
+        /* Search input inside list section */
+        .search-box {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            background: var(--surface-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 18px;
+            height: 18px;
+            stroke: var(--text-muted);
+        }
+
+        /* Retailer Outlet Cards */
+        .outlet-card {
+            background: var(--surface-card);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border); 
-            border-left: 4px solid var(--primary); 
-            border-radius: 14px; 
-            padding: 16px; 
-            margin-bottom: 14px; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px; 
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); 
-            box-shadow: var(--glass-glow);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: cardAppear 0.3s ease-out forwards;
         }
 
-        .retailer-card.visited { 
-            background: rgba(16, 185, 129, 0.05); 
-            border-left-color: var(--accent-green); 
-            opacity: 0.75; 
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .retailer-card:hover {
-            transform: translateY(-2px);
-            border-color: rgba(255, 255, 255, 0.15);
+        .outlet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary);
+            transition: background 0.3s ease;
         }
 
-        .card-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: flex-start; 
+        .outlet-card.visited {
+            background: rgba(16, 185, 129, 0.04);
+            border-color: rgba(16, 185, 129, 0.15);
+            opacity: 0.85;
         }
 
-        .retailer-title {
+        .outlet-card.visited::before {
+            background: var(--accent-green);
+        }
+
+        .outlet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .outlet-title-area {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .outlet-code-row {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 6px;
         }
 
-        .retailer-info h3 { 
-            font-size: 1.15rem; 
-            color: #38bdf8; 
-            font-weight: 700; 
-            letter-spacing: 0.01em;
+        .outlet-code {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 0.02em;
         }
 
-        .retailer-info p { 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            margin-bottom: 4px; 
-            display: flex;
-            align-items: center;
-            gap: 6px;
+        .visited-badge {
+            background: var(--accent-green);
+            color: #06110d;
+            font-size: 0.65rem;
+            font-weight: 800;
+            padding: 2px 8px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
 
-        .retailer-info p strong {
-            color: var(--text-main);
+        .rso-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
         }
 
-        .distance-badge { 
+        .rso-text strong {
+            color: var(--text-primary);
+        }
+
+        .dist-pill {
             display: inline-flex;
             align-items: center;
             gap: 4px;
-            font-weight: 600; 
-            color: var(--accent-green); 
-            background: rgba(16, 185, 129, 0.1);
-            padding: 4px 8px;
+            background: rgba(16, 185, 129, 0.12);
+            border: 1px solid var(--accent-green-glow);
+            color: #34d399;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .status-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
             border-radius: 6px;
-            font-size: 0.8rem; 
-            margin-top: 4px; 
-            border: 1px solid rgba(16, 185, 129, 0.2);
+            letter-spacing: 0.03em;
         }
 
-        .status-badge { 
-            padding: 2px 8px; 
-            border-radius: 6px; 
-            font-weight: 700; 
-            font-size: 0.7rem; 
-            display: inline-block; 
-            letter-spacing: 0.05em;
+        .status-y { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .status-n { background: rgba(244, 63, 94, 0.15); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-glass);
         }
 
-        .status-y { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-        .status-n { background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
-
-        .visited-badge { 
-            background: var(--accent-green); 
-            color: #0f172a; 
-            font-weight: 800; 
-            padding: 2px 6px; 
-            border-radius: 4px; 
-            font-size: 0.65rem; 
-            text-transform: uppercase;
-        }
-
-        .card-actions { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-top: 4px; 
-            padding-top: 12px; 
-            border-top: 1px solid rgba(255, 255, 255, 0.06); 
-        }
-
-        /* Custom Styled Checkbox */
-        .visit-check { 
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            font-size: 0.85rem; 
-            color: var(--text-main); 
-            cursor: pointer; 
-            font-weight: 500; 
+        /* Checkbox Custom styling */
+        .check-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
             user-select: none;
         }
 
-        .visit-check input { 
-            appearance: none;
-            width: 18px; 
-            height: 18px; 
-            border: 2px solid var(--text-muted);
-            border-radius: 5px;
-            outline: none;
-            cursor: pointer;
-            position: relative;
+        .custom-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            border: 2px solid var(--border-highlight);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.2s ease;
+            background: rgba(0, 0, 0, 0.2);
         }
 
-        .visit-check input:checked {
-            background-color: var(--accent-green);
+        .check-container input { display: none; }
+
+        .check-container input:checked ~ .custom-check {
+            background: var(--accent-green);
             border-color: var(--accent-green);
+            box-shadow: 0 0 10px var(--accent-green-glow);
         }
 
-        .visit-check input:checked::after {
-            content: '✓';
-            position: absolute;
-            color: #0f172a;
-            font-size: 12px;
-            font-weight: 900;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        .custom-check svg {
+            width: 14px;
+            height: 14px;
+            stroke: #090d16;
+            stroke-width: 3;
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .btn-copy { 
-            background: rgba(16, 185, 129, 0.15); 
-            color: #34d399; 
-            border: 1px solid rgba(16, 185, 129, 0.3); 
-            padding: 8px 14px; 
-            border-radius: 8px; 
-            font-weight: 600; 
-            font-size: 0.825rem; 
-            cursor: pointer; 
+        .check-container input:checked ~ .custom-check svg {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Copy Button */
+        .btn-copy {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 8px 16px;
+            border-radius: 10px;
+            font-size: 0.825rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
             transition: all 0.2s ease;
         }
 
         .btn-copy:hover {
-            background: var(--accent-green);
-            color: #0f172a;
+            background: var(--primary);
+            border-color: var(--primary);
+            color: #fff;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
-        .btn-copy:active { 
-            transform: scale(0.96); 
+        .btn-copy:active { transform: translateY(0); }
+
+        /* Empty State */
+        .empty-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--surface-glass);
+            border: 1px dashed var(--border-glass);
+            border-radius: 20px;
         }
 
-        .empty-state { 
-            text-align: center; 
-            color: var(--text-muted); 
-            padding: 32px 16px; 
-            font-size: 0.9rem; 
-            line-height: 1.5;
-            background: var(--card-bg);
-            border: 1px dashed var(--card-border);
-            border-radius: 16px;
+        .empty-illustration {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
         }
 
-        /* Toast UI */
-        .toast { 
-            position: fixed; 
-            bottom: 24px; 
+        /* Floating Bottom Action Bar */
+        .bottom-bar {
+            position: fixed;
+            bottom: 16px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
-            background: #1e293b; 
-            color: var(--text-main); 
-            border: 1px solid var(--accent-green);
-            padding: 10px 20px; 
-            border-radius: 30px; 
-            font-weight: 600; 
-            font-size: 0.875rem;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5); 
-            z-index: 99; 
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 520px;
+            background: rgba(18, 24, 38, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-highlight);
+            border-radius: 16px;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            z-index: 50;
+        }
+
+        .counter-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .counter-num {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .counter-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .btn-reset-small {
+            background: rgba(244, 63, 94, 0.1);
+            color: var(--accent-rose);
+            border: 1px solid rgba(244, 63, 94, 0.25);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-reset-small:hover {
+            background: var(--accent-rose);
+            color: #fff;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(16, 185, 129, 0.95);
+            color: #042f2e;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
+            z-index: 100;
             opacity: 0;
+            pointer-events: none;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
@@ -355,129 +564,82 @@
         }
 
         .toast.show {
+            opacity: 1;
             transform: translateX(-50%) translateY(0);
-            opacity: 1;
-        }
-
-        /* Modern Modal */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(4px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .modal {
-            background: #1e293b;
-            border: 1px solid var(--card-border);
-            padding: 24px;
-            border-radius: 16px;
-            max-width: 320px;
-            width: 90%;
-            text-align: center;
-            box-shadow: var(--glass-glow);
-        }
-
-        .modal h4 {
-            font-size: 1.1rem;
-            margin-bottom: 8px;
-        }
-
-        .modal p {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .modal-btn {
-            flex: 1;
-            padding: 10px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            cursor: pointer;
-        }
-
-        .modal-btn-cancel {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--text-main);
-        }
-
-        .modal-btn-confirm {
-            background: var(--accent-red);
-            color: #fff;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <header>
-        <h1>📍 Outlet Nearby</h1>
-    </header>
+<header>
+    <div class="header-container">
+        <div class="brand">
+            <div class="brand-icon">
+                <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <h1>Outlet Nearby</h1>
+        </div>
+        <div class="gps-status-pill">
+            <span id="statusDot" class="status-dot"></span>
+            <span id="statusText">Locating...</span>
+        </div>
+    </div>
+</header>
 
-    <div class="card upload-section">
-        <label for="csvFileInput" class="btn-upload">
-            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-            Upload Retailers CSV
+<div class="container">
+    <!-- Dropzone Upload Card -->
+    <div class="glass-card">
+        <label for="csvFileInput" class="upload-dropzone">
+            <div class="upload-icon">
+                <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+            </div>
+            <div class="upload-title">Drop CSV file or tap to browse</div>
+            <div class="upload-sub">Supports automatic location & retailer column extraction</div>
         </label>
         <input type="file" id="csvFileInput" accept=".csv">
 
-        <div class="status-grid">
-            <div class="status-card">
-                <span id="statusDot" class="dot"></span>
-                <span id="statusText">Awaiting GPS...</span>
-            </div>
-            <div class="status-card">
-                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                <span id="retailerCount">0 loaded</span>
+        <div class="filter-bar">
+            <span style="font-size:0.75rem; color:var(--text-muted); font-weight:600;">Radius:</span>
+            <div class="filter-chips">
+                <div class="chip" onclick="setRadius(25, this)">25m</div>
+                <div class="chip active" onclick="setRadius(50, this)">50m</div>
+                <div class="chip" onclick="setRadius(100, this)">100m</div>
+                <div class="chip" onclick="setRadius(500, this)">500m</div>
             </div>
         </div>
-
-        <button class="btn-reset" onclick="promptClearHistory()">🧹 Clear All Visit Marks</button>
     </div>
 
+    <!-- Search Input -->
+    <div class="search-box">
+        <svg class="search-icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        <input type="text" id="searchInput" class="search-input" placeholder="Search code or RSO..." oninput="updateNearbyList()">
+    </div>
+
+    <!-- Retailers Outlet Container -->
     <div id="retailerList">
-        <div class="empty-state">
-            Upload a CSV file and walk within 50m of an outlet to see nearby codes.
+        <div class="empty-card">
+            <div class="empty-illustration">
+                <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+            </div>
+            <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No Outlets Nearby</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Upload a CSV file and walk closer to your target stores.</p>
         </div>
     </div>
 </div>
 
+<!-- Floating Action Bar -->
+<div class="bottom-bar">
+    <div class="counter-info">
+        <span id="retailerCount" class="counter-num">0 Loaded</span>
+        <span id="visitedCount" class="counter-label">0 visited today</span>
+    </div>
+    <button class="btn-reset-small" onclick="clearVisitHistory()">Reset Visits</button>
+</div>
+
+<!-- Toast -->
 <div id="toast" class="toast">
+    <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
     <span id="toastMsg">Code copied!</span>
-</div>
-
-<div id="confirmModal" class="modal-overlay">
-    <div class="modal">
-        <h4>Reset Visits?</h4>
-        <p>This will clear all marked visit statuses for today.</p>
-        <div class="modal-actions">
-            <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
-            <button class="modal-btn modal-btn-confirm" onclick="confirmClearHistory()">Reset</button>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -485,17 +647,25 @@
     let visitedSet = new Set(JSON.parse(localStorage.getItem('visited_retailers') || '[]'));
     let currentLat = null;
     let currentLon = null;
+    let targetRadius = 50; // default 50 meters
 
-    // Load saved CSV data on startup
+    // Load initial cached dataset
     const savedData = localStorage.getItem('retailer_data');
     if (savedData) {
         try {
             retailers = JSON.parse(savedData);
-            document.getElementById('retailerCount').innerText = `${retailers.length} loaded`;
+            updateCounters();
         } catch(e) {}
     }
 
-    // Safely parse CSV lines handling quotes
+    function setRadius(meters, el) {
+        targetRadius = meters;
+        document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        updateNearbyList();
+        showToast(`Radius set to ${meters}m`);
+    }
+
     function parseCSVLine(line) {
         const result = [];
         let cur = '';
@@ -512,15 +682,12 @@
         return result;
     }
 
-    // CSV File Reader
     document.getElementById('csvFileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
 
         const reader = new FileReader();
-        reader.onload = function(evt) {
-            parseCSV(evt.target.result);
-        };
+        reader.onload = function(evt) { parseCSV(evt.target.result); };
         reader.readAsText(file);
     });
 
@@ -529,7 +696,6 @@
         if (lines.length < 2) return;
 
         const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
-
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
 
@@ -541,7 +707,6 @@
             const cols = parseCSVLine(line);
             if (cols.length < 3) continue;
 
-            // Target Retailer Code specifically matching R + 5-7 digits (e.g. R738883)
             let retailerCode = '';
             for (let c = 0; c < cols.length; c++) {
                 if (/^R\d{5,7}$/i.test(cols[c].trim())) {
@@ -550,13 +715,9 @@
                 }
             }
 
-            // Fallback to Column C (Index 2) if regex match isn't present
             if (!retailerCode && cols[2]) retailerCode = cols[2].trim();
-
-            // RSO Code: Column B (Index 1)
             const rsoCode = cols[1] ? cols[1].trim() : 'N/A';
 
-            // Status Y/N: Column H (Index 7)
             let statusVal = 'N/A';
             if (cols[7]) {
                 statusVal = cols[7].trim().toUpperCase();
@@ -564,7 +725,6 @@
                 statusVal = cols[cols.length - 1].trim().toUpperCase();
             }
 
-            // Lat & Lon extraction
             let lat = parseFloat(cols[latIdx !== -1 ? latIdx : 5]);
             let lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 6]);
 
@@ -588,12 +748,11 @@
         }
 
         localStorage.setItem('retailer_data', JSON.stringify(retailers));
-        document.getElementById('retailerCount').innerText = `${retailers.length} loaded`;
+        updateCounters();
         showToast(`Loaded ${retailers.length} outlets`);
         updateNearbyList();
     }
 
-    // Haversine Distance Calculation (Meters)
     function getDistanceMeters(lat1, lon1, lat2, lon2) {
         const R = 6371000;
         const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -601,44 +760,39 @@
         const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                   Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
+        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
     }
 
-    // Live Location Tracking
     if ("geolocation" in navigator) {
         navigator.geolocation.watchPosition(
             (pos) => {
                 currentLat = pos.coords.latitude;
                 currentLon = pos.coords.longitude;
                 document.getElementById('statusDot').classList.add('active');
-                document.getElementById('statusText').innerText = "GPS Live";
+                document.getElementById('statusText').innerText = "GPS Active";
                 updateNearbyList();
             },
-            (err) => {
-                document.getElementById('statusText').innerText = "GPS Error Access Denied";
-            },
+            () => { document.getElementById('statusText').innerText = "GPS Offline"; },
             { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 }
         );
-    } else {
-        document.getElementById('statusText').innerText = "Geolocation Unsupported";
     }
 
-    // Filter and Render Outlets within 50 Meters
     function updateNearbyList() {
         if (currentLat === null || currentLon === null || retailers.length === 0) return;
 
         const listContainer = document.getElementById('retailerList');
+        const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
         const nearby = [];
 
         for (const item of retailers) {
             const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
-            if (dist <= 50) { // 50 meters radius
-                nearby.push({ ...item, distance: Math.round(dist) });
+            if (dist <= targetRadius) {
+                if (!searchVal || item.code.toLowerCase().includes(searchVal) || item.rsoCode.toLowerCase().includes(searchVal)) {
+                    nearby.push({ ...item, distance: Math.round(dist) });
+                }
             }
         }
 
-        // Sort unvisited first, then by distance
         nearby.sort((a, b) => {
             const aVisited = visitedSet.has(a.code);
             const bVisited = visitedSet.has(b.code);
@@ -647,36 +801,51 @@
         });
 
         if (nearby.length === 0) {
-            listContainer.innerHTML = '<div class="empty-state">No outlets found within 50 meters.<br>Walk closer to a store.</div>';
+            listContainer.innerHTML = `
+                <div class="empty-card">
+                    <div class="empty-illustration">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                    <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No stores within ${targetRadius}m</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Try expanding your search radius or walking closer.</p>
+                </div>`;
             return;
         }
 
         listContainer.innerHTML = nearby.map(item => {
             const isVisited = visitedSet.has(item.code);
             const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
-            
+
             return `
-                <div class="retailer-card ${isVisited ? 'visited' : ''}">
-                    <div class="card-header">
-                        <div class="retailer-info">
-                            <div class="retailer-title">
-                                <h3>${escapeHtml(item.code)}</h3>
+                <div class="outlet-card ${isVisited ? 'visited' : ''}">
+                    <div class="outlet-header">
+                        <div class="outlet-title-area">
+                            <div class="outlet-code-row">
+                                <span class="outlet-code">${escapeHtml(item.code)}</span>
                                 ${isVisited ? '<span class="visited-badge">Visited</span>' : ''}
                             </div>
-                            <p>RSO Code: <strong>${escapeHtml(item.rsoCode)}</strong></p>
-                            <p>Status: <span class="status-badge ${statusClass}">${escapeHtml(item.status)}</span></p>
-                            <div class="distance-badge">
-                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                ${item.distance}m away
-                            </div>
+                            <span class="rso-text">RSO Code: <strong>${escapeHtml(item.rsoCode)}</strong></span>
+                        </div>
+                        <div class="dist-pill">
+                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                            ${item.distance}m
                         </div>
                     </div>
-                    <div class="card-actions">
-                        <label class="visit-check">
+                    <div>
+                        <span class="status-tag ${statusClass}">STATUS: ${escapeHtml(item.status)}</span>
+                    </div>
+                    <div class="card-footer">
+                        <label class="check-container">
                             <input type="checkbox" ${isVisited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
+                            <div class="custom-check">
+                                <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                            </div>
                             Mark Visited
                         </label>
-                        <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">Copy Code</button>
+                        <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+                            Copy
+                        </button>
                     </div>
                 </div>
             `;
@@ -689,53 +858,44 @@
             showToast(`Unmarked ${code}`);
         } else {
             visitedSet.add(code);
-            showToast(`Marked ${code} as Visited`);
+            showToast(`Marked ${code} visited`);
         }
         localStorage.setItem('visited_retailers', JSON.stringify(Array.from(visitedSet)));
+        updateCounters();
         updateNearbyList();
     }
 
-    function promptClearHistory() {
-        document.getElementById('confirmModal').classList.add('active');
+    function clearVisitHistory() {
+        if (confirm("Reset all visit markings?")) {
+            visitedSet.clear();
+            localStorage.removeItem('visited_retailers');
+            updateCounters();
+            showToast("Visit history reset");
+            updateNearbyList();
+        }
     }
 
-    function closeModal() {
-        document.getElementById('confirmModal').classList.remove('active');
-    }
-
-    function confirmClearHistory() {
-        visitedSet.clear();
-        localStorage.removeItem('visited_retailers');
-        closeModal();
-        showToast("Visit history cleared");
-        updateNearbyList();
+    function updateCounters() {
+        document.getElementById('retailerCount').innerText = `${retailers.length} Loaded`;
+        document.getElementById('visitedCount').innerText = `${visitedSet.size} visited today`;
     }
 
     function copyCode(code) {
-        navigator.clipboard.writeText(code).then(() => {
-            showToast(`Copied ${code}`);
-        });
+        navigator.clipboard.writeText(code).then(() => showToast(`Copied ${code}`));
     }
 
-    let toastTimeout;
+    let toastTimer;
     function showToast(msg) {
         const t = document.getElementById('toast');
-        const tMsg = document.getElementById('toastMsg');
-        tMsg.innerText = msg;
+        document.getElementById('toastMsg').innerText = msg;
         t.classList.add('show');
-        
-        clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => { 
-            t.classList.remove('show'); 
-        }, 2200);
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
     }
 
     function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, function(m) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-        });
+        return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
     }
 </script>
-
 </body>
 </html>
