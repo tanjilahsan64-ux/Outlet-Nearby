@@ -59,7 +59,7 @@
         header {
             width: 100%;
             max-width: 560px;
-            padding: 14px 16px;
+            padding: 12px 16px;
             position: sticky;
             top: 0;
             z-index: 500;
@@ -67,201 +67,198 @@
             -webkit-backdrop-filter: blur(16px);
             background: rgba(9, 13, 22, 0.85);
             border-bottom: 1px solid var(--border-glass);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
 
-        .header-container {
+        .header-top {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
-        .brand { display: flex; align-items: center; gap: 10px; }
+        .brand { display: flex; align-items: center; gap: 8px; }
 
         .brand-icon {
-            width: 36px; height: 36px;
-            border-radius: 10px;
+            width: 32px; height: 32px;
+            border-radius: 8px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 14px var(--primary-glow);
+            box-shadow: 0 4px 12px var(--primary-glow);
         }
 
-        .brand-icon svg { width: 18px; height: 18px; stroke: #fff; }
+        .brand-icon svg { width: 16px; height: 16px; stroke: #fff; }
 
         h1 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 800;
             background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .status-container { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+
+        .btn-upload-compact {
+            background: rgba(99, 102, 241, 0.12);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-upload-compact:hover {
+            background: rgba(99, 102, 241, 0.25);
+            border-color: var(--primary);
+            color: #fff;
+        }
 
         .gps-status-pill {
-            display: flex; align-items: center; gap: 6px;
-            padding: 4px 10px; border-radius: 20px;
+            display: flex; align-items: center; gap: 5px;
+            padding: 4px 8px; border-radius: 20px;
             background: rgba(15, 23, 42, 0.6);
             border: 1px solid var(--border-glass);
-            font-size: 0.72rem; font-weight: 600;
+            font-size: 0.7rem; font-weight: 600;
             color: var(--text-secondary);
         }
 
-        .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-rose); }
+        .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-rose); }
         .status-dot.active { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
 
-        .last-sync { font-size: 0.68rem; color: var(--text-muted); font-weight: 500; }
+        input[type="file"] { display: none; }
 
-        .view-toggle-container { width: 100%; max-width: 560px; padding: 12px 16px 0; }
+        .container {
+            width: 100%; max-width: 560px;
+            padding: 12px 16px; display: flex;
+            flex-direction: column; gap: 10px;
+        }
+
+        /* Compact Controls Card */
+        .glass-card-compact {
+            background: var(--surface-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px; padding: 10px 12px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
 
         .view-toggle-bar {
             display: flex;
-            background: rgba(18, 24, 38, 0.8);
-            padding: 4px; border-radius: 12px;
+            background: rgba(10, 15, 26, 0.6);
+            padding: 3px; border-radius: 10px;
             border: 1px solid var(--border-glass);
             gap: 4px;
         }
 
         .tab-btn {
-            flex: 1; padding: 8px 0; border: none;
+            flex: 1; padding: 6px 0; border: none;
             background: transparent; color: var(--text-muted);
-            font-size: 0.8rem; font-weight: 700; border-radius: 8px;
+            font-size: 0.78rem; font-weight: 700; border-radius: 7px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            gap: 6px; transition: all 0.25s ease;
+            gap: 5px; transition: all 0.25s ease;
         }
 
-        .tab-btn svg { width: 16px; height: 16px; stroke: currentColor; }
+        .tab-btn svg { width: 14px; height: 14px; stroke: currentColor; }
         .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 10px var(--primary-glow); }
 
-        .container {
-            width: 100%; max-width: 560px;
-            padding: 12px 16px; display: flex;
-            flex-direction: column; gap: 12px;
-        }
+        .filter-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+        .filter-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
 
-        .glass-card {
-            background: var(--surface-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-glass);
-            border-radius: 16px; padding: 14px;
-        }
-
-        .upload-dropzone {
-            border: 2px dashed rgba(99, 102, 241, 0.3);
-            border-radius: 12px; padding: 12px; text-align: center;
-            background: rgba(99, 102, 241, 0.03); cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .upload-dropzone:hover { border-color: var(--primary); background: rgba(99, 102, 241, 0.08); }
-
-        .upload-icon {
-            width: 32px; height: 32px; border-radius: 50%;
-            background: rgba(99, 102, 241, 0.15); color: var(--primary);
-            display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 6px;
-        }
-
-        .upload-title { font-size: 0.85rem; font-weight: 700; color: var(--text-primary); }
-        .upload-sub { font-size: 0.7rem; color: var(--text-muted); }
-
-        input[type="file"] { display: none; }
-
-        .filter-bar {
-            display: flex; flex-direction: column; gap: 8px;
-            margin-top: 10px; padding-top: 10px;
-            border-top: 1px solid var(--border-glass);
-        }
-
-        .filter-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-        .filter-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
-
-        .filter-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+        .filter-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
         .filter-chips::-webkit-scrollbar { display: none; }
 
         .chip {
-            padding: 4px 10px; border-radius: 20px;
+            padding: 3px 8px; border-radius: 14px;
             background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-glass);
-            font-size: 0.72rem; font-weight: 600; color: var(--text-secondary);
+            font-size: 0.7rem; font-weight: 600; color: var(--text-secondary);
             cursor: pointer; white-space: nowrap; transition: all 0.2s ease;
         }
 
-        .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 10px var(--primary-glow); }
+        .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px var(--primary-glow); }
 
         .search-box { position: relative; }
 
         .search-input {
-            width: 100%; padding: 10px 14px 10px 40px;
+            width: 100%; padding: 8px 12px 8px 36px;
             background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 12px; color: var(--text-primary); font-size: 0.85rem; outline: none;
+            border-radius: 10px; color: var(--text-primary); font-size: 0.82rem; outline: none;
             transition: all 0.25s ease;
         }
 
         .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
-        .search-icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; stroke: var(--text-muted); }
+        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: var(--text-muted); }
 
         .outlet-card {
             background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 14px; padding: 14px; margin-bottom: 10px;
+            border-radius: 12px; padding: 12px; margin-bottom: 8px;
             position: relative; overflow: hidden; transition: transform 0.2s ease, background 0.3s ease;
         }
 
-        .outlet-card:active { transform: scale(0.985); }
+        .outlet-card:active { transform: scale(0.988); }
         .outlet-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
         .outlet-card.visited { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2); }
         .outlet-card.visited::before { background: var(--accent-green); }
 
-        .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-        .outlet-code-row { display: flex; align-items: center; gap: 8px; }
-        .outlet-code { font-size: 1.1rem; font-weight: 800; color: #38bdf8; }
+        .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+        .outlet-code-row { display: flex; align-items: center; gap: 6px; }
+        .outlet-code { font-size: 1rem; font-weight: 800; color: #38bdf8; }
 
         .visited-badge {
             background: var(--accent-green); color: #06110d;
-            font-size: 0.65rem; font-weight: 800; padding: 2px 8px;
+            font-size: 0.62rem; font-weight: 800; padding: 2px 6px;
             border-radius: 20px; text-transform: uppercase;
         }
 
-        .rso-text { font-size: 0.78rem; color: var(--text-secondary); }
+        .rso-text { font-size: 0.75rem; color: var(--text-secondary); }
         .rso-text strong { color: var(--text-primary); }
 
         .dist-pill {
             display: inline-flex; align-items: center; gap: 4px;
             background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent-green-glow);
-            color: #34d399; padding: 4px 8px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
+            color: #34d399; padding: 3px 7px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
         }
 
-        .status-tag { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 6px; }
+        .status-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 5px; }
         .status-y { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
         .status-n { background: rgba(244, 63, 94, 0.15); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.3); }
 
         .card-footer {
             display: flex; justify-content: space-between; align-items: center;
-            margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-glass); gap: 6px;
+            margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-glass); gap: 6px;
         }
 
         .check-container {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; gap: 6px;
+            font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); cursor: pointer;
         }
 
         .custom-check {
-            width: 18px; height: 18px; border-radius: 6px;
+            width: 16px; height: 16px; border-radius: 5px;
             border: 2px solid var(--border-highlight); display: flex; align-items: center;
             justify-content: center; background: rgba(0, 0, 0, 0.2); transition: all 0.2s ease;
         }
 
         .check-container input { display: none; }
         .check-container input:checked ~ .custom-check { background: var(--accent-green); border-color: var(--accent-green); }
-        .custom-check svg { width: 10px; height: 10px; stroke: #090d16; stroke-width: 3; opacity: 0; }
+        .custom-check svg { width: 9px; height: 9px; stroke: #090d16; stroke-width: 3; opacity: 0; }
         .check-container input:checked ~ .custom-check svg { opacity: 1; }
 
-        .btn-action-group { display: flex; gap: 6px; }
+        .btn-action-group { display: flex; gap: 5px; }
 
         .btn-sm {
             background: rgba(255, 255, 255, 0.05); color: var(--text-secondary);
-            border: 1px solid var(--border-glass); padding: 5px 10px; border-radius: 8px;
-            font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex;
-            align-items: center; gap: 4px; transition: all 0.2s ease;
+            border: 1px solid var(--border-glass); padding: 4px 8px; border-radius: 6px;
+            font-size: 0.72rem; font-weight: 700; cursor: pointer; display: flex;
+            align-items: center; gap: 3px; transition: all 0.2s ease;
         }
 
         .btn-sm:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
@@ -273,8 +270,8 @@
 
         /* Map View Container */
         #mapView {
-            display: none; width: 100%; height: 62vh;
-            border-radius: 16px; overflow: hidden;
+            display: none; width: 100%; height: 68vh;
+            border-radius: 14px; overflow: hidden;
             border: 1px solid var(--border-glass);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); position: relative;
         }
@@ -299,31 +296,31 @@
 
         /* Bottom Control Bar */
         .bottom-bar {
-            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 32px); max-width: 520px;
+            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 24px); max-width: 520px;
             background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-highlight);
-            border-radius: 16px; padding: 10px 16px; display: flex;
+            border-radius: 14px; padding: 8px 12px; display: flex;
             align-items: center; justify-content: space-between;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 500;
+            box-shadow: 0 16px 36px rgba(0,0,0,0.6); z-index: 500;
         }
 
         .counter-info { display: flex; flex-direction: column; }
-        .counter-num { font-size: 0.88rem; font-weight: 800; color: var(--text-primary); }
-        .counter-label { font-size: 0.68rem; color: var(--text-muted); }
+        .counter-num { font-size: 0.82rem; font-weight: 800; color: var(--text-primary); }
+        .counter-label { font-size: 0.65rem; color: var(--text-muted); }
 
         .btn-group-bottom { display: flex; gap: 6px; }
 
         .btn-export {
             background: rgba(16, 185, 129, 0.15); color: var(--accent-green);
-            border: 1px solid rgba(16, 185, 129, 0.3); padding: 6px 12px;
-            border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+            border: 1px solid rgba(16, 185, 129, 0.3); padding: 5px 10px;
+            border-radius: 7px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
         }
 
         .btn-reset-small {
             background: rgba(244, 63, 94, 0.1); color: var(--accent-rose);
-            border: 1px solid rgba(244, 63, 94, 0.25); padding: 6px 12px;
-            border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer;
+            border: 1px solid rgba(244, 63, 94, 0.25); padding: 5px 10px;
+            border-radius: 7px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
         }
 
         /* Modals & Popups */
@@ -338,41 +335,41 @@
 
         .modal-card {
             background: var(--bg-dark); border: 1px solid var(--border-highlight);
-            border-radius: 20px 20px 0 0; width: 100%; max-width: 560px;
-            padding: 20px; transform: translateY(100%); transition: transform 0.3s ease;
-            display: flex; flex-direction: column; gap: 12px;
+            border-radius: 18px 18px 0 0; width: 100%; max-width: 560px;
+            padding: 16px; transform: translateY(100%); transition: transform 0.3s ease;
+            display: flex; flex-direction: column; gap: 10px;
         }
 
         .modal-overlay.active .modal-card { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; }
-        .modal-title { font-size: 1rem; font-weight: 800; color: var(--text-primary); }
-        .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+        .modal-title { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); }
+        .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; }
 
-        .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
+        .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
 
         .app-opt {
             background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 12px; padding: 12px 8px; display: flex; flex-direction: column;
-            align-items: center; gap: 6px; cursor: pointer; text-decoration: none;
-            color: var(--text-primary); font-size: 0.75rem; font-weight: 700;
+            border-radius: 10px; padding: 10px 6px; display: flex; flex-direction: column;
+            align-items: center; gap: 5px; cursor: pointer; text-decoration: none;
+            color: var(--text-primary); font-size: 0.72rem; font-weight: 700;
         }
 
         .map-popup-btn {
-            width: 100%; margin-top: 6px; padding: 6px; border-radius: 6px;
+            width: 100%; margin-top: 5px; padding: 5px; border-radius: 6px;
             border: none; background: var(--primary); color: #fff; font-weight: 700;
-            font-size: 0.75rem; cursor: pointer;
+            font-size: 0.72rem; cursor: pointer;
         }
 
         .notes-input {
-            width: 100%; height: 80px; background: var(--surface-card);
-            border: 1px solid var(--border-glass); border-radius: 10px; padding: 10px;
-            color: #fff; font-size: 0.85rem; outline: none; resize: none;
+            width: 100%; height: 75px; background: var(--surface-card);
+            border: 1px solid var(--border-glass); border-radius: 8px; padding: 8px;
+            color: #fff; font-size: 0.82rem; outline: none; resize: none;
         }
 
         .toast {
-            position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            position: fixed; top: 60px; left: 50%; transform: translateX(-50%) translateY(-20px);
             background: rgba(16, 185, 129, 0.95); color: #042f2e;
-            padding: 8px 18px; border-radius: 30px; font-weight: 700; font-size: 0.825rem;
+            padding: 6px 14px; border-radius: 30px; font-weight: 700; font-size: 0.78rem;
             box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); z-index: 1000;
             opacity: 0; pointer-events: none; transition: all 0.3s ease;
         }
@@ -383,67 +380,60 @@
 <body>
 
 <header>
-    <div class="header-container">
+    <div class="header-top">
         <div class="brand">
             <div class="brand-icon">
                 <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             </div>
             <h1>Outlet Nearby Ultra</h1>
         </div>
-        <div class="status-container">
+        <div class="header-actions">
+            <label for="csvFileInput" class="btn-upload-compact">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                Import CSV
+            </label>
+            <input type="file" id="csvFileInput" accept=".csv">
             <div class="gps-status-pill">
                 <span id="statusDot" class="status-dot"></span>
-                <span id="statusText">Awaiting GPS...</span>
+                <span id="statusText">GPS</span>
             </div>
-            <span id="lastSyncText" class="last-sync">Not updated yet</span>
         </div>
     </div>
 </header>
 
-<div class="view-toggle-container">
-    <div class="view-toggle-bar">
-        <button id="listViewTab" class="tab-btn active" onclick="switchView('list')">
-            <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-            List View
-        </button>
-        <button id="mapViewTab" class="tab-btn" onclick="switchView('map')">
-            <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-            Google Map
-        </button>
-    </div>
-</div>
-
 <div class="container">
-    <div class="glass-card">
-        <label for="csvFileInput" class="upload-dropzone">
-            <div class="upload-icon">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-            </div>
-            <div class="upload-title">Import Outlets CSV</div>
-            <div class="upload-sub">Retains memory across months</div>
-        </label>
-        <input type="file" id="csvFileInput" accept=".csv">
+    <!-- Compact View & Filter Controls -->
+    <div class="glass-card-compact">
+        <div class="view-toggle-bar">
+            <button id="listViewTab" class="tab-btn active" onclick="switchView('list')">
+                <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+                List
+            </button>
+            <button id="mapViewTab" class="tab-btn" onclick="switchView('map')">
+                <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                Map
+            </button>
+        </div>
 
-        <div class="filter-bar">
-            <div class="filter-row">
-                <span class="filter-label">Radius:</span>
-                <div class="filter-chips">
-                    <div class="chip" onclick="setRadius(25, this)">25m</div>
-                    <div class="chip active" onclick="setRadius(50, this)">50m</div>
-                    <div class="chip" onclick="setRadius(100, this)">100m</div>
-                    <div class="chip" onclick="setRadius(500, this)">500m</div>
-                    <div class="chip" onclick="setRadius(50000, this)">All Distances</div>
-                </div>
+        <div class="filter-row">
+            <span class="filter-label">Radius:</span>
+            <div class="filter-chips">
+                <div class="chip" onclick="setRadius(25, this)">25m</div>
+                <div class="chip active" onclick="setRadius(50, this)">50m</div>
+                <div class="chip" onclick="setRadius(100, this)">100m</div>
+                <div class="chip" onclick="setRadius(500, this)">500m</div>
+                <div class="chip" onclick="setRadius(50000, this)">All</div>
             </div>
-            <div class="filter-row">
-                <span class="filter-label">Filter:</span>
-                <div class="filter-chips">
-                    <div class="chip active" onclick="setStatusFilter('ALL', this)">All</div>
-                    <div class="chip" onclick="setStatusFilter('UNVISITED', this)">Unvisited Only</div>
-                    <div class="chip" onclick="setStatusFilter('VISITED', this)">Visited</div>
-                    <div class="chip" onclick="setStatusFilter('STATUS_Y', this)">Status Y</div>
-                    <div class="chip" onclick="setStatusFilter('STATUS_N', this)">Status N</div>
-                </div>
+        </div>
+        
+        <div class="filter-row">
+            <span class="filter-label">Status:</span>
+            <div class="filter-chips">
+                <div class="chip active" onclick="setStatusFilter('ALL', this)">All</div>
+                <div class="chip" onclick="setStatusFilter('UNVISITED', this)">Unvisited</div>
+                <div class="chip" onclick="setStatusFilter('VISITED', this)">Visited</div>
+                <div class="chip" onclick="setStatusFilter('STATUS_Y', this)">Status Y</div>
+                <div class="chip" onclick="setStatusFilter('STATUS_N', this)">Status N</div>
             </div>
         </div>
     </div>
@@ -455,9 +445,9 @@
 
     <div id="listView">
         <div id="retailerList">
-            <div class="empty-card" style="text-align: center; padding: 32px 20px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 16px;">
-                <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
-                <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Upload a CSV file and enable GPS location.</p>
+            <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
+                <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
             </div>
         </div>
     </div>
@@ -469,11 +459,11 @@
 
 <div class="bottom-bar">
     <div class="counter-info">
-        <span id="retailerCount" class="counter-num">0 Loaded</span>
+        <span id="retailerCount" class="counter-num">0 Outlets</span>
         <span id="visitedCount" class="counter-label">0 visited this month</span>
     </div>
     <div class="btn-group-bottom">
-        <button class="btn-export" onclick="exportVisitReport()">Export Month Report</button>
+        <button class="btn-export" onclick="exportVisitReport()">Export CSV</button>
         <button class="btn-reset-small" onclick="clearVisitHistory()">Reset Month</button>
     </div>
 </div>
@@ -485,22 +475,22 @@
             <span class="modal-title">Navigate To Outlet</span>
             <button class="modal-close" onclick="closeModal('navModal')">&times;</button>
         </div>
-        <p style="font-size:0.78rem; color:var(--text-muted);" id="navModalSub">Select preferred map provider:</p>
+        <p style="font-size:0.75rem; color:var(--text-muted);" id="navModalSub">Select preferred map provider:</p>
         <div class="app-picker-grid">
             <a id="gmapsLink" target="_blank" class="app-opt">
-                <svg width="24" height="24" fill="none" stroke="#06b6d4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                Google Maps
+                <svg width="20" height="20" fill="none" stroke="#06b6d4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                Google
             </a>
             <a id="wazeLink" target="_blank" class="app-opt">
-                <svg width="24" height="24" fill="none" stroke="#38bdf8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <svg width="20" height="20" fill="none" stroke="#38bdf8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 Waze
             </a>
             <a id="appleLink" target="_blank" class="app-opt">
-                <svg width="24" height="24" fill="none" stroke="#a855f7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-                Apple Maps
+                <svg width="20" height="20" fill="none" stroke="#a855f7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                Apple
             </a>
         </div>
-        <button class="map-popup-btn" style="margin-top:10px;" id="drawRouteBtn">Draw Live Route</button>
+        <button class="map-popup-btn" style="margin-top:8px;" id="drawRouteBtn">Draw Live Route</button>
     </div>
 </div>
 
@@ -508,11 +498,11 @@
 <div id="notesModal" class="modal-overlay" onclick="closeModal('notesModal')">
     <div class="modal-card" onclick="event.stopPropagation()">
         <div class="modal-header">
-            <span class="modal-title" id="notesModalTitle">Outlet Notes</span>
+            <span class="modal-title" id="notesModalTitle">Outlet Details</span>
             <button class="modal-close" onclick="closeModal('notesModal')">&times;</button>
         </div>
         <textarea id="noteInput" class="notes-input" placeholder="Type visit details, order notes..."></textarea>
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div style="display:flex; gap:8px; align-items:center;">
             <label class="btn-sm" style="flex:1; justify-content:center; cursor:pointer;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 Watermarked Camera
@@ -520,8 +510,8 @@
             </label>
             <button class="map-popup-btn" style="flex:1; margin:0;" onclick="saveNotes()">Save Details</button>
         </div>
-        <div id="photoPreviewContainer" style="display:none; margin-top:8px;">
-            <img id="photoPreview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; border:1px solid var(--border-glass);" src="" alt="Preview">
+        <div id="photoPreviewContainer" style="display:none; margin-top:6px;">
+            <img id="photoPreview" style="width:100%; height:110px; object-fit:cover; border-radius:8px; border:1px solid var(--border-glass);" src="" alt="Preview">
         </div>
     </div>
 </div>
@@ -532,10 +522,9 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <script>
-    // --- PWA SERVICE WORKER REGISTRATION (OFFLINE SUPPORT) ---
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v1';
+            const CACHE_NAME = 'outlet-ultra-v2';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -543,7 +532,6 @@
         navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
     }
 
-    // --- INDEXEDDB ARCHITECTURE (PERSISTENT MONTH-LONG MEMORY) ---
     let db;
     const dbReq = indexedDB.open("OutletUltraDB", 2);
     dbReq.onupgradeneeded = e => {
@@ -565,19 +553,11 @@
     let currentLat = null, currentLon = null, currentAccuracy = 0, currentHeading = 0;
     let targetRadius = 50;
     let statusFilter = 'ALL';
-    let lastRefreshTime = null;
     let activeView = 'list';
 
     let map = null, userMarker = null, userAccuracyCircle = null, storeClusterLayer = null;
     let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
     let activeNoteStoreCode = null, tempPhotoBase64 = null;
-
-    setInterval(() => {
-        if (!lastRefreshTime) return;
-        const secondsAgo = Math.floor((Date.now() - lastRefreshTime) / 1000);
-        document.getElementById('lastSyncText').innerText = 
-            secondsAgo < 2 ? 'Updated just now' : `Refreshed ${secondsAgo}s ago`;
-    }, 1000);
 
     function loadOutletsFromStorage() {
         if (!db) return;
@@ -746,7 +726,7 @@
 
         saveAllOutletsToDB();
         updateCounters();
-        showToast(`Loaded & Saved ${retailers.length} outlets`);
+        showToast(`Loaded ${retailers.length} outlets`);
         updateNearbyList();
     }
 
@@ -769,14 +749,13 @@
                 if (pos.coords.heading !== null && !isNaN(pos.coords.heading)) {
                     currentHeading = pos.coords.heading;
                 }
-                lastRefreshTime = Date.now();
                 document.getElementById('statusDot').classList.add('active');
                 document.getElementById('statusText').innerText = "GPS Live";
                 
                 checkGeofenceAutoVisit();
                 updateNearbyList();
             },
-            () => { document.getElementById('statusText').innerText = "GPS Offline"; },
+            () => { document.getElementById('statusText').innerText = "GPS Off"; },
             { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
         );
     }
@@ -795,7 +774,7 @@
                     item.visited = true;
                     item.visitedAt = new Date().toISOString();
                     modified = true;
-                    showToast(`Auto Check-in: ${item.code}`);
+                    showToast(`Auto Checked-in: ${item.code}`);
                 }
             }
         });
@@ -838,9 +817,9 @@
         const listContainer = document.getElementById('retailerList');
         if (nearby.length === 0) {
             listContainer.innerHTML = `
-                <div class="empty-card" style="text-align: center; padding: 32px 20px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 16px;">
-                    <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No stores match active filters</p>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Adjust distance or unvisited filter chips.</p>
+                <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
+                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No stores match active filters</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Adjust distance or unvisited filter chips.</p>
                 </div>`;
             return;
         }
@@ -878,10 +857,10 @@
                                 <span class="outlet-code">${escapeHtml(item.code)}</span>
                                 <span class="visited-badge" style="display: ${item.visited ? 'inline-block' : 'none'};">Visited</span>
                             </div>
-                            <span class="rso-text">RSO Code: <strong>${escapeHtml(item.rsoCode)}</strong></span>
+                            <span class="rso-text">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></span>
                         </div>
                         <div class="dist-pill">
-                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                            <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
                             <span class="dist-val">${item.distance < 900000 ? `${item.distance}m` : 'N/A'}</span>
                         </div>
                     </div>
@@ -890,14 +869,14 @@
                         <label class="check-container">
                             <input type="checkbox" class="visit-input" ${item.visited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
                             <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                            Mark Visited
+                            Visited
                         </label>
                         <div class="btn-action-group">
                             <button class="btn-sm" onclick="openNotesModal('${escapeHtml(item.code)}')">
-                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Details
+                                <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Details
                             </button>
                             <button class="btn-sm btn-nav" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">
-                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Nav
+                                <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Nav
                             </button>
                         </div>
                     </div>
@@ -956,14 +935,14 @@
 
             const customPin = L.divIcon({
                 className: 'store-pin',
-                html: `<div style="background:${pinColor};width:24px;height:24px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.4);font-size:11px;font-weight:800;color:#fff;">${item.visited ? '✓' : ''}</div>`,
-                iconSize: [24, 24]
+                html: `<div style="background:${pinColor};width:22px;height:22px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.4);font-size:10px;font-weight:800;color:#fff;">${item.visited ? '✓' : ''}</div>`,
+                iconSize: [22, 22]
             });
 
             const marker = L.marker([item.lat, item.lon], { icon: customPin });
             const popupContent = `
-                <div style="font-size:0.85rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)}</div>
-                <div style="font-size:0.75rem; color:#64748b; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
+                <div style="font-size:0.82rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)}</div>
+                <div style="font-size:0.72rem; color:#64748b; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
                 <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">${item.visited ? 'Unmark Visited' : 'Mark Visited'}</button>
                 <button class="map-popup-btn" style="background:#06b6d4; color:#fff;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
             `;
@@ -1013,7 +992,7 @@
                     if (osrmPolyline) map.removeLayer(osrmPolyline);
                     const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
                     osrmPolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.8 }).addTo(map);
-                    map.fitBounds(osrmPolyline.getBounds(), { padding: [40, 40] });
+                    map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
                     showToast("Route drawn on Map");
                 }
             })
@@ -1039,7 +1018,6 @@
         document.getElementById('notesModal').classList.add('active');
     }
 
-    // --- WATERMARKED CANVAS PHOTO ENGINE ---
     function handleWatermarkedPhotoUpload(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -1055,18 +1033,18 @@
 
                 ctx.drawImage(img, 0, 0);
 
-                const bannerHeight = Math.max(60, img.height * 0.08);
+                const bannerHeight = Math.max(50, img.height * 0.07);
                 ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
                 ctx.fillRect(0, img.height - bannerHeight, img.width, bannerHeight);
 
                 ctx.fillStyle = "#ffffff";
-                ctx.font = `bold ${Math.max(16, bannerHeight * 0.35)}px sans-serif`;
+                ctx.font = `bold ${Math.max(14, bannerHeight * 0.35)}px sans-serif`;
                 
                 const timeStr = new Date().toLocaleString();
-                const gpsStr = (currentLat && currentLon) ? `GPS: ${currentLat.toFixed(5)}, ${currentLon.toFixed(5)}` : 'GPS: Offline';
+                const gpsStr = (currentLat && currentLon) ? `GPS: ${currentLat.toFixed(5)}, ${currentLon.toFixed(5)}` : 'GPS: Off';
                 
-                ctx.fillText(`Outlet: ${activeNoteStoreCode} | ${timeStr}`, 20, img.height - (bannerHeight * 0.5));
-                ctx.fillText(gpsStr, 20, img.height - (bannerHeight * 0.18));
+                ctx.fillText(`Outlet: ${activeNoteStoreCode} | ${timeStr}`, 16, img.height - (bannerHeight * 0.5));
+                ctx.fillText(gpsStr, 16, img.height - (bannerHeight * 0.18));
 
                 tempPhotoBase64 = canvas.toDataURL('image/jpeg', 0.85);
                 document.getElementById('photoPreview').src = tempPhotoBase64;
@@ -1092,7 +1070,6 @@
 
     function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    // --- MONTH-END REPORTING & UNVISITED EXPORT ---
     function exportVisitReport() {
         if (retailers.length === 0) { showToast("No outlets loaded!"); return; }
 
@@ -1108,14 +1085,14 @@
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Month_End_Outlet_Report_${new Date().toISOString().slice(0,10)}.csv`);
+        link.setAttribute("download", `Outlet_Report_${new Date().toISOString().slice(0,10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     }
 
     function clearVisitHistory() {
-        if (confirm("Reset all check-ins for the new month? (Imported store data will remain saved)")) {
+        if (confirm("Reset all check-ins for the new month? (Store data stays saved)")) {
             retailers.forEach(item => {
                 item.visited = false;
                 item.visitedAt = null;
@@ -1134,8 +1111,8 @@
 
     function updateCounters() {
         const visitedCount = retailers.filter(r => r.visited).length;
-        document.getElementById('retailerCount').innerText = `${retailers.length} Total Stores`;
-        document.getElementById('visitedCount').innerText = `${visitedCount} visited this month (${retailers.length - visitedCount} unvisited)`;
+        document.getElementById('retailerCount').innerText = `${retailers.length} Outlets`;
+        document.getElementById('visitedCount').innerText = `${visitedCount} visited (${retailers.length - visitedCount} unvisited)`;
     }
 
     let toastTimer;
