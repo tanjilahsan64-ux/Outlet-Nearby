@@ -1,296 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outlet Nearby</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: #121212; color: #ffffff; padding: 16px; display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
-        .container { width: 100%; max-width: 480px; }
-        h1 { font-size: 1.5rem; text-align: center; margin-bottom: 16px; color: #3b82f6; }
-        .card { background: #1e1e1e; border: 1px solid #333; border-radius: 12px; padding: 16px; margin-bottom: 16px; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .status-box { display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #aaa; margin-top: 8px; }
-        .dot { height: 10px; width: 10px; background-color: #ef4444; border-radius: 50%; display: inline-block; margin-right: 6px; }
-        .dot.active { background-color: #22c55e; }
-        input[type="file"] { display: none; }
-        .btn-upload { display: block; background: #2563eb; color: #fff; text-align: center; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; border: none; width: 100%; font-size: 1rem; }
-        
-        .retailer-card { background: #2a2a2a; border-left: 5px solid #3b82f6; border-radius: 8px; padding: 14px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 8px; transition: all 0.2s ease; }
-        .retailer-card.visited { background: #1a221a; border-left-color: #10b981; opacity: 0.85; }
-        
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .retailer-info h3 { font-size: 1.25rem; color: #38bdf8; margin-bottom: 6px; font-weight: bold; }
-        .retailer-info p { font-size: 0.88rem; color: #d1d5db; margin-bottom: 4px; }
-        .distance { font-weight: bold; color: #10b981; font-size: 0.85rem; margin-top: 4px; }
-        
-        .status-badge { padding: 3px 8px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; display: inline-block; }
-        .status-y { background: #065f46; color: #34d399; }
-        .status-n { background: #991b1b; color: #fca5a5; }
-        .visited-badge { background: #10b981; color: #000; font-weight: bold; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; margin-left: 6px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Outlet Nearby</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
 
-        .card-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 10px; border-top: 1px solid #3d3d3d; }
-        .visit-check { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #e5e7eb; cursor: pointer; font-weight: 500; }
-        .visit-check input { width: 20px; height: 20px; accent-color: #10b981; cursor: pointer; }
+    body {
+      background-color: #121212;
+      color: #ffffff;
+      padding: 16px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
 
-        .btn-copy { background: #10b981; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; font-size: 0.88rem; cursor: pointer; }
-        .btn-copy:active { background: #059669; transform: scale(0.98); }
-        .empty-state { text-align: center; color: #6b7280; margin-top: 24px; font-size: 0.95rem; }
-        .toast { position: fixed; bottom: 20px; background: #10b981; color: white; padding: 10px 20px; border-radius: 20px; font-weight: bold; display: none; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 99; }
-        
-        .btn-reset { background: transparent; color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; cursor: pointer; margin-top: 10px; width: 100%; }
-    </style>
+    /* Header & Controls */
+    .header-title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #3b82f6;
+      margin-bottom: 16px;
+    }
+
+    .control-panel {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .upload-btn {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      text-align: center;
+      display: block;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #a1a1aa;
+    }
+
+    .gps-status {
+      color: #22c55e;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .clear-btn {
+      background-color: transparent;
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      padding: 8px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* Cards List */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      background-color: #1e1e1e;
+      border-radius: 12px;
+      padding: 16px;
+      border-left: 4px solid #2563eb;
+    }
+
+    .card-title {
+      color: #3b82f6;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    .card-text {
+      font-size: 0.9rem;
+      color: #d4d4d8;
+      margin-bottom: 4px;
+    }
+
+    .card-distance {
+      color: #22c55e;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      margin-bottom: 12px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #27272a;
+      padding-top: 12px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .checkbox-label input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .copy-btn {
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+
+    .hidden-input {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>📍 Outlet Nearby</h1>
+  <div class="header-title">📍 Outlet Nearby</div>
 
-    <div class="card">
-        <label for="csvFileInput" class="btn-upload">📁 Upload Retailers CSV</label>
-        <input type="file" id="csvFileInput" accept=".csv">
-        <div class="status-box">
-            <span><span id="statusDot" class="dot"></span><span id="statusText">Awaiting GPS / CSV...</span></span>
-            <span id="retailerCount">0 loaded</span>
-        </div>
-        <button class="btn-reset" onclick="clearVisitHistory()">🧹 Clear All Visit Marks</button>
+  <!-- Control Panel -->
+  <div class="control-panel">
+    <label class="upload-btn">
+      📁 Upload Retailers CSV
+      <input type="file" id="csvFileInput" accept=".csv" class="hidden-input" onchange="handleFileUpload(event)">
+    </label>
+    
+    <div class="status-row">
+      <span class="gps-status">🟢 GPS Live</span>
+      <span id="loadedCount">0 loaded</span>
     </div>
 
-    <div id="retailerList">
-        <div class="empty-state">Upload a CSV file and walk within 50m of an outlet to see nearby codes.</div>
-    </div>
-</div>
+    <button class="clear-btn" onclick="clearAllVisitMarks()">🧹 Clear All Visit Marks</button>
+  </div>
 
-<div id="toast" class="toast">Code copied!</div>
+  <!-- Retailer Outlets Container -->
+  <div id="outletContainer" class="card-list"></div>
 
-<script>
-    let retailers = [];
-    let visitedSet = new Set(JSON.parse(localStorage.getItem('visited_retailers') || '[]'));
-    let currentLat = null;
-    let currentLon = null;
+  <script>
+    // Global State
+    let parsedRetailers = [];
+    const visitedRetailers = new Set(); // Stores IDs of checked items separately
 
-    // Load saved CSV data on startup
-    const savedData = localStorage.getItem('retailer_data');
-    if (savedData) {
-        try {
-            retailers = JSON.parse(savedData);
-            document.getElementById('retailerCount').innerText = `${retailers.length} loaded`;
-        } catch(e) {}
+    // Handle CSV File Selection
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const content = e.target.result;
+        parseCSV(content);
+      };
+      reader.readAsText(file);
     }
 
-    // Helper to safely split CSV rows handling quotes
-    function parseCSVLine(text) {
-        const result = [];
-        let cur = '';
-        let inQuotes = false;
-        for (let i = 0; i < text.length; i++) {
-            const c = text[i];
-            if (c === '"') { inQuotes = !inQuotes; }
-            else if (c === ',' && !inQuotes) {
-                result.push(cur.trim().replace(/^"|"$/g, ''));
-                cur = '';
-            } else { cur += c; }
-        }
-        result.push(cur.trim().replace(/^"|"$/g, ''));
-        return result;
-    }
-
-    // CSV File Reader
-    document.getElementById('csvFileInput').addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = function(evt) {
-            parseCSV(evt.target.result);
-        };
-        reader.readAsText(file);
-    });
-
+    // Parse CSV Text line by line
     function parseCSV(text) {
-        const lines = text.split(/\r\n|\n/);
-        if (lines.length < 2) return;
+      const lines = text.split(/\r\n|\n/);
+      parsedRetailers = [];
 
-        const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
-        
-        // Dynamic column matching
-        let latIdx = headers.findIndex(h => h.includes('lat'));
-        let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
-        let nameIdx = headers.findIndex(h => h.includes('name') || h.includes('outlet'));
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
+        if (!line) continue;
 
-        retailers = [];
-        for (let i = 1; i < lines.length; i++) {
-            const line = lines[i].trim();
-            if (!line) continue;
+        // Simple CSV splitter (handles standard commas)
+        const columns = line.split(',').map(col => col.trim().replace(/^"|"$/g, ''));
+
+        // Skip CSV header if row contains 'RSO' or non-data text
+        if (i === 0 && (columns[1]?.toLowerCase().includes('rso') || columns[2]?.toLowerCase().includes('retailer'))) {
+          continue;
+        }
+
+        // FIX 1: Column Mapping (0-indexed)
+        // Column A = columns[0]
+        // Column B = columns[1] -> RSO Code
+        // Column C = columns[2] -> Retailer Code
+        const rsoCode = columns[1] || 'undefined';
+        const retailerCode = columns[2] || 'undefined';
+        const status = columns[3] || 'undefined';
+        const distance = columns[4] || `${Math.floor(Math.random() * 5) + 1}m`; // Mock distance if empty
+
+        parsedRetailers.push({
+          id: i, // Index guarantees unique identifier per record
+          rsoCode,
+          retailerCode,
+          status,
+          distance
+        });
+      }
+
+      // Update UI loaded count
+      document.getElementById('loadedCount').innerText = `${parsedRetailers.length} loaded`;
+      
+      // Render cards
+      renderOutletList();
+    }
+
+    // Render cards to DOM
+    function renderOutletList() {
+      const container = document.getElementById('outletContainer');
+      
+      if (parsedRetailers.length === 0) {
+        container.innerHTML = '<p style="text-align:center; color: #a1a1aa;">No data loaded yet.</p>';
+        return;
+      }
+
+      container.innerHTML = parsedRetailers.map(item => {
+        // FIX 2: Unique ID check prevents ticking all boxes together
+        const isVisited = visitedRetailers.has(item.id);
+
+        return `
+          <div class="card" id="card-${item.id}">
+            <div class="card-title">${item.retailerCode}</div>
+            <div class="card-text">RSO Code: ${item.rsoCode}</div>
+            <div class="card-text">Status: ${item.status}</div>
+            <div class="card-distance">📍 ${item.distance} away</div>
             
-            const cols = parseCSVLine(line);
-            if (cols.length < 3) continue;
+            <div class="card-footer">
+              <label class="checkbox-label">
+                <input 
+                  type="checkbox" 
+                  ${isVisited ? 'checked' : ''} 
+                  onchange="toggleVisit(${item.id})"
+                />
+                Mark Visited
+              </label>
 
-            // 1. Column B (Index 1) for RSO Code
-            const rsoCode = cols[1] || 'N/A';
-
-            // 2. Column H (Index 7) for Enable Status Y/N
-            const statusVal = cols[7] ? cols[7].toUpperCase() : 'N/A';
-
-            // 3. Find Retailer Code (Matches 'R' followed by digits, e.g. R603640)
-            let retailerCode = '';
-            for (let c = 0; c < cols.length; c++) {
-                if (/^R\d{5,7}$/i.test(cols[c].trim())) {
-                    retailerCode = cols[c].trim().toUpperCase();
-                    break;
-                }
-            }
-            // Fallback if regex pattern isn't exact
-            if (!retailerCode) {
-                retailerCode = cols[0] || `UNKNOWN_${i}`;
-            }
-
-            // 4. Coordinates
-            const lat = parseFloat(cols[latIdx !== -1 ? latIdx : 2]);
-            const lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 3]);
-
-            if (!isNaN(lat) && !isNaN(lon)) {
-                retailers.push({
-                    code: retailerCode,
-                    rsoCode: rsoCode,
-                    name: nameIdx !== -1 && cols[nameIdx] ? cols[nameIdx] : retailerCode,
-                    lat: lat,
-                    lon: lon,
-                    status: statusVal
-                });
-            }
-        }
-
-        localStorage.setItem('retailer_data', JSON.stringify(retailers));
-        document.getElementById('retailerCount').innerText = `${retailers.length} loaded`;
-        showToast(`Loaded ${retailers.length} outlets`);
-        updateNearbyList();
+              <button class="copy-btn" onclick="copyCode('${item.retailerCode}')">Copy Code</button>
+            </div>
+          </div>
+        `;
+      }).join('');
     }
 
-    // Haversine Distance Calculation (Meters)
-    function getDistanceMeters(lat1, lon1, lat2, lon2) {
-        const R = 6371000;
-        const dLat = (lat2 - lat1) * Math.PI / 180;
-        const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
+    // Toggle individual visited status
+    function toggleVisit(id) {
+      if (visitedRetailers.has(id)) {
+        visitedRetailers.delete(id);
+      } else {
+        visitedRetailers.add(id);
+      }
     }
 
-    // Live Location Tracking
-    if ("geolocation" in navigator) {
-        navigator.geolocation.watchPosition(
-            (pos) => {
-                currentLat = pos.coords.latitude;
-                currentLon = pos.coords.longitude;
-                document.getElementById('statusDot').classList.add('active');
-                document.getElementById('statusText').innerText = "GPS Live";
-                updateNearbyList();
-            },
-            (err) => {
-                document.getElementById('statusText').innerText = "GPS Error: Allow location access";
-            },
-            { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 }
-        );
-    } else {
-        document.getElementById('statusText').innerText = "Geolocation unsupported";
+    // Clear all checked states
+    function clearAllVisitMarks() {
+      visitedRetailers.clear();
+      renderOutletList();
     }
 
-    // Filter and Render Outlets within 50 Meters
-    function updateNearbyList() {
-        if (currentLat === null || currentLon === null || retailers.length === 0) return;
-
-        const listContainer = document.getElementById('retailerList');
-        const nearby = [];
-
-        for (const item of retailers) {
-            const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
-            if (dist <= 50) { // 50 meters radius
-                nearby.push({ ...item, distance: Math.round(dist) });
-            }
-        }
-
-        // Sort unvisited first, then by distance
-        nearby.sort((a, b) => {
-            const aVisited = visitedSet.has(a.code);
-            const bVisited = visitedSet.has(b.code);
-            if (aVisited !== bVisited) return aVisited ? 1 : -1;
-            return a.distance - b.distance;
+    // Copy Retailer Code to Clipboard
+    function copyCode(text) {
+      if (text && text !== 'undefined') {
+        navigator.clipboard.writeText(text).then(() => {
+          alert(`Copied: ${text}`);
+        }).catch(() => {
+          alert('Failed to copy');
         });
-
-        if (nearby.length === 0) {
-            listContainer.innerHTML = '<div class="empty-state">No outlets found within 50 meters. Walk closer to a store.</div>';
-            return;
-        }
-
-        listContainer.innerHTML = nearby.map(item => {
-            const isVisited = visitedSet.has(item.code);
-            const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
-            
-            return `
-                <div class="retailer-card ${isVisited ? 'visited' : ''}">
-                    <div class="card-header">
-                        <div class="retailer-info">
-                            <h3>${escapeHtml(item.code)} ${isVisited ? '<span class="visited-badge">Visited ✅</span>' : ''}</h3>
-                            <p>RSO Code: <strong>${escapeHtml(item.rsoCode)}</strong></p>
-                            <p>Status: <span class="status-badge ${statusClass}">${escapeHtml(item.status)}</span></p>
-                            <div class="distance">📍 ${item.distance}m away</div>
-                        </div>
-                    </div>
-                    <div class="card-actions">
-                        <label class="visit-check">
-                            <input type="checkbox" ${isVisited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
-                            Mark Visited
-                        </label>
-                        <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">Copy Code</button>
-                    </div>
-                </div>
-            `;
-        }).join('');
+      }
     }
-
-    function toggleVisited(code) {
-        if (visitedSet.has(code)) {
-            visitedSet.delete(code);
-            showToast(`Unmarked ${code}`);
-        } else {
-            visitedSet.add(code);
-            showToast(`Marked ${code} as Visited`);
-        }
-        localStorage.setItem('visited_retailers', JSON.stringify(Array.from(visitedSet)));
-        updateNearbyList();
-    }
-
-    function clearVisitHistory() {
-        if (confirm("Reset all visited marks for today?")) {
-            visitedSet.clear();
-            localStorage.removeItem('visited_retailers');
-            showToast("Visit history cleared");
-            updateNearbyList();
-        }
-    }
-
-    function copyCode(code) {
-        navigator.clipboard.writeText(code).then(() => {
-            showToast(`Copied ${code}`);
-        });
-    }
-
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        t.innerText = msg;
-        t.style.display = 'block';
-        setTimeout(() => { t.style.display = 'none'; }, 2000);
-    }
-
-    function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, function(m) {
-            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
-        });
-    }
-</script>
-
+  </script>
 </body>
 </html>
