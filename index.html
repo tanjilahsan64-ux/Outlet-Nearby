@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outlet Nearby Pro</title>
+    <title>Outlet Nearby Pro - NextGen Field Tool</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Leaflet CSS for Map View -->
+    <!-- Leaflet CSS & MarkerCluster CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 
     <style>
         :root {
@@ -174,7 +177,7 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.2s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .tab-btn svg { width: 16px; height: 16px; stroke: currentColor; }
@@ -195,7 +198,7 @@
             gap: 12px;
         }
 
-        /* Glass Card Controls */
+        /* Glass Cards & Controls */
         .glass-card {
             background: var(--surface-glass);
             backdrop-filter: blur(16px);
@@ -248,18 +251,36 @@
 
         .filter-bar {
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
             gap: 8px;
             margin-top: 10px;
             padding-top: 10px;
             border-top: 1px solid var(--border-glass);
         }
 
+        .filter-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .filter-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
         .filter-chips {
             display: flex;
             gap: 6px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding-bottom: 2px;
         }
+
+        .filter-chips::-webkit-scrollbar { display: none; }
 
         .chip {
             padding: 4px 10px;
@@ -270,7 +291,8 @@
             font-weight: 600;
             color: var(--text-secondary);
             cursor: pointer;
-            transition: all 0.2s ease;
+            white-space: nowrap;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .chip.active {
@@ -294,6 +316,7 @@
             color: var(--text-primary);
             font-size: 0.85rem;
             outline: none;
+            transition: all 0.25s ease;
         }
 
         .search-input:focus {
@@ -320,7 +343,11 @@
             margin-bottom: 10px;
             position: relative;
             overflow: hidden;
-            transition: background 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .outlet-card:active {
+            transform: scale(0.985);
         }
 
         .outlet-card::before {
@@ -418,6 +445,8 @@
             margin-top: 10px;
             padding-top: 10px;
             border-top: 1px solid var(--border-glass);
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
         .check-container {
@@ -440,6 +469,7 @@
             align-items: center;
             justify-content: center;
             background: rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
         }
 
         .check-container input { display: none; }
@@ -455,15 +485,21 @@
             stroke: #090d16;
             stroke-width: 3;
             opacity: 0;
+            transition: opacity 0.2s ease;
         }
 
         .check-container input:checked ~ .custom-check svg { opacity: 1; }
 
-        .btn-copy {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 5px 12px;
+        .btn-action-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-sm {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-glass);
+            padding: 5px 10px;
             border-radius: 8px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -471,31 +507,91 @@
             display: flex;
             align-items: center;
             gap: 4px;
+            transition: all 0.2s ease;
         }
 
-        .empty-card {
-            text-align: center;
-            padding: 32px 20px;
-            background: var(--surface-glass);
-            border: 1px dashed var(--border-glass);
-            border-radius: 16px;
+        .btn-sm:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+
+        .btn-nav {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .notes-preview {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(0,0,0,0.2);
+            padding: 6px 10px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         /* Map View Container */
         #mapView {
             display: none;
             width: 100%;
-            height: 60vh;
+            height: 62vh;
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid var(--border-glass);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            position: relative;
         }
 
         #map {
             width: 100%;
             height: 100%;
-            background: #0f172a;
+            background: #090d16;
+        }
+
+        /* GPS Pulse & User Heading Icon */
+        .user-gps-container {
+            position: relative;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-heading-cone {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 24px solid rgba(99, 102, 241, 0.4);
+            top: -16px;
+            transform-origin: bottom center;
+            pointer-events: none;
+        }
+
+        .user-gps-dot {
+            width: 14px;
+            height: 14px;
+            background: #6366f1;
+            border: 2px solid white;
+            border-radius: 50%;
+            box-shadow: 0 0 12px #6366f1;
+            z-index: 2;
+        }
+
+        /* Cluster Styling Override */
+        .marker-cluster-small, .marker-cluster-medium, .marker-cluster-large {
+            background-color: rgba(99, 102, 241, 0.4) !important;
+        }
+        .marker-cluster-small div, .marker-cluster-medium div, .marker-cluster-large div {
+            background-color: rgba(18, 24, 38, 0.9) !important;
+            color: #fff !important;
+            font-weight: 800 !important;
+            font-family: 'Plus Jakarta Sans', sans-serif !important;
         }
 
         /* Leaflet Dark Customization */
@@ -518,7 +614,7 @@
 
         .map-popup-btn {
             width: 100%;
-            margin-top: 8px;
+            margin-top: 6px;
             padding: 6px;
             border-radius: 6px;
             border: none;
@@ -527,21 +623,6 @@
             font-weight: 700;
             font-size: 0.75rem;
             cursor: pointer;
-        }
-
-        .map-nav-btn {
-            display: inline-block;
-            text-align: center;
-            width: 100%;
-            margin-top: 4px;
-            padding: 6px;
-            border-radius: 6px;
-            background: rgba(6, 182, 212, 0.15);
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            color: var(--accent-cyan);
-            font-weight: 700;
-            font-size: 0.75rem;
-            text-decoration: none;
         }
 
         /* Bottom Bar */
@@ -569,6 +650,23 @@
         .counter-num { font-size: 0.88rem; font-weight: 800; color: var(--text-primary); }
         .counter-label { font-size: 0.68rem; color: var(--text-muted); }
 
+        .btn-group-bottom {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-export {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
         .btn-reset-small {
             background: rgba(244, 63, 94, 0.1);
             color: var(--accent-rose);
@@ -578,6 +676,96 @@
             font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
+        }
+
+        /* Modal Sheets */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--bg-dark);
+            border: 1px solid var(--border-highlight);
+            border-radius: 20px 20px 0 0;
+            width: 100%;
+            max-width: 560px;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title { font-size: 1rem; font-weight: 800; color: var(--text-primary); }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .app-picker-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .app-opt {
+            background: var(--surface-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 12px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--text-primary);
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .notes-input {
+            width: 100%;
+            height: 80px;
+            background: var(--surface-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 10px;
+            padding: 10px;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+            resize: none;
         }
 
         .toast {
@@ -595,7 +783,7 @@
             z-index: 1000;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
@@ -646,32 +834,42 @@
         <input type="file" id="csvFileInput" accept=".csv">
 
         <div class="filter-bar">
-            <span style="font-size:0.72rem; color:var(--text-muted); font-weight:600;">Radius:</span>
-            <div class="filter-chips">
-                <div class="chip" onclick="setRadius(25, this)">25m</div>
-                <div class="chip active" onclick="setRadius(50, this)">50m</div>
-                <div class="chip" onclick="setRadius(100, this)">100m</div>
-                <div class="chip" onclick="setRadius(500, this)">500m</div>
+            <div class="filter-row">
+                <span class="filter-label">Radius:</span>
+                <div class="filter-chips">
+                    <div class="chip" onclick="setRadius(25, this)">25m</div>
+                    <div class="chip active" onclick="setRadius(50, this)">50m</div>
+                    <div class="chip" onclick="setRadius(100, this)">100m</div>
+                    <div class="chip" onclick="setRadius(500, this)">500m</div>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Filter:</span>
+                <div class="filter-chips">
+                    <div class="chip active" onclick="setStatusFilter('ALL', this)">All</div>
+                    <div class="chip" onclick="setStatusFilter('UNVISITED', this)">Unvisited</div>
+                    <div class="chip" onclick="setStatusFilter('VISITED', this)">Visited</div>
+                    <div class="chip" onclick="setStatusFilter('STATUS_Y', this)">Status Y</div>
+                    <div class="chip" onclick="setStatusFilter('STATUS_N', this)">Status N</div>
+                </div>
             </div>
         </div>
     </div>
 
     <div class="search-box">
         <svg class="search-icon" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-        <input type="text" id="searchInput" class="search-input" placeholder="Search code or RSO..." oninput="updateNearbyList()">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search Code, RSO, or Status..." oninput="updateNearbyList()">
     </div>
 
-    <!-- Container for List View -->
     <div id="listView">
         <div id="retailerList">
-            <div class="empty-card">
+            <div class="empty-card" style="text-align: center; padding: 32px 20px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 16px;">
                 <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
                 <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Upload a CSV file and enable GPS location.</p>
             </div>
         </div>
     </div>
 
-    <!-- Container for Map View -->
     <div id="mapView">
         <div id="map"></div>
     </div>
@@ -682,41 +880,100 @@
         <span id="retailerCount" class="counter-num">0 Loaded</span>
         <span id="visitedCount" class="counter-label">0 visited today</span>
     </div>
-    <button class="btn-reset-small" onclick="clearVisitHistory()">Reset Visits</button>
+    <div class="btn-group-bottom">
+        <button class="btn-export" onclick="exportVisitReport()">Export CSV</button>
+        <button class="btn-reset-small" onclick="clearVisitHistory()">Reset</button>
+    </div>
+</div>
+
+<!-- Navigation Modal Sheet -->
+<div id="navModal" class="modal-overlay" onclick="closeModal('navModal')">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-title">Navigate To Outlet</span>
+            <button class="modal-close" onclick="closeModal('navModal')">&times;</button>
+        </div>
+        <p style="font-size:0.78rem; color:var(--text-muted);" id="navModalSub">Select preferred map provider:</p>
+        <div class="app-picker-grid">
+            <a id="gmapsLink" target="_blank" class="app-opt">
+                <svg width="24" height="24" fill="none" stroke="#06b6d4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                Google Maps
+            </a>
+            <a id="wazeLink" target="_blank" class="app-opt">
+                <svg width="24" height="24" fill="none" stroke="#38bdf8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                Waze
+            </a>
+            <a id="appleLink" target="_blank" class="app-opt">
+                <svg width="24" height="24" fill="none" stroke="#a855f7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                Apple Maps
+            </a>
+        </div>
+        <button class="map-popup-btn" style="margin-top:10px;" id="drawRouteBtn">Draw Live OSRM Route</button>
+    </div>
+</div>
+
+<!-- Notes Modal Sheet -->
+<div id="notesModal" class="modal-overlay" onclick="closeModal('notesModal')">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-title" id="notesModalTitle">Outlet Notes</span>
+            <button class="modal-close" onclick="closeModal('notesModal')">&times;</button>
+        </div>
+        <textarea id="noteInput" class="notes-input" placeholder="Type visit details, order notes..."></textarea>
+        <div style="display:flex; gap:10px; align-items:center;">
+            <label class="btn-sm" style="flex:1; justify-content:center; cursor:pointer;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                Attach Photo
+                <input type="file" id="photoInput" accept="image/*" capture="environment" onchange="handlePhotoUpload(event)">
+            </label>
+            <button class="map-popup-btn" style="flex:1; margin:0;" onclick="saveNotes()">Save Details</button>
+        </div>
+        <div id="photoPreviewContainer" style="display:none; margin-top:8px;">
+            <img id="photoPreview" style="width:100%; height:120px; object-fit:cover; border-radius:8px; border:1px solid var(--border-glass);" src="" alt="Preview">
+        </div>
+    </div>
 </div>
 
 <div id="toast" class="toast"><span id="toastMsg">Copied!</span></div>
 
-<!-- Leaflet JS -->
+<!-- Leaflet JS & MarkerCluster JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
 <script>
+    // IndexedDB setup for Notes & Photos
+    let db;
+    const request = indexedDB.open("OutletProDB", 1);
+    request.onupgradeneeded = e => {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains("store_data")) {
+            db.createObjectStore("store_data", { keyPath: "code" });
+        }
+    };
+    request.onsuccess = e => { db = e.target.result; };
+
     let retailers = [];
     let visitedSet = new Set(JSON.parse(localStorage.getItem('visited_retailers') || '[]'));
-    let currentLat = null;
-    let currentLon = null;
+    let visitTimestamps = JSON.parse(localStorage.getItem('visited_timestamps') || '{}');
+    
+    let currentLat = null, currentLon = null, currentAccuracy = 0, currentHeading = 0;
     let targetRadius = 50;
+    let statusFilter = 'ALL';
     let lastRefreshTime = null;
     let activeView = 'list';
 
-    // Map Variables
-    let map = null;
-    let userMarker = null;
-    let radiusCircle = null;
-    let storeMarkersLayer = null;
-    let activePopupMarker = null;
-    let popupTimer = null;
+    // Map State Variables
+    let map = null, userMarker = null, userAccuracyCircle = null, storeClusterLayer = null;
+    let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
+    let selectedNavStore = null, activeNoteStoreCode = null, tempPhotoBase64 = null;
 
-    // Load initial cached dataset
+    // Load Cached Retailers Data
     const savedData = localStorage.getItem('retailer_data');
     if (savedData) {
-        try {
-            retailers = JSON.parse(savedData);
-            updateCounters();
-        } catch(e) {}
+        try { retailers = JSON.parse(savedData); updateCounters(); } catch(e) {}
     }
 
-    // Refresh Time Counter
+    // Refresh Sync Text
     setInterval(() => {
         if (!lastRefreshTime) return;
         const secondsAgo = Math.floor((Date.now() - lastRefreshTime) / 1000);
@@ -742,11 +999,8 @@
             mapTab.classList.add('active');
             listTab.classList.remove('active');
 
-            if (!map) {
-                initMap();
-            } else {
-                setTimeout(() => map.invalidateSize(), 100);
-            }
+            if (!map) initMap();
+            else setTimeout(() => map.invalidateSize(), 100);
             updateMapView();
         }
     }
@@ -757,26 +1011,26 @@
 
         map = L.map('map', { zoomControl: false }).setView([startLat, startLon], 18);
 
-        // Google Maps Street View Layer
-        L.tileLayer('https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+        // CartoDB Dark Matter Dark Styled Map Tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
             maxZoom: 20,
-            subdomains: ['mt0', 'mt1', 'mt2', 'mt3'],
-            attribution: '&copy; Google Maps'
+            subdomains: 'abcd',
+            attribution: '&copy; CartoDB'
         }).addTo(map);
 
         L.control.zoom({ position: 'topright' }).addTo(map);
 
-        storeMarkersLayer = L.layerGroup().addTo(map);
+        // Leaflet Marker Cluster
+        storeClusterLayer = L.markerClusterGroup({
+            disableClusteringAtZoom: 17,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false
+        }).addTo(map);
 
-        // Track active popup open state
         map.on('popupopen', function(e) {
             activePopupMarker = e.popup._source;
             clearTimeout(popupTimer);
-            
-            // Auto-close popup after 10 seconds (change to 8000 for 8 seconds)
-            popupTimer = setTimeout(() => {
-                map.closePopup();
-            }, 10000);
+            popupTimer = setTimeout(() => map.closePopup(), 10000);
         });
 
         map.on('popupclose', function() {
@@ -787,23 +1041,29 @@
 
     function setRadius(meters, el) {
         targetRadius = meters;
-        document.querySelectorAll('.filter-chips .chip').forEach(c => c.classList.remove('active'));
+        el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         updateNearbyList();
         showToast(`Radius set to ${meters}m`);
     }
 
+    function setStatusFilter(filterVal, el) {
+        statusFilter = filterVal;
+        el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        el.classList.add('active');
+        updateNearbyList();
+    }
+
     function parseCSVLine(line) {
         const result = [];
-        let cur = '';
-        let inQuotes = false;
+        let cur = '', inQuotes = false;
         for (let i = 0; i < line.length; i++) {
             const c = line[i];
-            if (c === '"') { inQuotes = !inQuotes; }
+            if (c === '"') inQuotes = !inQuotes;
             else if (c === ',' && !inQuotes) {
                 result.push(cur.trim().replace(/^"|"$/g, ''));
                 cur = '';
-            } else { cur += c; }
+            } else cur += c;
         }
         result.push(cur.trim().replace(/^"|"$/g, ''));
         return result;
@@ -812,16 +1072,14 @@
     document.getElementById('csvFileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
-        reader.onload = function(evt) { parseCSV(evt.target.result); };
+        reader.onload = evt => parseCSV(evt.target.result);
         reader.readAsText(file);
     });
 
     function parseCSV(text) {
         const lines = text.split(/\r\n|\n/);
         if (lines.length < 2) return;
-
         const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
@@ -830,7 +1088,6 @@
         for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
-            
             const cols = parseCSVLine(line);
             if (cols.length < 3) continue;
 
@@ -841,16 +1098,9 @@
                     break;
                 }
             }
-
             if (!retailerCode && cols[2]) retailerCode = cols[2].trim();
             const rsoCode = cols[1] ? cols[1].trim() : 'N/A';
-
-            let statusVal = 'N/A';
-            if (cols[7]) {
-                statusVal = cols[7].trim().toUpperCase();
-            } else if (cols.length >= 8) {
-                statusVal = cols[cols.length - 1].trim().toUpperCase();
-            }
+            let statusVal = cols[7] ? cols[7].trim().toUpperCase() : (cols.length >= 8 ? cols[cols.length - 1].trim().toUpperCase() : 'N/A');
 
             let lat = parseFloat(cols[latIdx !== -1 ? latIdx : 5]);
             let lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 6]);
@@ -864,13 +1114,7 @@
             }
 
             if (!isNaN(lat) && !isNaN(lon) && retailerCode) {
-                retailers.push({
-                    code: retailerCode,
-                    rsoCode: rsoCode,
-                    lat: lat,
-                    lon: lon,
-                    status: statusVal
-                });
+                retailers.push({ code: retailerCode, rsoCode: rsoCode, lat: lat, lon: lon, status: statusVal });
             }
         }
 
@@ -890,33 +1134,70 @@
         return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
     }
 
+    // GPS & Orientation Listening
     if ("geolocation" in navigator) {
         navigator.geolocation.watchPosition(
             (pos) => {
                 currentLat = pos.coords.latitude;
                 currentLon = pos.coords.longitude;
+                currentAccuracy = pos.coords.accuracy || 0;
+                if (pos.coords.heading !== null && !isNaN(pos.coords.heading)) {
+                    currentHeading = pos.coords.heading;
+                }
                 lastRefreshTime = Date.now();
                 document.getElementById('statusDot').classList.add('active');
                 document.getElementById('statusText').innerText = "GPS Live";
+                
+                checkGeofenceAutoVisit();
                 updateNearbyList();
             },
             () => { document.getElementById('statusText').innerText = "GPS Offline"; },
-            { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 }
+            { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
         );
+    }
+
+    // Heading Device Motion fallback
+    window.addEventListener('deviceorientationabsolute', e => {
+        if (e.alpha !== null) currentHeading = 360 - e.alpha;
+    }, true);
+
+    // Geofencing Auto-Check (15 meters trigger)
+    function checkGeofenceAutoVisit() {
+        if (!currentLat || !currentLon) return;
+        retailers.forEach(item => {
+            if (!visitedSet.has(item.code)) {
+                const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
+                if (dist <= 15) {
+                    toggleVisited(item.code, true);
+                    showToast(`Auto-Arrived: ${item.code}`);
+                }
+            }
+        });
     }
 
     function getNearbyFilteredData() {
         if (currentLat === null || currentLon === null || retailers.length === 0) return [];
-
         const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
         const nearby = [];
 
         for (const item of retailers) {
             const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
+            const isVisited = visitedSet.has(item.code);
+
+            // Filter Chips Logic
+            if (statusFilter === 'VISITED' && !isVisited) continue;
+            if (statusFilter === 'UNVISITED' && isVisited) continue;
+            if (statusFilter === 'STATUS_Y' && item.status !== 'Y') continue;
+            if (statusFilter === 'STATUS_N' && item.status !== 'N') continue;
+
             if (dist <= targetRadius) {
-                if (!searchVal || item.code.toLowerCase().includes(searchVal) || item.rsoCode.toLowerCase().includes(searchVal)) {
-                    nearby.push({ ...item, distance: Math.round(dist) });
-                }
+                // Multi-field search
+                const matchesSearch = !searchVal || 
+                    item.code.toLowerCase().includes(searchVal) || 
+                    item.rsoCode.toLowerCase().includes(searchVal) ||
+                    item.status.toLowerCase().includes(searchVal);
+
+                if (matchesSearch) nearby.push({ ...item, distance: Math.round(dist) });
             }
         }
 
@@ -930,31 +1211,22 @@
 
     function updateNearbyList() {
         const nearby = getNearbyFilteredData();
-
-        if (activeView === 'map') {
-            updateMapView(nearby);
-            return;
-        }
+        if (activeView === 'map') { updateMapView(nearby); return; }
 
         const listContainer = document.getElementById('retailerList');
-
         if (nearby.length === 0) {
             listContainer.innerHTML = `
-                <div class="empty-card">
-                    <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No stores within ${targetRadius}m</p>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Walk closer or adjust your radius.</p>
+                <div class="empty-card" style="text-align: center; padding: 32px 20px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 16px;">
+                    <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">No stores found</p>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 4px;">Adjust radius or search filters.</p>
                 </div>`;
             return;
         }
 
-        if (listContainer.querySelector('.empty-card')) {
-            listContainer.innerHTML = '';
-        }
+        if (listContainer.querySelector('.empty-card')) listContainer.innerHTML = '';
 
         const existingCards = new Map();
-        listContainer.querySelectorAll('.outlet-card').forEach(card => {
-            existingCards.set(card.getAttribute('data-code'), card);
-        });
+        listContainer.querySelectorAll('.outlet-card').forEach(card => existingCards.set(card.getAttribute('data-code'), card));
 
         nearby.forEach((item) => {
             const isVisited = visitedSet.has(item.code);
@@ -963,18 +1235,14 @@
             if (card) {
                 const distEl = card.querySelector('.dist-val');
                 if (distEl) distEl.innerText = `${item.distance}m`;
-
                 const checkbox = card.querySelector('.visit-input');
-                if (checkbox && checkbox.checked !== isVisited) {
-                    checkbox.checked = isVisited;
-                }
+                if (checkbox && checkbox.checked !== isVisited) checkbox.checked = isVisited;
 
                 if (isVisited) card.classList.add('visited');
                 else card.classList.remove('visited');
 
                 const badge = card.querySelector('.visited-badge');
                 if (badge) badge.style.display = isVisited ? 'inline-block' : 'none';
-
                 existingCards.delete(item.code);
             } else {
                 const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
@@ -996,21 +1264,21 @@
                             <span class="dist-val">${item.distance}m</span>
                         </div>
                     </div>
-                    <div>
-                        <span class="status-tag ${statusClass}">STATUS: ${escapeHtml(item.status)}</span>
-                    </div>
+                    <div><span class="status-tag ${statusClass}">STATUS: ${escapeHtml(item.status)}</span></div>
                     <div class="card-footer">
                         <label class="check-container">
                             <input type="checkbox" class="visit-input" ${isVisited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
-                            <div class="custom-check">
-                                <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                            </div>
+                            <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
                             Mark Visited
                         </label>
-                        <button class="btn-copy" onclick="copyCode('${escapeHtml(item.code)}')">
-                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-                            Copy
-                        </button>
+                        <div class="btn-action-group">
+                            <button class="btn-sm" onclick="openNotesModal('${escapeHtml(item.code)}')">
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Notes
+                            </button>
+                            <button class="btn-sm btn-nav" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">
+                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Nav
+                            </button>
+                        </div>
                     </div>
                 `;
             }
@@ -1020,47 +1288,49 @@
         existingCards.forEach(card => card.remove());
     }
 
-    // Map Render Engine
     function updateMapView(data) {
         if (!map) return;
-        
-        // Update user location pin and circle
+
+        // Render Smooth User GPS & Compass Bearing Icon
         if (currentLat !== null && currentLon !== null) {
+            const userIcon = L.divIcon({
+                className: 'user-gps-marker',
+                html: `
+                    <div class="user-gps-container">
+                        <div class="user-heading-cone" style="transform: rotate(${currentHeading}deg);"></div>
+                        <div class="user-gps-dot"></div>
+                    </div>`,
+                iconSize: [24, 24],
+                iconAnchor: [12, 12]
+            });
+
             if (!userMarker) {
-                const userIcon = L.divIcon({
-                    className: 'user-pin',
-                    html: `<div style="width:16px;height:16px;background:#6366f1;border:3px solid white;border-radius:50%;box-shadow:0 0 12px #6366f1;"></div>`,
-                    iconSize: [16, 16]
-                });
                 userMarker = L.marker([currentLat, currentLon], { icon: userIcon }).addTo(map);
                 map.panTo([currentLat, currentLon]);
             } else {
                 userMarker.setLatLng([currentLat, currentLon]);
+                userMarker.setIcon(userIcon);
             }
 
-            if (!radiusCircle) {
-                radiusCircle = L.circle([currentLat, currentLon], {
-                    radius: targetRadius,
+            // Accuracy aura circle
+            if (!userAccuracyCircle) {
+                userAccuracyCircle = L.circle([currentLat, currentLon], {
+                    radius: currentAccuracy || 15,
                     color: '#6366f1',
                     fillColor: '#6366f1',
-                    fillOpacity: 0.08,
-                    weight: 1.5
+                    fillOpacity: 0.1,
+                    weight: 1
                 }).addTo(map);
             } else {
-                radiusCircle.setLatLng([currentLat, currentLon]);
-                radiusCircle.setRadius(targetRadius);
+                userAccuracyCircle.setLatLng([currentLat, currentLon]);
+                userAccuracyCircle.setRadius(currentAccuracy || 15);
             }
         }
 
-        // PREVENT REDRAWING IF POPUP IS OPEN TO AVOID CLOSING IT
-        if (activePopupMarker) {
-            return; 
-        }
+        if (activePopupMarker) return;
 
         const stores = data || getNearbyFilteredData();
-
-        // Draw Store Pins
-        storeMarkersLayer.clearLayers();
+        storeClusterLayer.clearLayers();
 
         stores.forEach(item => {
             const isVisited = visitedSet.has(item.code);
@@ -1073,45 +1343,152 @@
             });
 
             const marker = L.marker([item.lat, item.lon], { icon: customPin });
-            
             const popupContent = `
                 <div style="font-size:0.85rem; font-weight:800; color:#38bdf8; margin-bottom:2px;">${escapeHtml(item.code)}</div>
                 <div style="font-size:0.75rem; color:#cbd5e1; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
-                <div style="font-size:0.72rem; color:#94a3b8;">Dist: ${item.distance}m</div>
-                <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">
-                    ${isVisited ? 'Unmark Visited' : 'Mark Visited'}
-                </button>
-                <a href="https://www.google.com/maps/dir/?api=1&destination=${item.lat},${item.lon}" target="_blank" class="map-nav-btn">
-                    Get Directions
-                </a>
+                <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">${isVisited ? 'Unmark Visited' : 'Mark Visited'}</button>
+                <button class="map-popup-btn" style="background:rgba(6, 182, 212, 0.2); border:1px solid #06b6d4; color:#38bdf8;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
             `;
-
             marker.bindPopup(popupContent);
-            storeMarkersLayer.addLayer(marker);
+            storeClusterLayer.addLayer(marker);
         });
     }
 
-    function toggleVisited(code) {
+    // Toggle Visited Status
+    function toggleVisited(code, auto = false) {
         if (visitedSet.has(code)) {
             visitedSet.delete(code);
-            showToast(`Unmarked ${code}`);
+            delete visitTimestamps[code];
+            if(!auto) showToast(`Unmarked ${code}`);
         } else {
             visitedSet.add(code);
-            showToast(`Marked ${code} visited`);
+            visitTimestamps[code] = new Date().toISOString();
+            if(!auto) showToast(`Marked ${code} visited`);
         }
         localStorage.setItem('visited_retailers', JSON.stringify(Array.from(visitedSet)));
-        updateCounters();
+        localStorage.setItem('visited_timestamps', JSON.stringify(visitTimestamps));
         
-        // Temporarily clear active popup marker so UI refreshes correctly
+        updateCounters();
         activePopupMarker = null;
         updateNearbyList();
         if (activeView === 'map') updateMapView();
     }
 
+    // Modal Helpers
+    function openNavModal(lat, lon, code) {
+        selectedNavStore = { lat, lon, code };
+        document.getElementById('navModalSub').innerText = `Target: ${code}`;
+        document.getElementById('gmapsLink').href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
+        document.getElementById('wazeLink').href = `https://waze.com/ul?ll=${lat},${lon}&navigate=yes`;
+        document.getElementById('appleLink').href = `https://maps.apple.com/?daddr=${lat},${lon}`;
+        
+        document.getElementById('drawRouteBtn').onclick = () => {
+            closeModal('navModal');
+            drawOSRMRoute(lat, lon);
+        };
+        document.getElementById('navModal').classList.add('active');
+    }
+
+    // OSRM Polyline Path Drawing
+    function drawOSRMRoute(destLat, destLon) {
+        if (!currentLat || !currentLon) { showToast("GPS location missing!"); return; }
+        switchView('map');
+        
+        const url = `https://router.project-osrm.org/route/v1/driving/${currentLon},${currentLat};${destLon},${destLat}?overview=full&geometries=geojson`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (data.routes && data.routes.length > 0) {
+                    if (osrmPolyline) map.removeLayer(osrmPolyline);
+                    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                    osrmPolyline = L.polyline(coords, { color: '#06b6d4', weight: 4, opacity: 0.8, dashArray: '8, 8' }).addTo(map);
+                    map.fitBounds(osrmPolyline.getBounds(), { padding: [40, 40] });
+                    showToast("Route drawn on map");
+                }
+            })
+            .catch(() => showToast("Failed to fetch route"));
+    }
+
+    // Notes & Photos Handlers
+    function openNotesModal(code) {
+        activeNoteStoreCode = code;
+        document.getElementById('notesModalTitle').innerText = `Notes - ${code}`;
+        document.getElementById('noteInput').value = '';
+        document.getElementById('photoPreviewContainer').style.display = 'none';
+        tempPhotoBase64 = null;
+
+        if (db) {
+            const tx = db.transaction("store_data", "readonly");
+            const store = tx.objectStore("store_data");
+            const getReq = store.get(code);
+            getReq.onsuccess = () => {
+                if (getReq.result) {
+                    document.getElementById('noteInput').value = getReq.result.notes || '';
+                    if (getReq.result.photo) {
+                        tempPhotoBase64 = getReq.result.photo;
+                        document.getElementById('photoPreview').src = tempPhotoBase64;
+                        document.getElementById('photoPreviewContainer').style.display = 'block';
+                    }
+                }
+            };
+        }
+        document.getElementById('notesModal').classList.add('active');
+    }
+
+    function handlePhotoUpload(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = evt => {
+            tempPhotoBase64 = evt.target.result;
+            document.getElementById('photoPreview').src = tempPhotoBase64;
+            document.getElementById('photoPreviewContainer').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function saveNotes() {
+        if (!activeNoteStoreCode || !db) return;
+        const notesText = document.getElementById('noteInput').value;
+        const tx = db.transaction("store_data", "readwrite");
+        const store = tx.objectStore("store_data");
+        store.put({ code: activeNoteStoreCode, notes: notesText, photo: tempPhotoBase64 });
+        tx.oncomplete = () => {
+            showToast("Details saved!");
+            closeModal('notesModal');
+        };
+    }
+
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+    // Export Daily CSV Report
+    function exportVisitReport() {
+        if (visitedSet.size === 0) { showToast("No visits to export!"); return; }
+        let csvContent = "data:text/csv;charset=utf-8,Outlet Code,RSO Code,Status,Visit Timestamp\n";
+
+        retailers.forEach(item => {
+            if (visitedSet.has(item.code)) {
+                const timestamp = visitTimestamps[item.code] || 'N/A';
+                csvContent += `"${item.code}","${item.rsoCode}","${item.status}","${timestamp}"\n`;
+            }
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Visit_Report_${new Date().toISOString().slice(0,10)}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
     function clearVisitHistory() {
         if (confirm("Reset all visit markings?")) {
             visitedSet.clear();
+            visitTimestamps = {};
             localStorage.removeItem('visited_retailers');
+            localStorage.removeItem('visited_timestamps');
+            if (osrmPolyline) map.removeLayer(osrmPolyline);
             updateCounters();
             showToast("Visit history reset");
             activePopupMarker = null;
@@ -1123,10 +1500,6 @@
     function updateCounters() {
         document.getElementById('retailerCount').innerText = `${retailers.length} Loaded`;
         document.getElementById('visitedCount').innerText = `${visitedSet.size} visited today`;
-    }
-
-    function copyCode(code) {
-        navigator.clipboard.writeText(code).then(() => showToast(`Copied ${code}`));
     }
 
     let toastTimer;
