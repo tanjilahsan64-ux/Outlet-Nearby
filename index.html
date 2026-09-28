@@ -556,6 +556,7 @@
     let activeView = 'list';
 
     let map = null, userMarker = null, userAccuracyCircle = null, storeClusterLayer = null;
+    let radiusCircle = null; // Variable for radius boundary line
     let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
     let activeNoteStoreCode = null, tempPhotoBase64 = null;
 
@@ -635,11 +636,41 @@
         });
     }
 
+    function updateRadiusCircle() {
+        if (!map || currentLat === null || currentLon === null) return;
+
+        // Hide circle if "All" (>= 50,000m) is selected
+        if (targetRadius >= 50000) {
+            if (radiusCircle) {
+                map.removeLayer(radiusCircle);
+                radiusCircle = null;
+            }
+            return;
+        }
+
+        // Create or update boundary circle
+        if (!radiusCircle) {
+            radiusCircle = L.circle([currentLat, currentLon], {
+                radius: targetRadius,
+                color: '#6366f1',
+                weight: 2,
+                dashArray: '4, 4',
+                fillColor: '#6366f1',
+                fillOpacity: 0.08,
+                interactive: false
+            }).addTo(map);
+        } else {
+            radiusCircle.setLatLng([currentLat, currentLon]);
+            radiusCircle.setRadius(targetRadius);
+        }
+    }
+
     function setRadius(meters, el) {
         targetRadius = meters;
         el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         updateNearbyList();
+        updateRadiusCircle();
         showToast(meters >= 50000 ? "Showing All Outlets" : `Radius set to ${meters}m`);
     }
 
@@ -850,7 +881,7 @@
                     <div class="card-footer">
                         <label class="check-container">
                             <input type="checkbox" class="visit-input" ${item.visited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
-                            <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
+                            <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="d" M5 13l4 4L19 7"/></svg></div>
                             Visited
                         </label>
                         <div class="btn-action-group">
@@ -905,6 +936,8 @@
                 userAccuracyCircle.setLatLng([currentLat, currentLon]);
                 userAccuracyCircle.setRadius(currentAccuracy || 15);
             }
+
+            updateRadiusCircle();
         }
 
         if (activePopupMarker) return;
