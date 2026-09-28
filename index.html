@@ -752,7 +752,6 @@
                 document.getElementById('statusDot').classList.add('active');
                 document.getElementById('statusText').innerText = "GPS Live";
                 
-                checkGeofenceAutoVisit();
                 updateNearbyList();
             },
             () => { document.getElementById('statusText').innerText = "GPS Off"; },
@@ -763,23 +762,6 @@
     window.addEventListener('deviceorientationabsolute', e => {
         if (e.alpha !== null) currentHeading = 360 - e.alpha;
     }, true);
-
-    function checkGeofenceAutoVisit() {
-        if (!currentLat || !currentLon) return;
-        let modified = false;
-        retailers.forEach(item => {
-            if (!item.visited) {
-                const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
-                if (dist <= 15) {
-                    item.visited = true;
-                    item.visitedAt = new Date().toISOString();
-                    modified = true;
-                    showToast(`Auto Checked-in: ${item.code}`);
-                }
-            }
-        });
-        if (modified) saveAllOutletsToDB();
-    }
 
     function getNearbyFilteredData() {
         if (retailers.length === 0) return [];
