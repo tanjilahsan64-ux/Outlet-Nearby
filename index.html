@@ -28,6 +28,7 @@
             --accent-green: #10b981;
             --accent-green-glow: rgba(16, 185, 129, 0.25);
             --accent-rose: #f43f5e;
+            --accent-amber: #f59e0b;
             
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
@@ -98,26 +99,37 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .header-actions { display: flex; align-items: center; gap: 6px; }
 
-        .btn-upload-compact {
+        .btn-header {
             background: rgba(99, 102, 241, 0.12);
             color: #a5b4fc;
             border: 1px solid rgba(99, 102, 241, 0.3);
-            padding: 5px 10px;
+            padding: 5px 9px;
             border-radius: 8px;
             font-size: 0.72rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             transition: all 0.2s ease;
         }
 
-        .btn-upload-compact:hover {
+        .btn-header:hover {
             background: rgba(99, 102, 241, 0.25);
             border-color: var(--primary);
+            color: #fff;
+        }
+
+        .btn-plan {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border-color: rgba(245, 158, 11, 0.35);
+        }
+
+        .btn-plan:hover {
+            background: rgba(245, 158, 11, 0.3);
             color: #fff;
         }
 
@@ -140,6 +152,23 @@
             padding: 12px 16px; display: flex;
             flex-direction: column; gap: 10px;
         }
+
+        /* Target Route Active Bar */
+        .route-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 12px;
+            padding: 10px 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .route-banner-info { display: flex; flex-direction: column; }
+        .route-banner-title { font-size: 0.8rem; font-weight: 800; color: #fbbf24; }
+        .route-banner-sub { font-size: 0.68rem; color: var(--text-secondary); }
+
+        .route-banner-actions { display: flex; gap: 6px; }
 
         /* Compact Controls Card */
         .glass-card-compact {
@@ -184,6 +213,8 @@
         }
 
         .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px var(--primary-glow); }
+        .chip.target-chip { border-color: rgba(245, 158, 11, 0.4); }
+        .chip.target-chip.active { background: var(--accent-amber); border-color: var(--accent-amber); color: #000; }
 
         .search-box { position: relative; }
 
@@ -207,10 +238,18 @@
         .outlet-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
         .outlet-card.visited { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2); }
         .outlet-card.visited::before { background: var(--accent-green); }
+        .outlet-card.target-planned { border: 1px solid rgba(245, 158, 11, 0.4); }
+        .outlet-card.target-planned::before { background: var(--accent-amber); }
 
         .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
         .outlet-code-row { display: flex; align-items: center; gap: 6px; }
         .outlet-code { font-size: 1rem; font-weight: 800; color: #38bdf8; }
+
+        .target-order-badge {
+            background: var(--accent-amber); color: #000;
+            font-size: 0.65rem; font-weight: 800; padding: 2px 6px;
+            border-radius: 20px; text-transform: uppercase;
+        }
 
         .visited-badge {
             background: var(--accent-green); color: #06110d;
@@ -337,13 +376,25 @@
             background: var(--bg-dark); border: 1px solid var(--border-highlight);
             border-radius: 18px 18px 0 0; width: 100%; max-width: 560px;
             padding: 16px; transform: translateY(100%); transition: transform 0.3s ease;
-            display: flex; flex-direction: column; gap: 10px;
+            display: flex; flex-direction: column; gap: 10px; max-height: 85vh; overflow-y: auto;
         }
 
         .modal-overlay.active .modal-card { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; }
         .modal-title { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); }
         .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; }
+
+        .plan-options { display: flex; gap: 10px; margin-top: 8px; }
+
+        .plan-btn-option {
+            flex: 1; background: var(--surface-card); border: 1px solid var(--border-glass);
+            border-radius: 12px; padding: 14px 10px; text-align: center; cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .plan-btn-option:hover { border-color: var(--accent-amber); background: rgba(245, 158, 11, 0.08); }
+        .plan-btn-num { font-size: 1.2rem; font-weight: 800; color: #fbbf24; }
+        .plan-btn-text { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; }
 
         .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
 
@@ -388,9 +439,13 @@
             <h1>Outlet Nearby Ultra</h1>
         </div>
         <div class="header-actions">
-            <label for="csvFileInput" class="btn-upload-compact">
+            <button class="btn-header btn-plan" onclick="openPlannerModal()">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                Plan Route
+            </button>
+            <label for="csvFileInput" class="btn-header">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                Import CSV
+                Import
             </label>
             <input type="file" id="csvFileInput" accept=".csv">
             <div class="gps-status-pill">
@@ -402,6 +457,18 @@
 </header>
 
 <div class="container">
+    <!-- Active Target Plan Banner -->
+    <div id="routeBanner" class="route-banner">
+        <div class="route-banner-info">
+            <span class="route-banner-title" id="routeBannerTitle">Target Plan Active (0/15)</span>
+            <span class="route-banner-sub">Optimized Status 'Y' stores nearby</span>
+        </div>
+        <div class="route-banner-actions">
+            <button class="btn-sm" style="background: var(--accent-amber); color:#000; border:none;" onclick="drawFullTargetRoute()">Draw Route</button>
+            <button class="btn-sm" onclick="clearTargetPlan()">Clear</button>
+        </div>
+    </div>
+
     <!-- Compact View & Filter Controls -->
     <div class="glass-card-compact">
         <div class="view-toggle-bar">
@@ -430,6 +497,7 @@
             <span class="filter-label">Status:</span>
             <div class="filter-chips">
                 <div class="chip active" onclick="setStatusFilter('ALL', this)">All</div>
+                <div id="targetFilterChip" class="chip target-chip" style="display:none;" onclick="setStatusFilter('PLANNED', this)">Planned Target</div>
                 <div class="chip" onclick="setStatusFilter('UNVISITED', this)">Unvisited</div>
                 <div class="chip" onclick="setStatusFilter('VISITED', this)">Visited</div>
                 <div class="chip" onclick="setStatusFilter('STATUS_Y', this)">Status Y</div>
@@ -447,7 +515,7 @@
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
                 <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import" at the top right to load store CSV.</p>
             </div>
         </div>
     </div>
@@ -465,6 +533,29 @@
     <div class="btn-group-bottom">
         <button class="btn-export" onclick="exportVisitReport()">Export CSV</button>
         <button class="btn-reset-small" onclick="clearVisitHistory()">Reset Month</button>
+    </div>
+</div>
+
+<!-- Target Planner Modal -->
+<div id="plannerModal" class="modal-overlay" onclick="closeModal('plannerModal')">
+    <div class="modal-card" onclick="event.stopPropagation()">
+        <div class="modal-header">
+            <span class="modal-title">Multi-Stop Route Planner</span>
+            <button class="modal-close" onclick="closeModal('plannerModal')">&times;</button>
+        </div>
+        <p style="font-size:0.75rem; color:var(--text-muted);">
+            Select target count. The app will automatically pick nearest unvisited <strong>Status 'Y'</strong> outlets and generate an optimized route.
+        </p>
+        <div class="plan-options">
+            <div class="plan-btn-option" onclick="generateTargetPlan(15)">
+                <div class="plan-btn-num">15 Shops</div>
+                <div class="plan-btn-text">Quick Visit Target</div>
+            </div>
+            <div class="plan-btn-option" onclick="generateTargetPlan(25)">
+                <div class="plan-btn-num">25 Shops</div>
+                <div class="plan-btn-text">Full Day Target</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -505,7 +596,7 @@
         <div style="display:flex; gap:8px; align-items:center;">
             <label class="btn-sm" style="flex:1; justify-content:center; cursor:pointer;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Watermarked Camera
+                Watermarked Photo
                 <input type="file" id="photoInput" accept="image/*" capture="environment" onchange="handleWatermarkedPhotoUpload(event)">
             </label>
             <button class="map-popup-btn" style="flex:1; margin:0;" onclick="saveNotes()">Save Details</button>
@@ -524,7 +615,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v2';
+            const CACHE_NAME = 'outlet-ultra-v3';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -550,13 +641,14 @@
     }
 
     let retailers = [];
+    let plannedTargetCodes = []; // Array of codes for current target plan
     let currentLat = null, currentLon = null, currentAccuracy = 0, currentHeading = 0;
     let targetRadius = 50;
     let statusFilter = 'ALL';
     let activeView = 'list';
 
     let map = null, userMarker = null, userAccuracyCircle = null, storeClusterLayer = null;
-    let radiusCircle = null; // Variable for radius boundary line
+    let radiusCircle = null; 
     let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
     let activeNoteStoreCode = null, tempPhotoBase64 = null;
 
@@ -639,7 +731,6 @@
     function updateRadiusCircle() {
         if (!map || currentLat === null || currentLon === null) return;
 
-        // Hide circle if "All" (>= 50,000m) is selected
         if (targetRadius >= 50000) {
             if (radiusCircle) {
                 map.removeLayer(radiusCircle);
@@ -648,7 +739,6 @@
             return;
         }
 
-        // Create or update boundary circle
         if (!radiusCircle) {
             radiusCircle = L.circle([currentLat, currentLon], {
                 radius: targetRadius,
@@ -679,6 +769,109 @@
         el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         updateNearbyList();
+    }
+
+    function openPlannerModal() {
+        if (retailers.length === 0) { showToast("Import outlets first!"); return; }
+        if (!currentLat || !currentLon) { showToast("Waiting for GPS position..."); return; }
+        document.getElementById('plannerModal').classList.add('active');
+    }
+
+    function generateTargetPlan(count) {
+        closeModal('plannerModal');
+        if (!currentLat || !currentLon) return;
+
+        // Filter: Status 'Y' & Unvisited
+        const eligible = retailers.filter(r => r.status === 'Y' && !r.visited);
+
+        if (eligible.length === 0) {
+            showToast("No unvisited 'Y' status stores available!");
+            return;
+        }
+
+        // Nearest Neighbor TSP optimization from current location
+        const pool = [...eligible];
+        let startLat = currentLat;
+        let startLon = currentLon;
+        plannedTargetCodes = [];
+
+        const targetLimit = Math.min(count, pool.length);
+
+        for (let i = 0; i < targetLimit; i++) {
+            let closestIdx = -1;
+            let minDist = Infinity;
+
+            for (let j = 0; j < pool.length; j++) {
+                const dist = getDistanceMeters(startLat, startLon, pool[j].lat, pool[j].lon);
+                if (dist < minDist) {
+                    minDist = dist;
+                    closestIdx = j;
+                }
+            }
+
+            if (closestIdx !== -1) {
+                const chosen = pool.splice(closestIdx, 1)[0];
+                plannedTargetCodes.push(chosen.code);
+                startLat = chosen.lat;
+                startLon = chosen.lon;
+            }
+        }
+
+        document.getElementById('targetFilterChip').style.display = 'inline-block';
+        updateRouteBanner();
+        showToast(`Route planned for ${plannedTargetCodes.length} nearest 'Y' stores!`);
+        updateNearbyList();
+    }
+
+    function updateRouteBanner() {
+        const banner = document.getElementById('routeBanner');
+        if (plannedTargetCodes.length === 0) {
+            banner.style.display = 'none';
+            document.getElementById('targetFilterChip').style.display = 'none';
+            if (statusFilter === 'PLANNED') setStatusFilter('ALL', document.querySelector('.filter-chips .chip'));
+            return;
+        }
+
+        banner.style.display = 'flex';
+        const visitedPlanned = retailers.filter(r => plannedTargetCodes.includes(r.code) && r.visited).length;
+        document.getElementById('routeBannerTitle').innerText = `Target Plan Active (${visitedPlanned}/${plannedTargetCodes.length})`;
+    }
+
+    function clearTargetPlan() {
+        plannedTargetCodes = [];
+        if (osrmPolyline && map) map.removeLayer(osrmPolyline);
+        updateRouteBanner();
+        updateNearbyList();
+        showToast("Target plan cleared");
+    }
+
+    function drawFullTargetRoute() {
+        if (plannedTargetCodes.length === 0) return;
+        if (!currentLat || !currentLon) { showToast("GPS position missing!"); return; }
+
+        switchView('map');
+
+        const points = [`${currentLon},${currentLat}`];
+        plannedTargetCodes.forEach(code => {
+            const item = retailers.find(r => r.code === code);
+            if (item) points.push(`${item.lon},${item.lat}`);
+        });
+
+        // Limit OSRM waypoint query size if necessary
+        const url = `https://router.project-osrm.org/route/v1/driving/${points.join(';')}?overview=full&geometries=geojson`;
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (data.routes && data.routes.length > 0) {
+                    if (osrmPolyline) map.removeLayer(osrmPolyline);
+                    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                    osrmPolyline = L.polyline(coords, { color: '#f59e0b', weight: 5, opacity: 0.85, dashArray: '6, 6' }).addTo(map);
+                    map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
+                    showToast("Optimized Target Route Drawn");
+                }
+            })
+            .catch(() => showToast("Failed to fetch full multi-stop route"));
     }
 
     function parseCSVLine(line) {
@@ -802,22 +995,33 @@
         for (const item of retailers) {
             const dist = (currentLat && currentLon) ? getDistanceMeters(currentLat, currentLon, item.lat, item.lon) : 999999;
 
+            if (statusFilter === 'PLANNED' && !plannedTargetCodes.includes(item.code)) continue;
             if (statusFilter === 'VISITED' && !item.visited) continue;
             if (statusFilter === 'UNVISITED' && item.visited) continue;
             if (statusFilter === 'STATUS_Y' && item.status !== 'Y') continue;
             if (statusFilter === 'STATUS_N' && item.status !== 'N') continue;
 
-            if (dist <= targetRadius || targetRadius >= 50000) {
+            if (dist <= targetRadius || targetRadius >= 50000 || statusFilter === 'PLANNED') {
                 const matchesSearch = !searchVal || 
                     item.code.toLowerCase().includes(searchVal) || 
                     item.rsoCode.toLowerCase().includes(searchVal) ||
                     item.status.toLowerCase().includes(searchVal);
 
-                if (matchesSearch) nearby.push({ ...item, distance: Math.round(dist) });
+                if (matchesSearch) {
+                    const planOrder = plannedTargetCodes.indexOf(item.code);
+                    nearby.push({ 
+                        ...item, 
+                        distance: Math.round(dist),
+                        isPlanned: planOrder !== -1,
+                        planOrder: planOrder + 1
+                    });
+                }
             }
         }
 
         return nearby.sort((a, b) => {
+            if (statusFilter === 'PLANNED') return a.planOrder - b.planOrder;
+            if (a.isPlanned !== b.isPlanned) return a.isPlanned ? -1 : 1;
             if (a.visited !== b.visited) return a.visited ? 1 : -1;
             return a.distance - b.distance;
         });
@@ -832,7 +1036,7 @@
             listContainer.innerHTML = `
                 <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
                     <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No stores match active filters</p>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Adjust distance or unvisited filter chips.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Adjust distance or filter options.</p>
                 </div>`;
             return;
         }
@@ -854,13 +1058,16 @@
                 if (item.visited) card.classList.add('visited');
                 else card.classList.remove('visited');
 
+                if (item.isPlanned) card.classList.add('target-planned');
+                else card.classList.remove('target-planned');
+
                 const badge = card.querySelector('.visited-badge');
                 if (badge) badge.style.display = item.visited ? 'inline-block' : 'none';
                 existingCards.delete(item.code);
             } else {
                 const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
                 card = document.createElement('div');
-                card.className = `outlet-card ${item.visited ? 'visited' : ''}`;
+                card.className = `outlet-card ${item.visited ? 'visited' : ''} ${item.isPlanned ? 'target-planned' : ''}`;
                 card.setAttribute('data-code', item.code);
 
                 card.innerHTML = `
@@ -868,6 +1075,7 @@
                         <div class="outlet-title-area">
                             <div class="outlet-code-row">
                                 <span class="outlet-code">${escapeHtml(item.code)}</span>
+                                ${item.isPlanned ? `<span class="target-order-badge">Stop #${item.planOrder}</span>` : ''}
                                 <span class="visited-badge" style="display: ${item.visited ? 'inline-block' : 'none'};">Visited</span>
                             </div>
                             <span class="rso-text">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></span>
@@ -946,17 +1154,18 @@
         storeClusterLayer.clearLayers();
 
         stores.forEach(item => {
-            const pinColor = item.visited ? '#10b981' : '#ea4335';
+            let pinColor = item.visited ? '#10b981' : '#ea4335';
+            if (item.isPlanned && !item.visited) pinColor = '#f59e0b';
 
             const customPin = L.divIcon({
                 className: 'store-pin',
-                html: `<div style="background:${pinColor};width:22px;height:22px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.4);font-size:10px;font-weight:800;color:#fff;">${item.visited ? '✓' : ''}</div>`,
-                iconSize: [22, 22]
+                html: `<div style="background:${pinColor};width:24px;height:24px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.4);font-size:10px;font-weight:800;color:#fff;">${item.isPlanned ? item.planOrder : (item.visited ? '✓' : '')}</div>`,
+                iconSize: [24, 24]
             });
 
             const marker = L.marker([item.lat, item.lon], { icon: customPin });
             const popupContent = `
-                <div style="font-size:0.82rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)}</div>
+                <div style="font-size:0.82rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)} ${item.isPlanned ? `<span style="color:#f59e0b;">(Stop #${item.planOrder})</span>` : ''}</div>
                 <div style="font-size:0.72rem; color:#64748b; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
                 <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">${item.visited ? 'Unmark Visited' : 'Mark Visited'}</button>
                 <button class="map-popup-btn" style="background:#06b6d4; color:#fff;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
@@ -975,6 +1184,7 @@
 
         saveAllOutletsToDB();
         updateCounters();
+        updateRouteBanner();
         showToast(item.visited ? `Marked ${code} Visited` : `Unmarked ${code}`);
         
         activePopupMarker = null;
@@ -1114,9 +1324,11 @@
                 item.notes = "";
                 item.photo = null;
             });
+            plannedTargetCodes = [];
             saveAllOutletsToDB();
-            if (osrmPolyline) map.removeLayer(osrmPolyline);
+            if (osrmPolyline && map) map.removeLayer(osrmPolyline);
             updateCounters();
+            updateRouteBanner();
             showToast("Month reset completed");
             activePopupMarker = null;
             updateNearbyList();
