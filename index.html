@@ -28,7 +28,6 @@
             --accent-green: #10b981;
             --accent-green-glow: rgba(16, 185, 129, 0.25);
             --accent-rose: #f43f5e;
-            --accent-amber: #f59e0b;
             
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
@@ -99,37 +98,26 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .header-actions { display: flex; align-items: center; gap: 6px; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
 
-        .btn-header {
+        .btn-upload-compact {
             background: rgba(99, 102, 241, 0.12);
             color: #a5b4fc;
             border: 1px solid rgba(99, 102, 241, 0.3);
-            padding: 5px 9px;
+            padding: 5px 10px;
             border-radius: 8px;
             font-size: 0.72rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             transition: all 0.2s ease;
         }
 
-        .btn-header:hover {
+        .btn-upload-compact:hover {
             background: rgba(99, 102, 241, 0.25);
             border-color: var(--primary);
-            color: #fff;
-        }
-
-        .btn-plan {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-            border-color: rgba(245, 158, 11, 0.35);
-        }
-
-        .btn-plan:hover {
-            background: rgba(245, 158, 11, 0.3);
             color: #fff;
         }
 
@@ -153,24 +141,6 @@
             flex-direction: column; gap: 10px;
         }
 
-        /* Target Route Active Bar */
-        .route-banner {
-            display: none;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-radius: 12px;
-            padding: 10px 12px;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .route-banner-info { display: flex; flex-direction: column; }
-        .route-banner-title { font-size: 0.8rem; font-weight: 800; color: #fbbf24; }
-        .route-banner-sub { font-size: 0.68rem; color: var(--text-secondary); }
-
-        .route-banner-actions { display: flex; gap: 6px; }
-
-        /* Compact Controls Card */
         .glass-card-compact {
             background: var(--surface-glass);
             backdrop-filter: blur(16px);
@@ -213,8 +183,6 @@
         }
 
         .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px var(--primary-glow); }
-        .chip.target-chip { border-color: rgba(245, 158, 11, 0.4); }
-        .chip.target-chip.active { background: var(--accent-amber); border-color: var(--accent-amber); color: #000; }
 
         .search-box { position: relative; }
 
@@ -238,18 +206,10 @@
         .outlet-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
         .outlet-card.visited { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2); }
         .outlet-card.visited::before { background: var(--accent-green); }
-        .outlet-card.target-planned { border: 1px solid rgba(245, 158, 11, 0.4); }
-        .outlet-card.target-planned::before { background: var(--accent-amber); }
 
         .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
         .outlet-code-row { display: flex; align-items: center; gap: 6px; }
         .outlet-code { font-size: 1rem; font-weight: 800; color: #38bdf8; }
-
-        .target-order-badge {
-            background: var(--accent-amber); color: #000;
-            font-size: 0.65rem; font-weight: 800; padding: 2px 6px;
-            border-radius: 20px; text-transform: uppercase;
-        }
 
         .visited-badge {
             background: var(--accent-green); color: #06110d;
@@ -307,7 +267,6 @@
             color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Map View Container */
         #mapView {
             display: none; width: 100%; height: 68vh;
             border-radius: 14px; overflow: hidden;
@@ -317,7 +276,6 @@
 
         #map { width: 100%; height: 100%; background: #e5e3df; }
 
-        /* GPS Marker Styling */
         .user-gps-container { position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
 
         .user-heading-cone {
@@ -333,7 +291,6 @@
             box-shadow: 0 0 12px #6366f1; z-index: 2;
         }
 
-        /* Bottom Control Bar */
         .bottom-bar {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 520px;
@@ -362,7 +319,6 @@
             border-radius: 7px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
         }
 
-        /* Modals & Popups */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000;
@@ -376,25 +332,13 @@
             background: var(--bg-dark); border: 1px solid var(--border-highlight);
             border-radius: 18px 18px 0 0; width: 100%; max-width: 560px;
             padding: 16px; transform: translateY(100%); transition: transform 0.3s ease;
-            display: flex; flex-direction: column; gap: 10px; max-height: 85vh; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 10px;
         }
 
         .modal-overlay.active .modal-card { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; }
         .modal-title { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); }
         .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; }
-
-        .plan-options { display: flex; gap: 10px; margin-top: 8px; }
-
-        .plan-btn-option {
-            flex: 1; background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 12px; padding: 14px 10px; text-align: center; cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .plan-btn-option:hover { border-color: var(--accent-amber); background: rgba(245, 158, 11, 0.08); }
-        .plan-btn-num { font-size: 1.2rem; font-weight: 800; color: #fbbf24; }
-        .plan-btn-text { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; }
 
         .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
 
@@ -439,13 +383,9 @@
             <h1>Outlet Nearby Ultra</h1>
         </div>
         <div class="header-actions">
-            <button class="btn-header btn-plan" onclick="openPlannerModal()">
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                Plan Route
-            </button>
-            <label for="csvFileInput" class="btn-header">
+            <label for="csvFileInput" class="btn-upload-compact">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                Import
+                Import CSV
             </label>
             <input type="file" id="csvFileInput" accept=".csv">
             <div class="gps-status-pill">
@@ -457,19 +397,6 @@
 </header>
 
 <div class="container">
-    <!-- Active Target Plan Banner -->
-    <div id="routeBanner" class="route-banner">
-        <div class="route-banner-info">
-            <span class="route-banner-title" id="routeBannerTitle">Target Plan Active (0/15)</span>
-            <span class="route-banner-sub">Optimized Status 'Y' stores nearby</span>
-        </div>
-        <div class="route-banner-actions">
-            <button class="btn-sm" style="background: var(--accent-amber); color:#000; border:none;" onclick="drawFullTargetRoute()">Draw Route</button>
-            <button class="btn-sm" onclick="clearTargetPlan()">Clear</button>
-        </div>
-    </div>
-
-    <!-- Compact View & Filter Controls -->
     <div class="glass-card-compact">
         <div class="view-toggle-bar">
             <button id="listViewTab" class="tab-btn active" onclick="switchView('list')">
@@ -497,7 +424,6 @@
             <span class="filter-label">Status:</span>
             <div class="filter-chips">
                 <div class="chip active" onclick="setStatusFilter('ALL', this)">All</div>
-                <div id="targetFilterChip" class="chip target-chip" style="display:none;" onclick="setStatusFilter('PLANNED', this)">Planned Target</div>
                 <div class="chip" onclick="setStatusFilter('UNVISITED', this)">Unvisited</div>
                 <div class="chip" onclick="setStatusFilter('VISITED', this)">Visited</div>
                 <div class="chip" onclick="setStatusFilter('STATUS_Y', this)">Status Y</div>
@@ -515,7 +441,7 @@
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
                 <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import" at the top right to load store CSV.</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
             </div>
         </div>
     </div>
@@ -533,29 +459,6 @@
     <div class="btn-group-bottom">
         <button class="btn-export" onclick="exportVisitReport()">Export CSV</button>
         <button class="btn-reset-small" onclick="clearVisitHistory()">Reset Month</button>
-    </div>
-</div>
-
-<!-- Target Planner Modal -->
-<div id="plannerModal" class="modal-overlay" onclick="closeModal('plannerModal')">
-    <div class="modal-card" onclick="event.stopPropagation()">
-        <div class="modal-header">
-            <span class="modal-title">Multi-Stop Route Planner</span>
-            <button class="modal-close" onclick="closeModal('plannerModal')">&times;</button>
-        </div>
-        <p style="font-size:0.75rem; color:var(--text-muted);">
-            Select target count. The app will automatically pick nearest unvisited <strong>Status 'Y'</strong> outlets and generate an optimized route.
-        </p>
-        <div class="plan-options">
-            <div class="plan-btn-option" onclick="generateTargetPlan(15)">
-                <div class="plan-btn-num">15 Shops</div>
-                <div class="plan-btn-text">Quick Visit Target</div>
-            </div>
-            <div class="plan-btn-option" onclick="generateTargetPlan(25)">
-                <div class="plan-btn-num">25 Shops</div>
-                <div class="plan-btn-text">Full Day Target</div>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -596,7 +499,7 @@
         <div style="display:flex; gap:8px; align-items:center;">
             <label class="btn-sm" style="flex:1; justify-content:center; cursor:pointer;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                Watermarked Photo
+                Watermarked Camera
                 <input type="file" id="photoInput" accept="image/*" capture="environment" onchange="handleWatermarkedPhotoUpload(event)">
             </label>
             <button class="map-popup-btn" style="flex:1; margin:0;" onclick="saveNotes()">Save Details</button>
@@ -615,7 +518,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v3';
+            const CACHE_NAME = 'outlet-ultra-v2';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -641,14 +544,12 @@
     }
 
     let retailers = [];
-    let plannedTargetCodes = []; // Array of codes for current target plan
     let currentLat = null, currentLon = null, currentAccuracy = 0, currentHeading = 0;
     let targetRadius = 50;
     let statusFilter = 'ALL';
     let activeView = 'list';
 
     let map = null, userMarker = null, userAccuracyCircle = null, storeClusterLayer = null;
-    let radiusCircle = null; 
     let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
     let activeNoteStoreCode = null, tempPhotoBase64 = null;
 
@@ -728,39 +629,11 @@
         });
     }
 
-    function updateRadiusCircle() {
-        if (!map || currentLat === null || currentLon === null) return;
-
-        if (targetRadius >= 50000) {
-            if (radiusCircle) {
-                map.removeLayer(radiusCircle);
-                radiusCircle = null;
-            }
-            return;
-        }
-
-        if (!radiusCircle) {
-            radiusCircle = L.circle([currentLat, currentLon], {
-                radius: targetRadius,
-                color: '#6366f1',
-                weight: 2,
-                dashArray: '4, 4',
-                fillColor: '#6366f1',
-                fillOpacity: 0.08,
-                interactive: false
-            }).addTo(map);
-        } else {
-            radiusCircle.setLatLng([currentLat, currentLon]);
-            radiusCircle.setRadius(targetRadius);
-        }
-    }
-
     function setRadius(meters, el) {
         targetRadius = meters;
         el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         updateNearbyList();
-        updateRadiusCircle();
         showToast(meters >= 50000 ? "Showing All Outlets" : `Radius set to ${meters}m`);
     }
 
@@ -769,109 +642,6 @@
         el.parentElement.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         el.classList.add('active');
         updateNearbyList();
-    }
-
-    function openPlannerModal() {
-        if (retailers.length === 0) { showToast("Import outlets first!"); return; }
-        if (!currentLat || !currentLon) { showToast("Waiting for GPS position..."); return; }
-        document.getElementById('plannerModal').classList.add('active');
-    }
-
-    function generateTargetPlan(count) {
-        closeModal('plannerModal');
-        if (!currentLat || !currentLon) return;
-
-        // Filter: Status 'Y' & Unvisited
-        const eligible = retailers.filter(r => r.status === 'Y' && !r.visited);
-
-        if (eligible.length === 0) {
-            showToast("No unvisited 'Y' status stores available!");
-            return;
-        }
-
-        // Nearest Neighbor TSP optimization from current location
-        const pool = [...eligible];
-        let startLat = currentLat;
-        let startLon = currentLon;
-        plannedTargetCodes = [];
-
-        const targetLimit = Math.min(count, pool.length);
-
-        for (let i = 0; i < targetLimit; i++) {
-            let closestIdx = -1;
-            let minDist = Infinity;
-
-            for (let j = 0; j < pool.length; j++) {
-                const dist = getDistanceMeters(startLat, startLon, pool[j].lat, pool[j].lon);
-                if (dist < minDist) {
-                    minDist = dist;
-                    closestIdx = j;
-                }
-            }
-
-            if (closestIdx !== -1) {
-                const chosen = pool.splice(closestIdx, 1)[0];
-                plannedTargetCodes.push(chosen.code);
-                startLat = chosen.lat;
-                startLon = chosen.lon;
-            }
-        }
-
-        document.getElementById('targetFilterChip').style.display = 'inline-block';
-        updateRouteBanner();
-        showToast(`Route planned for ${plannedTargetCodes.length} nearest 'Y' stores!`);
-        updateNearbyList();
-    }
-
-    function updateRouteBanner() {
-        const banner = document.getElementById('routeBanner');
-        if (plannedTargetCodes.length === 0) {
-            banner.style.display = 'none';
-            document.getElementById('targetFilterChip').style.display = 'none';
-            if (statusFilter === 'PLANNED') setStatusFilter('ALL', document.querySelector('.filter-chips .chip'));
-            return;
-        }
-
-        banner.style.display = 'flex';
-        const visitedPlanned = retailers.filter(r => plannedTargetCodes.includes(r.code) && r.visited).length;
-        document.getElementById('routeBannerTitle').innerText = `Target Plan Active (${visitedPlanned}/${plannedTargetCodes.length})`;
-    }
-
-    function clearTargetPlan() {
-        plannedTargetCodes = [];
-        if (osrmPolyline && map) map.removeLayer(osrmPolyline);
-        updateRouteBanner();
-        updateNearbyList();
-        showToast("Target plan cleared");
-    }
-
-    function drawFullTargetRoute() {
-        if (plannedTargetCodes.length === 0) return;
-        if (!currentLat || !currentLon) { showToast("GPS position missing!"); return; }
-
-        switchView('map');
-
-        const points = [`${currentLon},${currentLat}`];
-        plannedTargetCodes.forEach(code => {
-            const item = retailers.find(r => r.code === code);
-            if (item) points.push(`${item.lon},${item.lat}`);
-        });
-
-        // Limit OSRM waypoint query size if necessary
-        const url = `https://router.project-osrm.org/route/v1/driving/${points.join(';')}?overview=full&geometries=geojson`;
-
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                if (data.routes && data.routes.length > 0) {
-                    if (osrmPolyline) map.removeLayer(osrmPolyline);
-                    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                    osrmPolyline = L.polyline(coords, { color: '#f59e0b', weight: 5, opacity: 0.85, dashArray: '6, 6' }).addTo(map);
-                    map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
-                    showToast("Optimized Target Route Drawn");
-                }
-            })
-            .catch(() => showToast("Failed to fetch full multi-stop route"));
     }
 
     function parseCSVLine(line) {
@@ -941,418 +711,307 @@
                     lon: lon, 
                     status: statusVal,
                     visited: false,
-                    visitedAt: null,
+                    visitDate: null,
                     notes: '',
                     photo: null
                 });
             }
         }
-
         saveAllOutletsToDB();
         updateCounters();
-        showToast(`Loaded ${retailers.length} outlets`);
         updateNearbyList();
+        showToast(`Successfully imported ${retailers.length} outlets!`);
     }
 
-    function getDistanceMeters(lat1, lon1, lat2, lon2) {
-        const R = 6371000;
+    function calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371e3; // Earth radius in meters
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
                   Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-    }
-
-    if ("geolocation" in navigator) {
-        navigator.geolocation.watchPosition(
-            (pos) => {
-                currentLat = pos.coords.latitude;
-                currentLon = pos.coords.longitude;
-                currentAccuracy = pos.coords.accuracy || 0;
-                if (pos.coords.heading !== null && !isNaN(pos.coords.heading)) {
-                    currentHeading = pos.coords.heading;
-                }
-                document.getElementById('statusDot').classList.add('active');
-                document.getElementById('statusText').innerText = "GPS Live";
-                
-                updateNearbyList();
-            },
-            () => { document.getElementById('statusText').innerText = "GPS Off"; },
-            { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
-        );
-    }
-
-    window.addEventListener('deviceorientationabsolute', e => {
-        if (e.alpha !== null) currentHeading = 360 - e.alpha;
-    }, true);
-
-    function getNearbyFilteredData() {
-        if (retailers.length === 0) return [];
-        const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
-        const nearby = [];
-
-        for (const item of retailers) {
-            const dist = (currentLat && currentLon) ? getDistanceMeters(currentLat, currentLon, item.lat, item.lon) : 999999;
-
-            if (statusFilter === 'PLANNED' && !plannedTargetCodes.includes(item.code)) continue;
-            if (statusFilter === 'VISITED' && !item.visited) continue;
-            if (statusFilter === 'UNVISITED' && item.visited) continue;
-            if (statusFilter === 'STATUS_Y' && item.status !== 'Y') continue;
-            if (statusFilter === 'STATUS_N' && item.status !== 'N') continue;
-
-            if (dist <= targetRadius || targetRadius >= 50000 || statusFilter === 'PLANNED') {
-                const matchesSearch = !searchVal || 
-                    item.code.toLowerCase().includes(searchVal) || 
-                    item.rsoCode.toLowerCase().includes(searchVal) ||
-                    item.status.toLowerCase().includes(searchVal);
-
-                if (matchesSearch) {
-                    const planOrder = plannedTargetCodes.indexOf(item.code);
-                    nearby.push({ 
-                        ...item, 
-                        distance: Math.round(dist),
-                        isPlanned: planOrder !== -1,
-                        planOrder: planOrder + 1
-                    });
-                }
-            }
-        }
-
-        return nearby.sort((a, b) => {
-            if (statusFilter === 'PLANNED') return a.planOrder - b.planOrder;
-            if (a.isPlanned !== b.isPlanned) return a.isPlanned ? -1 : 1;
-            if (a.visited !== b.visited) return a.visited ? 1 : -1;
-            return a.distance - b.distance;
-        });
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     }
 
     function updateNearbyList() {
-        const nearby = getNearbyFilteredData();
-        if (activeView === 'map') { updateMapView(nearby); return; }
+        const container = document.getElementById('retailerList');
+        const searchQuery = document.getElementById('searchInput').value.toLowerCase();
 
-        const listContainer = document.getElementById('retailerList');
-        if (nearby.length === 0) {
-            listContainer.innerHTML = `
+        if (retailers.length === 0) {
+            container.innerHTML = `
                 <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
-                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No stores match active filters</p>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Adjust distance or filter options.</p>
-                </div>`;
+                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
+                </div>
+            `;
             return;
         }
 
-        if (listContainer.querySelector('.empty-card')) listContainer.innerHTML = '';
-
-        const existingCards = new Map();
-        listContainer.querySelectorAll('.outlet-card').forEach(card => existingCards.set(card.getAttribute('data-code'), card));
-
-        nearby.forEach((item) => {
-            let card = existingCards.get(item.code);
-
-            if (card) {
-                const distEl = card.querySelector('.dist-val');
-                if (distEl) distEl.innerText = item.distance < 900000 ? `${item.distance}m` : 'N/A';
-                const checkbox = card.querySelector('.visit-input');
-                if (checkbox && checkbox.checked !== item.visited) checkbox.checked = item.visited;
-
-                if (item.visited) card.classList.add('visited');
-                else card.classList.remove('visited');
-
-                if (item.isPlanned) card.classList.add('target-planned');
-                else card.classList.remove('target-planned');
-
-                const badge = card.querySelector('.visited-badge');
-                if (badge) badge.style.display = item.visited ? 'inline-block' : 'none';
-                existingCards.delete(item.code);
-            } else {
-                const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
-                card = document.createElement('div');
-                card.className = `outlet-card ${item.visited ? 'visited' : ''} ${item.isPlanned ? 'target-planned' : ''}`;
-                card.setAttribute('data-code', item.code);
-
-                card.innerHTML = `
-                    <div class="outlet-header">
-                        <div class="outlet-title-area">
-                            <div class="outlet-code-row">
-                                <span class="outlet-code">${escapeHtml(item.code)}</span>
-                                ${item.isPlanned ? `<span class="target-order-badge">Stop #${item.planOrder}</span>` : ''}
-                                <span class="visited-badge" style="display: ${item.visited ? 'inline-block' : 'none'};">Visited</span>
-                            </div>
-                            <span class="rso-text">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></span>
-                        </div>
-                        <div class="dist-pill">
-                            <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                            <span class="dist-val">${item.distance < 900000 ? `${item.distance}m` : 'N/A'}</span>
-                        </div>
-                    </div>
-                    <div><span class="status-tag ${statusClass}">STATUS: ${escapeHtml(item.status)}</span></div>
-                    <div class="card-footer">
-                        <label class="check-container">
-                            <input type="checkbox" class="visit-input" ${item.visited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
-                            <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="d" M5 13l4 4L19 7"/></svg></div>
-                            Visited
-                        </label>
-                        <div class="btn-action-group">
-                            <button class="btn-sm" onclick="openNotesModal('${escapeHtml(item.code)}')">
-                                <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Details
-                            </button>
-                            <button class="btn-sm btn-nav" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">
-                                <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Nav
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-            listContainer.appendChild(card);
+        let filtered = retailers.map(item => {
+            let dist = currentLat !== null && currentLon !== null ? calculateDistance(currentLat, currentLon, item.lat, item.lon) : 0;
+            return { ...item, distance: dist };
         });
 
-        existingCards.forEach(card => card.remove());
-    }
-
-    function updateMapView(data) {
-        if (!map) return;
-
-        if (currentLat !== null && currentLon !== null) {
-            const userIcon = L.divIcon({
-                className: 'user-gps-marker',
-                html: `
-                    <div class="user-gps-container">
-                        <div class="user-heading-cone" style="transform: rotate(${currentHeading}deg);"></div>
-                        <div class="user-gps-dot"></div>
-                    </div>`,
-                iconSize: [24, 24],
-                iconAnchor: [12, 12]
-            });
-
-            if (!userMarker) {
-                userMarker = L.marker([currentLat, currentLon], { icon: userIcon }).addTo(map);
-                map.panTo([currentLat, currentLon]);
-            } else {
-                userMarker.setLatLng([currentLat, currentLon]);
-                userMarker.setIcon(userIcon);
-            }
-
-            if (!userAccuracyCircle) {
-                userAccuracyCircle = L.circle([currentLat, currentLon], {
-                    radius: currentAccuracy || 15,
-                    color: '#6366f1',
-                    fillColor: '#6366f1',
-                    fillOpacity: 0.1,
-                    weight: 1
-                }).addTo(map);
-            } else {
-                userAccuracyCircle.setLatLng([currentLat, currentLon]);
-                userAccuracyCircle.setRadius(currentAccuracy || 15);
-            }
-
-            updateRadiusCircle();
+        if (targetRadius < 50000 && currentLat !== null) {
+            filtered = filtered.filter(item => item.distance <= targetRadius);
         }
 
-        if (activePopupMarker) return;
+        if (statusFilter === 'UNVISITED') filtered = filtered.filter(i => !i.visited);
+        if (statusFilter === 'VISITED') filtered = filtered.filter(i => i.visited);
+        if (statusFilter === 'STATUS_Y') filtered = filtered.filter(i => i.status.includes('Y'));
+        if (statusFilter === 'STATUS_N') filtered = filtered.filter(i => i.status.includes('N'));
 
-        const stores = data || getNearbyFilteredData();
+        if (searchQuery) {
+            filtered = filtered.filter(i => 
+                i.code.toLowerCase().includes(searchQuery) || 
+                i.rsoCode.toLowerCase().includes(searchQuery) ||
+                i.status.toLowerCase().includes(searchQuery)
+            );
+        }
+
+        filtered.sort((a, b) => a.distance - b.distance);
+
+        if (filtered.length === 0) {
+            container.innerHTML = `<div style="text-align:center; padding:20px; color:var(--text-muted); font-size:0.8rem;">No outlets matching criteria within ${targetRadius}m.</div>`;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach(item => {
+            const statusClass = item.status.includes('Y') ? 'status-y' : 'status-n';
+            html += `
+                <div class="outlet-card ${item.visited ? 'visited' : ''}" id="card-${item.code}">
+                    <div class="outlet-header">
+                        <div class="outlet-code-row">
+                            <span class="outlet-code">${item.code}</span>
+                            ${item.visited ? '<span class="visited-badge">Visited</span>' : ''}
+                        </div>
+                        <span class="status-tag ${statusClass}">${item.status}</span>
+                    </div>
+                    <div class="rso-text">RSO: <strong>${item.rsoCode}</strong></div>
+                    <div style="margin-top: 6px; display: flex; align-items: center; justify-content: space-between;">
+                        <span class="dist-pill">
+                            <svg width="10" height="10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
+                            ${Math.round(item.distance)}m away
+                        </span>
+                    </div>
+                    <div class="card-footer">
+                        <label class="check-container" onclick="toggleVisitStatus('${item.code}')">
+                            <input type="checkbox" ${item.visited ? 'checked' : ''}>
+                            <div class="custom-check">
+                                <svg fill="none" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            Mark Visited
+                        </label>
+                        <div class="btn-action-group">
+                            <button class="btn-sm" onclick="openNotesModal('${item.code}')">Details</button>
+                            <button class="btn-sm btn-nav" onclick="openNavModal('${item.code}', ${item.lat}, ${item.lon})">Navigate</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function updateMapView() {
+        if (!map || !storeClusterLayer) return;
         storeClusterLayer.clearLayers();
 
-        stores.forEach(item => {
-            let pinColor = item.visited ? '#10b981' : '#ea4335';
-            if (item.isPlanned && !item.visited) pinColor = '#f59e0b';
+        retailers.forEach(item => {
+            const markerColor = item.visited ? '#10b981' : '#6366f1';
+            const markerHtml = `<div style="background:${markerColor};width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 8px ${markerColor}"></div>`;
+            const customIcon = L.divIcon({ html: markerHtml, className: 'custom-map-marker', iconSize: [14, 14] });
 
-            const customPin = L.divIcon({
-                className: 'store-pin',
-                html: `<div style="background:${pinColor};width:24px;height:24px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.4);font-size:10px;font-weight:800;color:#fff;">${item.isPlanned ? item.planOrder : (item.visited ? '✓' : '')}</div>`,
-                iconSize: [24, 24]
-            });
-
-            const marker = L.marker([item.lat, item.lon], { icon: customPin });
-            const popupContent = `
-                <div style="font-size:0.82rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)} ${item.isPlanned ? `<span style="color:#f59e0b;">(Stop #${item.planOrder})</span>` : ''}</div>
-                <div style="font-size:0.72rem; color:#64748b; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
-                <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">${item.visited ? 'Unmark Visited' : 'Mark Visited'}</button>
-                <button class="map-popup-btn" style="background:#06b6d4; color:#fff;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
-            `;
-            marker.bindPopup(popupContent);
+            const marker = L.marker([item.lat, item.lon], { icon: customIcon });
+            marker.bindPopup(`
+                <div style="font-family:'Plus Jakarta Sans',sans-serif; min-width: 140px;">
+                    <div style="font-weight:800; font-size:0.9rem; color:#0f172a;">${item.code}</div>
+                    <div style="font-size:0.75rem; color:#475569; margin-top:2px;">RSO: ${item.rsoCode}</div>
+                    <button class="map-popup-btn" onclick="openNavModal('${item.code}', ${item.lat}, ${item.lon})">Navigate Now</button>
+                </div>
+            `);
             storeClusterLayer.addLayer(marker);
         });
     }
 
-    function toggleVisited(code) {
-        const item = retailers.find(r => r.code === code);
-        if (!item) return;
-
-        item.visited = !item.visited;
-        item.visitedAt = item.visited ? new Date().toISOString() : null;
-
+    function toggleVisitStatus(code) {
+        const target = retailers.find(i => i.code === code);
+        if (!target) return;
+        target.visited = !target.visited;
+        target.visitDate = target.visited ? new Date().toISOString() : null;
         saveAllOutletsToDB();
         updateCounters();
-        updateRouteBanner();
-        showToast(item.visited ? `Marked ${code} Visited` : `Unmarked ${code}`);
-        
-        activePopupMarker = null;
         updateNearbyList();
         if (activeView === 'map') updateMapView();
+        showToast(target.visited ? `Marked ${code} as visited!` : `Unmarked visit for ${code}`);
     }
 
-    function openNavModal(lat, lon, code) {
-        document.getElementById('navModalSub').innerText = `Target: ${code}`;
+    function updateCounters() {
+        const total = retailers.length;
+        const visited = retailers.filter(i => i.visited).length;
+        document.getElementById('retailerCount').innerText = `${total} Outlets`;
+        document.getElementById('visitedCount').innerText = `${visited} visited this month`;
+    }
+
+    function clearVisitHistory() {
+        if (!confirm("Reset all visit markings for this month?")) return;
+        retailers.forEach(i => { i.visited = false; i.visitDate = null; });
+        saveAllOutletsToDB();
+        updateCounters();
+        updateNearbyList();
+        if (activeView === 'map') updateMapView();
+        showToast("Monthly visits reset.");
+    }
+
+    function exportVisitReport() {
+        let csv = "Outlet Code,RSO Code,Latitude,Longitude,Status,Visited,Visit Date,Notes\n";
+        retailers.forEach(i => {
+            csv += `"${i.code}","${i.rsoCode}",${i.lat},${i.lon},"${i.status}",${i.visited},"${i.visitDate || ''}","${(i.notes || '').replace(/"/g, '""')}"\n`;
+        });
+        const blob = new Blob([csv], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Outlet_Visit_Report_${new Date().toISOString().slice(0,10)}.csv`;
+        a.click();
+        showToast("Report exported successfully!");
+    }
+
+    function openNavModal(code, lat, lon) {
+        activeNoteStoreCode = code;
+        document.getElementById('navModalSub').innerText = `Navigate to Outlet: ${code}`;
         document.getElementById('gmapsLink').href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
         document.getElementById('wazeLink').href = `https://waze.com/ul?ll=${lat},${lon}&navigate=yes`;
-        document.getElementById('appleLink').href = `https://maps.apple.com/?daddr=${lat},${lon}`;
-        
-        document.getElementById('drawRouteBtn').onclick = () => {
-            closeModal('navModal');
-            drawOSRMRoute(lat, lon);
-        };
+        document.getElementById('appleLink').href = `http://maps.apple.com/?daddr=${lat},${lon}`;
+        document.getElementById('drawRouteBtn').onclick = () => { closeModal('navModal'); drawOSRMRoute(lat, lon); };
         document.getElementById('navModal').classList.add('active');
-    }
-
-    function drawOSRMRoute(destLat, destLon) {
-        if (!currentLat || !currentLon) { showToast("GPS location missing!"); return; }
-        switchView('map');
-        
-        const url = `https://router.project-osrm.org/route/v1/driving/${currentLon},${currentLat};${destLon},${destLat}?overview=full&geometries=geojson`;
-        fetch(url)
-            .then(res => res.json())
-            .then(data => {
-                if (data.routes && data.routes.length > 0) {
-                    if (osrmPolyline) map.removeLayer(osrmPolyline);
-                    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                    osrmPolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.8 }).addTo(map);
-                    map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
-                    showToast("Route drawn on Map");
-                }
-            })
-            .catch(() => showToast("Failed to fetch route"));
     }
 
     function openNotesModal(code) {
         activeNoteStoreCode = code;
-        const item = retailers.find(r => r.code === code);
-        if (!item) return;
-
-        document.getElementById('notesModalTitle').innerText = `Details - ${code}`;
-        document.getElementById('noteInput').value = item.notes || '';
-        tempPhotoBase64 = item.photo || null;
-
+        const target = retailers.find(i => i.code === code);
+        document.getElementById('notesModalTitle').innerText = `Outlet Details: ${code}`;
+        document.getElementById('noteInput').value = target ? (target.notes || '') : '';
+        tempPhotoBase64 = target ? (target.photo || null) : null;
+        
+        const preview = document.getElementById('photoPreviewContainer');
+        const img = document.getElementById('photoPreview');
         if (tempPhotoBase64) {
-            document.getElementById('photoPreview').src = tempPhotoBase64;
-            document.getElementById('photoPreviewContainer').style.display = 'block';
+            img.src = tempPhotoBase64;
+            preview.style.display = 'block';
         } else {
-            document.getElementById('photoPreviewContainer').style.display = 'none';
+            preview.style.display = 'none';
         }
-
         document.getElementById('notesModal').classList.add('active');
+    }
+
+    function saveNotes() {
+        const target = retailers.find(i => i.code === activeNoteStoreCode);
+        if (target) {
+            target.notes = document.getElementById('noteInput').value;
+            if (tempPhotoBase64) target.photo = tempPhotoBase64;
+            saveAllOutletsToDB();
+            showToast("Details saved successfully!");
+        }
+        closeModal('notesModal');
     }
 
     function handleWatermarkedPhotoUpload(e) {
         const file = e.target.files[0];
         if (!file) return;
-
         const reader = new FileReader();
-        reader.onload = evt => {
+        reader.onload = function(event) {
             const img = new Image();
-            img.onload = () => {
+            img.onload = function() {
                 const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
                 canvas.width = img.width;
                 canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-
                 ctx.drawImage(img, 0, 0);
 
-                const bannerHeight = Math.max(50, img.height * 0.07);
-                ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
-                ctx.fillRect(0, img.height - bannerHeight, img.width, bannerHeight);
+                // Add Watermark Banner
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                ctx.fillRect(0, canvas.height - 60, canvas.width, 60);
 
-                ctx.fillStyle = "#ffffff";
-                ctx.font = `bold ${Math.max(14, bannerHeight * 0.35)}px sans-serif`;
-                
-                const timeStr = new Date().toLocaleString();
-                const gpsStr = (currentLat && currentLon) ? `GPS: ${currentLat.toFixed(5)}, ${currentLon.toFixed(5)}` : 'GPS: Off';
-                
-                ctx.fillText(`Outlet: ${activeNoteStoreCode} | ${timeStr}`, 16, img.height - (bannerHeight * 0.5));
-                ctx.fillText(gpsStr, 16, img.height - (bannerHeight * 0.18));
+                ctx.fillStyle = '#ffffff';
+                ctx.font = 'bold 20px sans-serif';
+                ctx.fillText(`Outlet: ${activeNoteStoreCode}`, 20, canvas.height - 32);
+                ctx.fillText(`Time: ${new Date().toLocaleString()}`, 20, canvas.height - 10);
 
                 tempPhotoBase64 = canvas.toDataURL('image/jpeg', 0.85);
                 document.getElementById('photoPreview').src = tempPhotoBase64;
                 document.getElementById('photoPreviewContainer').style.display = 'block';
-                showToast("Photo Watermarked");
             };
-            img.src = evt.target.result;
+            img.src = event.target.result;
         };
         reader.readAsDataURL(file);
     }
 
-    function saveNotes() {
-        if (!activeNoteStoreCode) return;
-        const item = retailers.find(r => r.code === activeNoteStoreCode);
-        if (item) {
-            item.notes = document.getElementById('noteInput').value;
-            item.photo = tempPhotoBase64;
-            saveAllOutletsToDB();
-            showToast("Details Saved");
-            closeModal('notesModal');
+    function drawOSRMRoute(destLat, destLon) {
+        if (currentLat === null || currentLon === null) {
+            showToast("Waiting for GPS lock...");
+            return;
         }
+        switchView('map');
+        const url = `https://router.project-osrm.org/route/v1/driving/${currentLon},${currentLat};${destLon},${destLat}?overview=full&geometries=geojson`;
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                if (data.routes && data.routes.length > 0) {
+                    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                    if (osrmPolyline) map.removeLayer(osrmPolyline);
+                    osrmPolyline = L.polyline(coords, { color: '#6366f1', weight: 5, opacity: 0.8 }).addTo(map);
+                    map.fitBounds(osrmPolyline.getBounds(), { padding: [50, 50] });
+                    showToast("Live route drawn successfully!");
+                }
+            })
+            .catch(() => showToast("Failed to draw route."));
     }
 
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-    function exportVisitReport() {
-        if (retailers.length === 0) { showToast("No outlets loaded!"); return; }
-
-        let csvContent = "data:text/csv;charset=utf-8,Outlet Code,RSO Code,Status,Visited,Visit Timestamp,Notes\n";
-
-        retailers.forEach(item => {
-            const visitedStr = item.visited ? "YES" : "NO";
-            const timestamp = item.visitedAt || "N/A";
-            const cleanNotes = (item.notes || "").replace(/"/g, '""');
-            csvContent += `"${item.code}","${item.rsoCode}","${item.status}","${visitedStr}","${timestamp}","${cleanNotes}"\n`;
-        });
-
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Outlet_Report_${new Date().toISOString().slice(0,10)}.csv`);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+    function closeModal(modalId) {
+        document.getElementById(modalId).classList.remove('active');
     }
 
-    function clearVisitHistory() {
-        if (confirm("Reset all check-ins for the new month? (Store data stays saved)")) {
-            retailers.forEach(item => {
-                item.visited = false;
-                item.visitedAt = null;
-                item.notes = "";
-                item.photo = null;
-            });
-            plannedTargetCodes = [];
-            saveAllOutletsToDB();
-            if (osrmPolyline && map) map.removeLayer(osrmPolyline);
-            updateCounters();
-            updateRouteBanner();
-            showToast("Month reset completed");
-            activePopupMarker = null;
-            updateNearbyList();
-            if (activeView === 'map') updateMapView();
-        }
-    }
-
-    function updateCounters() {
-        const visitedCount = retailers.filter(r => r.visited).length;
-        document.getElementById('retailerCount').innerText = `${retailers.length} Outlets`;
-        document.getElementById('visitedCount').innerText = `${visitedCount} visited (${retailers.length - visitedCount} unvisited)`;
-    }
-
-    let toastTimer;
     function showToast(msg) {
-        const t = document.getElementById('toast');
+        const toast = document.getElementById('toast');
         document.getElementById('toastMsg').innerText = msg;
-        t.classList.add('show');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    // Initialize GPS tracking
+    if (navigator.geolocation) {
+        navigator.geolocation.watchPosition(pos => {
+            currentLat = pos.coords.latitude;
+            currentLon = pos.coords.longitude;
+            currentAccuracy = pos.coords.accuracy;
+            currentHeading = pos.coords.heading || 0;
+
+            document.getElementById('statusDot').classList.add('active');
+            document.getElementById('statusText').innerText = `${Math.round(currentAccuracy)}m GPS`;
+
+            if (map) {
+                const latLng = [currentLat, currentLon];
+                if (!userMarker) {
+                    const gpsIcon = L.divIcon({
+                        className: 'user-gps-container',
+                        html: `<div class="user-heading-cone" style="transform: rotate(${currentHeading}deg)"></div><div class="user-gps-dot"></div>`,
+                        iconSize: [24, 24]
+                    });
+                    userMarker = L.marker(latLng, { icon: gpsIcon }).addTo(map);
+                    userAccuracyCircle = L.circle(latLng, { radius: currentAccuracy, color: '#6366f1', fillColor: '#6366f1', fillOpacity: 0.15, weight: 1 }).addTo(map);
+                } else {
+                    userMarker.setLatLng(latLng);
+                    userAccuracyCircle.setLatLng(latLng);
+                    userAccuracyCircle.setRadius(currentAccuracy);
+                }
+            }
+            updateNearbyList();
+        }, () => {
+            document.getElementById('statusText').innerText = 'No GPS';
+        }, { enableHighAccuracy: true, maximumAge: 2000, timeout: 10000 });
     }
 </script>
 </body>
