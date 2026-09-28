@@ -362,6 +362,54 @@
             border-radius: 7px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
         }
 
+        /* Visit Timer & Stats Analytics Banner */
+        .analytics-card {
+            background: var(--surface-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 10px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .analytics-side {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .analytics-side.right {
+            text-align: right;
+            border-left: 1px solid var(--border-glass);
+            padding-left: 10px;
+        }
+
+        .analytics-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .analytics-value {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .analytics-sub {
+            font-size: 0.62rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
         /* Modals & Popups */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
@@ -466,6 +514,20 @@
         <div class="route-banner-actions">
             <button class="btn-sm" style="background: var(--accent-amber); color:#000; border:none;" onclick="drawFullTargetRoute()">Draw Route</button>
             <button class="btn-sm" onclick="clearTargetPlan()">Clear</button>
+        </div>
+    </div>
+
+    <!-- Visit Timer & Average Gap Analytics Card -->
+    <div class="analytics-card">
+        <div class="analytics-side">
+            <span class="analytics-label">Current Visit Stop Timer</span>
+            <span id="currentStopTimer" class="analytics-value">00:00</span>
+            <span id="wholeVisitDuration" class="analytics-sub">Total Duration: 00:00:00</span>
+        </div>
+        <div class="analytics-side right">
+            <span class="analytics-label">Avg Visit Gap Time</span>
+            <span id="avgGapTime" class="analytics-value">0 min</span>
+            <span id="totalVisitedStats" class="analytics-sub">0 visited stops</span>
         </div>
     </div>
 
@@ -661,6 +723,7 @@
             retailers = req.result || [];
             updateCounters();
             updateNearbyList();
+            updateAnalyticsDisplay();
         };
     }
 
@@ -952,6 +1015,7 @@
         updateCounters();
         showToast(`Loaded ${retailers.length} outlets`);
         updateNearbyList();
+        updateAnalyticsDisplay();
     }
 
     function getDistanceMeters(lat1, lon1, lat2, lon2) {
@@ -1179,17 +1243,78 @@
         const item = retailers.find(r => r.code === code);
         if (!item) return;
 
+        const nowIso = new Date().toISOString();
         item.visited = !item.visited;
-        item.visitedAt = item.visited ? new Date().toISOString() : null;
+        item.visitedAt = item.visited ? nowIso : null;
 
         saveAllOutletsToDB();
         updateCounters();
         updateRouteBanner();
+        updateAnalyticsDisplay();
         showToast(item.visited ? `Marked ${code} Visited` : `Unmarked ${code}`);
         
         activePopupMarker = null;
         updateNearbyList();
         if (activeView === 'map') updateMapView();
+    }
+
+    // Timer & Analytics Logic
+    setInterval(() => {
+        updateAnalyticsDisplay();
+    }, 1000);
+
+    function updateAnalyticsDisplay() {
+        const visitedList = retailers.filter(r => r.visited && r.visitedAt).sort((a, b) => new Date(a.visitedAt) - new Date(b.visitedAt));
+        const totalVisited = visitedList.length;
+
+        document.getElementById('totalVisitedStats').innerText = `${totalVisited} visited stops`;
+
+        if (totalVisited === 0) {
+            document.getElementById('currentStopTimer').innerText = "00:00";
+            document.getElementById('wholeVisitDuration').innerText = "Total Duration: 00:00:00";
+            document.getElementById('avgGapTime').innerText = "0 min";
+            return;
+        }
+
+        // 1. Current stop stopwatch (since last visited timestamp)
+        const lastVisitedTime = new Date(visitedList[visitedList.length - 1].visitedAt).getTime();
+        const now = Date.now();
+        const diffSecs = Math.max(0, Math.floor((now - lastVisitedTime) / 1000));
+        
+        const stopMins = String(Math.floor(diffSecs / 60)).padStart(2, '0');
+        const stopSecs = String(diffSecs % 60).padStart(2, '0');
+        document.getElementById('currentStopTimer').innerText = `${stopMins}:${stopSecs}`;
+
+        // 2. Whole visit duration (from first visit timestamp to now)
+        const firstVisitedTime = new Date(visitedList[0].visitedAt).getTime();
+        const totalDiffSecs = Math.max(0, Math.floor((now - firstVisitedTime) / 1000));
+        const wholeHrs = String(Math.floor(totalDiffSecs / 3600)).padStart(2, '0');
+        const wholeMins = String(Math.floor((totalDiffSecs % 3600) / 60)).padStart(2, '0');
+        const wholeSecs = String(totalDiffSecs % 60).padStart(2, '0');
+        document.getElementById('wholeVisitDuration').innerText = `Total Duration: ${wholeHrs}:${wholeMins}:${wholeSecs}`;
+
+        // 3. Average time gap between retailer visits
+        if (totalVisited < 2) {
+            document.getElementById('avgGapTime').innerText = "0 min";
+        } else {
+            let totalGapMs = 0;
+            for (let i = 1; i < visitedList.length; i++) {
+                const prev = new Date(visitedList[i - 1].visitedAt).getTime();
+                const curr = new Date(visitedList[i].visitedAt).getTime();
+                totalGapMs += (curr - prev);
+            }
+            const avgGapMs = totalGapMs / (totalVisited - 1);
+            const avgGapTotalSecs = Math.round(avgGapMs / 1000);
+            const avgMins = Math.floor(avgGapTotalSecs / 60);
+            const avgSecs = avgGapTotalSecs % 60;
+            const decimalMins = (avgGapMs / 60000).toFixed(1);
+
+            if (avgMins > 0) {
+                document.getElementById('avgGapTime').innerText = `${decimalMins} min (${avgMins}m ${avgSecs}s)`;
+            } else {
+                document.getElementById('avgGapTime').innerText = `${avgSecs} sec`;
+            }
+        }
     }
 
     function openNavModal(lat, lon, code) {
@@ -1329,6 +1454,7 @@
             if (osrmPolyline && map) map.removeLayer(osrmPolyline);
             updateCounters();
             updateRouteBanner();
+            updateAnalyticsDisplay();
             showToast("Month reset completed");
             activePopupMarker = null;
             updateNearbyList();
