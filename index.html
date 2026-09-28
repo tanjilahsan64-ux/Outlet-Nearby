@@ -14,27 +14,24 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
 
-    <!-- SheetJS for Excel (.xlsx, .xls) and CSV parsing -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-
     <style>
         :root {
-            --bg-dark: #090d16;
-            --surface-glass: rgba(18, 24, 38, 0.85);
-            --surface-card: rgba(26, 34, 53, 0.85);
+            --bg-dark: #0f0b08;
+            --surface-glass: rgba(28, 20, 15, 0.85);
+            --surface-card: rgba(38, 27, 20, 0.85);
             --border-glass: rgba(255, 255, 255, 0.1);
-            --border-highlight: rgba(255, 255, 255, 0.2);
+            --border-highlight: rgba(249, 115, 22, 0.3);
             
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.35);
-            --accent-cyan: #06b6d4;
+            --primary: #f97316;
+            --primary-glow: rgba(249, 115, 22, 0.35);
+            --accent-cyan: #fb923c;
             --accent-green: #10b981;
             --accent-green-glow: rgba(16, 185, 129, 0.25);
             --accent-rose: #f43f5e;
             
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
+            --text-primary: #fff7ed;
+            --text-secondary: #fdba74;
+            --text-muted: #9a3412;
         }
 
         * {
@@ -48,8 +45,8 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(251, 146, 60, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
@@ -68,7 +65,7 @@
             z-index: 500;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            background: rgba(9, 13, 22, 0.85);
+            background: rgba(15, 11, 8, 0.85);
             border-bottom: 1px solid var(--border-glass);
             display: flex;
             flex-direction: column;
@@ -86,7 +83,7 @@
         .brand-icon {
             width: 32px; height: 32px;
             border-radius: 8px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, #ea580c 100%);
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 12px var(--primary-glow);
         }
@@ -96,7 +93,7 @@
         h1 {
             font-size: 1rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            background: linear-gradient(135deg, #fff 0%, #ffedd5 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -104,9 +101,9 @@
         .header-actions { display: flex; align-items: center; gap: 8px; }
 
         .btn-upload-compact {
-            background: rgba(99, 102, 241, 0.12);
-            color: #a5b4fc;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(249, 115, 22, 0.15);
+            color: #fdba74;
+            border: 1px solid rgba(249, 115, 22, 0.4);
             padding: 5px 10px;
             border-radius: 8px;
             font-size: 0.72rem;
@@ -119,7 +116,7 @@
         }
 
         .btn-upload-compact:hover {
-            background: rgba(99, 102, 241, 0.25);
+            background: rgba(249, 115, 22, 0.3);
             border-color: var(--primary);
             color: #fff;
         }
@@ -127,10 +124,11 @@
         .gps-status-pill {
             display: flex; align-items: center; gap: 5px;
             padding: 4px 8px; border-radius: 20px;
-            background: rgba(15, 23, 42, 0.6);
+            background: rgba(28, 20, 15, 0.6);
             border: 1px solid var(--border-glass);
             font-size: 0.7rem; font-weight: 600;
             color: var(--text-secondary);
+            cursor: pointer;
         }
 
         .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-rose); }
@@ -144,7 +142,6 @@
             flex-direction: column; gap: 10px;
         }
 
-        /* Compact Controls Card */
         .glass-card-compact {
             background: var(--surface-glass);
             backdrop-filter: blur(16px);
@@ -156,7 +153,7 @@
 
         .view-toggle-bar {
             display: flex;
-            background: rgba(10, 15, 26, 0.6);
+            background: rgba(15, 11, 8, 0.6);
             padding: 3px; border-radius: 10px;
             border: 1px solid var(--border-glass);
             gap: 4px;
@@ -164,7 +161,7 @@
 
         .tab-btn {
             flex: 1; padding: 6px 0; border: none;
-            background: transparent; color: var(--text-muted);
+            background: transparent; color: #c2410c;
             font-size: 0.78rem; font-weight: 700; border-radius: 7px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             gap: 5px; transition: all 0.25s ease;
@@ -174,7 +171,7 @@
         .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 10px var(--primary-glow); }
 
         .filter-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-        .filter-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+        .filter-label { font-size: 0.7rem; color: #ea580c; font-weight: 600; white-space: nowrap; }
 
         .filter-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
         .filter-chips::-webkit-scrollbar { display: none; }
@@ -198,7 +195,7 @@
         }
 
         .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
-        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: var(--text-muted); }
+        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: #ea580c; }
 
         .outlet-card {
             background: var(--surface-card); border: 1px solid var(--border-glass);
@@ -213,7 +210,7 @@
 
         .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
         .outlet-code-row { display: flex; align-items: center; gap: 6px; }
-        .outlet-code { font-size: 1rem; font-weight: 800; color: #38bdf8; }
+        .outlet-code { font-size: 1rem; font-weight: 800; color: #fb923c; }
 
         .visited-badge {
             background: var(--accent-green); color: #06110d;
@@ -226,8 +223,8 @@
 
         .dist-pill {
             display: inline-flex; align-items: center; gap: 4px;
-            background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent-green-glow);
-            color: #34d399; padding: 3px 7px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
+            background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3);
+            color: #fdba74; padding: 3px 7px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
         }
 
         .status-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 5px; }
@@ -252,7 +249,7 @@
 
         .check-container input { display: none; }
         .check-container input:checked ~ .custom-check { background: var(--accent-green); border-color: var(--accent-green); }
-        .custom-check svg { width: 9px; height: 9px; stroke: #090d16; stroke-width: 3; opacity: 0; }
+        .custom-check svg { width: 9px; height: 9px; stroke: #0f0b08; stroke-width: 3; opacity: 0; }
         .check-container input:checked ~ .custom-check svg { opacity: 1; }
 
         .btn-action-group { display: flex; gap: 5px; }
@@ -267,8 +264,8 @@
         .btn-sm:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
 
         .btn-nav {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
-            color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
+            background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.2) 100%);
+            color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4);
         }
 
         /* Map View Container */
@@ -281,27 +278,40 @@
 
         #map { width: 100%; height: 100%; background: #e5e3df; }
 
-        /* GPS Marker Styling */
-        .user-gps-container { position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+        .user-gps-container { 
+            position: relative; 
+            width: 24px; 
+            height: 24px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
 
         .user-heading-cone {
-            position: absolute; width: 0; height: 0;
-            border-left: 10px solid transparent; border-right: 10px solid transparent;
-            border-bottom: 24px solid rgba(99, 102, 241, 0.4); top: -16px;
-            transform-origin: bottom center; pointer-events: none;
+            position: absolute; 
+            width: 0; 
+            height: 0;
+            border-left: 8px solid transparent; 
+            border-right: 8px solid transparent;
+            border-bottom: 22px solid rgba(249, 115, 22, 0.85); 
+            top: -12px;
+            transform-origin: 50% 100%; 
+            pointer-events: none;
+            transition: transform 0.15s ease-out;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.5));
         }
 
         .user-gps-dot {
-            width: 14px; height: 14px; background: #6366f1;
+            width: 14px; height: 14px; background: #f97316;
             border: 2px solid white; border-radius: 50%;
-            box-shadow: 0 0 12px #6366f1; z-index: 2;
+            box-shadow: 0 0 12px #f97316; z-index: 2;
         }
 
         /* Bottom Control Bar */
         .bottom-bar {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 520px;
-            background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(20px);
+            background: rgba(28, 20, 15, 0.85); backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-highlight);
             border-radius: 14px; padding: 8px 12px; display: flex;
             align-items: center; justify-content: space-between;
@@ -310,7 +320,7 @@
 
         .counter-info { display: flex; flex-direction: column; }
         .counter-num { font-size: 0.82rem; font-weight: 800; color: var(--text-primary); }
-        .counter-label { font-size: 0.65rem; color: var(--text-muted); }
+        .counter-label { font-size: 0.65rem; color: #c2410c; }
 
         .btn-group-bottom { display: flex; gap: 6px; }
 
@@ -346,7 +356,7 @@
         .modal-overlay.active .modal-card { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; }
         .modal-title { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); }
-        .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; }
+        .modal-close { background: transparent; border: none; color: #ea580c; font-size: 1.1rem; cursor: pointer; }
 
         .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
 
@@ -371,9 +381,9 @@
 
         .toast {
             position: fixed; top: 60px; left: 50%; transform: translateX(-50%) translateY(-20px);
-            background: rgba(16, 185, 129, 0.95); color: #042f2e;
+            background: rgba(249, 115, 22, 0.95); color: #fff;
             padding: 6px 14px; border-radius: 30px; font-weight: 700; font-size: 0.78rem;
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); z-index: 1000;
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3); z-index: 1000;
             opacity: 0; pointer-events: none; transition: all 0.3s ease;
         }
 
@@ -391,13 +401,12 @@
             <h1>Outlet Nearby Ultra</h1>
         </div>
         <div class="header-actions">
-            <label for="excelFileInput" class="btn-upload-compact">
+            <label for="csvFileInput" class="btn-upload-compact">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
-                Import File
+                Import CSV
             </label>
-            <!-- Accepts Excel (.xlsx, .xls) and CSV files -->
-            <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv">
-            <div class="gps-status-pill">
+            <input type="file" id="csvFileInput" accept=".csv">
+            <div class="gps-status-pill" onclick="requestCompassPermission()">
                 <span id="statusDot" class="status-dot"></span>
                 <span id="statusText">GPS</span>
             </div>
@@ -406,7 +415,6 @@
 </header>
 
 <div class="container">
-    <!-- Compact View & Filter Controls -->
     <div class="glass-card-compact">
         <div class="view-toggle-bar">
             <button id="listViewTab" class="tab-btn active" onclick="switchView('list')">
@@ -451,7 +459,7 @@
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
                 <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import File" at the top right to upload an Excel or CSV file.</p>
+                <p style="font-size: 0.75rem; color: #ea580c; margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
             </div>
         </div>
     </div>
@@ -479,18 +487,18 @@
             <span class="modal-title">Navigate To Outlet</span>
             <button class="modal-close" onclick="closeModal('navModal')">&times;</button>
         </div>
-        <p style="font-size:0.75rem; color:var(--text-muted);" id="navModalSub">Select preferred map provider:</p>
+        <p style="font-size:0.75rem; color:#ea580c;" id="navModalSub">Select preferred map provider:</p>
         <div class="app-picker-grid">
             <a id="gmapsLink" target="_blank" class="app-opt">
-                <svg width="20" height="20" fill="none" stroke="#06b6d4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                <svg width="20" height="20" fill="none" stroke="#f97316" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                 Google
             </a>
             <a id="wazeLink" target="_blank" class="app-opt">
-                <svg width="20" height="20" fill="none" stroke="#38bdf8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <svg width="20" height="20" fill="none" stroke="#fb923c" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 Waze
             </a>
             <a id="appleLink" target="_blank" class="app-opt">
-                <svg width="20" height="20" fill="none" stroke="#a855f7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                <svg width="20" height="20" fill="none" stroke="#ea580c" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                 Apple
             </a>
         </div>
@@ -528,7 +536,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v3';
+            const CACHE_NAME = 'outlet-ultra-orange-v1';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -537,7 +545,7 @@
     }
 
     let db;
-    const dbReq = indexedDB.open("OutletUltraDB", 3);
+    const dbReq = indexedDB.open("OutletUltraDB", 2);
     dbReq.onupgradeneeded = e => {
         db = e.target.result;
         if (!db.objectStoreNames.contains("outlets")) {
@@ -555,6 +563,7 @@
 
     let retailers = [];
     let currentLat = null, currentLon = null, currentAccuracy = 0, currentHeading = 0;
+    let deviceHeading = 0;
     let targetRadius = 50;
     let statusFilter = 'ALL';
     let activeView = 'list';
@@ -654,109 +663,74 @@
         updateNearbyList();
     }
 
-    // File Upload & Universal Spreadsheet Handler (Excel & CSV via SheetJS)
-    document.getElementById('excelFileInput').addEventListener('change', function(e) {
+    function parseCSVLine(line) {
+        const result = [];
+        let cur = '', inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+            const c = line[i];
+            if (c === '"') inQuotes = !inQuotes;
+            else if (c === ',' && !inQuotes) {
+                result.push(cur.trim().replace(/^"|"$/g, ''));
+                cur = '';
+            } else cur += c;
+        }
+        result.push(cur.trim().replace(/^"|"$/g, ''));
+        return result;
+    }
+
+    document.getElementById('csvFileInput').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        const isExcel = file.name.endsWith('.xlsx') || file.name.endsWith('.xls');
-
-        reader.onload = function(evt) {
-            try {
-                let workbook;
-                if (isExcel) {
-                    const data = new Uint8Array(evt.target.result);
-                    workbook = XLSX.read(data, { type: 'array' });
-                } else {
-                    const text = evt.target.result;
-                    workbook = XLSX.read(text, { type: 'string' });
-                }
-                const firstSheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[firstSheetName];
-                const rows = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                parseSheetRows(rows);
-            } catch (err) {
-                showToast("Failed to parse file!");
-            }
-        };
-
-        if (isExcel) reader.readAsArrayBuffer(file);
-        else reader.readAsText(file);
+        reader.onload = evt => parseCSV(evt.target.result);
+        reader.readAsText(file);
     });
 
-    function parseSheetRows(rows) {
-        if (!rows || rows.length < 2) {
-            showToast("File is empty or missing data");
-            return;
-        }
-
-        const headers = rows[0].map(h => h ? String(h).toLowerCase().trim() : '');
+    function parseCSV(text) {
+        const lines = text.split(/\r\n|\n/);
+        if (lines.length < 2) return;
+        const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
-        let retailerIdx = headers.findIndex(h => h.includes('retailer') || h.includes('outlet') || h.includes('code'));
-        let rsoIdx = headers.findIndex(h => h.includes('rso'));
 
         retailers = [];
-
-        for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
-            if (!row || row.length === 0) continue;
-            if (row.every(cell => cell === undefined || cell === null || String(cell).trim() === '')) continue;
+        for (let i = 1; i < lines.length; i++) {
+            const line = lines[i].trim();
+            if (!line) continue;
+            const cols = parseCSVLine(line);
+            if (cols.length < 3) continue;
 
             let retailerCode = '';
-            let rsoCode = 'N/A';
-            let lat = NaN;
-            let lon = NaN;
-
-            // 1. Find Retailer Code (e.g. R124342)
-            if (retailerIdx !== -1 && row[retailerIdx] !== undefined) {
-                retailerCode = String(row[retailerIdx]).trim().toUpperCase();
-            }
-            if (!retailerCode) {
-                for (let c = 0; c < row.length; c++) {
-                    const val = String(row[c] || '').trim();
-                    if (/^R\d{4,8}$/i.test(val)) {
-                        retailerCode = val.toUpperCase();
-                        break;
-                    }
+            for (let c = 0; c < cols.length; c++) {
+                if (/^R\d{5,7}$/i.test(cols[c].trim())) {
+                    retailerCode = cols[c].trim().toUpperCase();
+                    break;
                 }
             }
-            if (!retailerCode && row.length > 2) {
-                retailerCode = String(row[2] || '').trim().toUpperCase();
-            }
+            if (!retailerCode && cols[2]) retailerCode = cols[2].trim();
+            const rsoCode = cols[1] ? cols[1].trim() : 'N/A';
+            let statusVal = cols[7] ? cols[7].trim().toUpperCase() : (cols.length >= 8 ? cols[cols.length - 1].trim().toUpperCase() : 'N/A');
 
-            // 2. Find RSO Code (e.g. RS062531)
-            if (rsoIdx !== -1 && row[rsoIdx] !== undefined) {
-                rsoCode = String(row[rsoIdx]).trim();
-            } else if (row.length > 1) {
-                rsoCode = String(row[1] || 'N/A').trim();
-            }
-
-            // 3. Find Latitude and Longitude
-            if (latIdx !== -1) lat = parseFloat(row[latIdx]);
-            if (lonIdx !== -1) lon = parseFloat(row[lonIdx]);
+            let lat = parseFloat(cols[latIdx !== -1 ? latIdx : 5]);
+            let lon = parseFloat(cols[lonIdx !== -1 ? lonIdx : 6]);
 
             if (isNaN(lat) || isNaN(lon)) {
-                for (let c = 0; c < row.length; c++) {
-                    const val = parseFloat(row[c]);
-                    if (!isNaN(val) && val > 5 && val < 40 && isNaN(lat)) lat = val;
-                    else if (!isNaN(val) && val > 60 && val < 100 && isNaN(lon)) lon = val;
+                for (let c = 0; c < cols.length; c++) {
+                    const val = parseFloat(cols[c]);
+                    if (!isNaN(val) && val > 5 && val < 40) lat = val;
+                    if (!isNaN(val) && val > 60 && val < 100) lon = val;
                 }
             }
 
-            // 4. Status in the LAST column
-            const lastColIdx = row.length - 1;
-            let statusVal = row[lastColIdx] !== undefined ? String(row[lastColIdx]).trim().toUpperCase() : 'N/A';
-
             if (!isNaN(lat) && !isNaN(lon) && retailerCode) {
-                retailers.push({
-                    code: retailerCode,
-                    rsoCode: rsoCode,
-                    lat: lat,
-                    lon: lon,
+                retailers.push({ 
+                    code: retailerCode, 
+                    rsoCode: rsoCode, 
+                    lat: lat, 
+                    lon: lon, 
                     status: statusVal,
                     visited: false,
-                    visitedAt: null,
+                    visitTimestamp: null,
                     notes: '',
                     photo: null
                 });
@@ -765,275 +739,173 @@
 
         saveAllOutletsToDB();
         updateCounters();
-        showToast(`Loaded ${retailers.length} outlets successfully`);
         updateNearbyList();
+        showToast(`Loaded ${retailers.length} outlets`);
     }
 
-    function getDistanceMeters(lat1, lon1, lat2, lon2) {
+    function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371000;
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                  Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
-    }
-
-    if ("geolocation" in navigator) {
-        navigator.geolocation.watchPosition(
-            (pos) => {
-                currentLat = pos.coords.latitude;
-                currentLon = pos.coords.longitude;
-                currentAccuracy = pos.coords.accuracy || 0;
-                if (pos.coords.heading !== null && !isNaN(pos.coords.heading)) {
-                    currentHeading = pos.coords.heading;
-                }
-                document.getElementById('statusDot').classList.add('active');
-                document.getElementById('statusText').innerText = "GPS Live";
-                
-                checkGeofenceAutoVisit();
-                updateNearbyList();
-            },
-            () => { document.getElementById('statusText').innerText = "GPS Off"; },
-            { enableHighAccuracy: true, maximumAge: 1000, timeout: 10000 }
-        );
-    }
-
-    window.addEventListener('deviceorientationabsolute', e => {
-        if (e.alpha !== null) currentHeading = 360 - e.alpha;
-    }, true);
-
-    function checkGeofenceAutoVisit() {
-        if (!currentLat || !currentLon) return;
-        let modified = false;
-        retailers.forEach(item => {
-            if (!item.visited) {
-                const dist = getDistanceMeters(currentLat, currentLon, item.lat, item.lon);
-                if (dist <= 15) {
-                    item.visited = true;
-                    item.visitedAt = new Date().toISOString();
-                    modified = true;
-                    showToast(`Auto Checked-in: ${item.code}`);
-                }
-            }
-        });
-        if (modified) saveAllOutletsToDB();
-    }
-
-    function getNearbyFilteredData() {
-        if (retailers.length === 0) return [];
-        const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
-        const nearby = [];
-
-        for (const item of retailers) {
-            const dist = (currentLat && currentLon) ? getDistanceMeters(currentLat, currentLon, item.lat, item.lon) : 999999;
-
-            if (statusFilter === 'VISITED' && !item.visited) continue;
-            if (statusFilter === 'UNVISITED' && item.visited) continue;
-            if (statusFilter === 'STATUS_Y' && item.status !== 'Y') continue;
-            if (statusFilter === 'STATUS_N' && item.status !== 'N') continue;
-
-            if (dist <= targetRadius || targetRadius >= 50000) {
-                const matchesSearch = !searchVal || 
-                    item.code.toLowerCase().includes(searchVal) || 
-                    item.rsoCode.toLowerCase().includes(searchVal) ||
-                    item.status.toLowerCase().includes(searchVal);
-
-                if (matchesSearch) nearby.push({ ...item, distance: Math.round(dist) });
-            }
-        }
-
-        return nearby.sort((a, b) => {
-            if (a.visited !== b.visited) return a.visited ? 1 : -1;
-            return a.distance - b.distance;
-        });
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
     }
 
     function updateNearbyList() {
-        const nearby = getNearbyFilteredData();
-        if (activeView === 'map') { updateMapView(nearby); return; }
+        const listEl = document.getElementById('retailerList');
+        const searchVal = document.getElementById('searchInput').value.trim().toLowerCase();
 
-        const listContainer = document.getElementById('retailerList');
-        if (nearby.length === 0) {
-            listContainer.innerHTML = `
+        if (retailers.length === 0) {
+            listEl.innerHTML = `
                 <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
-                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No stores match active filters</p>
-                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Adjust distance or unvisited filter chips.</p>
+                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
+                    <p style="font-size: 0.75rem; color: #ea580c; margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
                 </div>`;
             return;
         }
 
-        if (listContainer.querySelector('.empty-card')) listContainer.innerHTML = '';
-
-        const existingCards = new Map();
-        listContainer.querySelectorAll('.outlet-card').forEach(card => existingCards.set(card.getAttribute('data-code'), card));
-
-        nearby.forEach((item) => {
-            let card = existingCards.get(item.code);
-
-            if (card) {
-                const distEl = card.querySelector('.dist-val');
-                if (distEl) distEl.innerText = item.distance < 900000 ? `${item.distance}m` : 'N/A';
-                const checkbox = card.querySelector('.visit-input');
-                if (checkbox && checkbox.checked !== item.visited) checkbox.checked = item.visited;
-
-                if (item.visited) card.classList.add('visited');
-                else card.classList.remove('visited');
-
-                const badge = card.querySelector('.visited-badge');
-                if (badge) badge.style.display = item.visited ? 'inline-block' : 'none';
-                existingCards.delete(item.code);
-            } else {
-                const statusClass = item.status === 'Y' ? 'status-y' : (item.status === 'N' ? 'status-n' : '');
-                card = document.createElement('div');
-                card.className = `outlet-card ${item.visited ? 'visited' : ''}`;
-                card.setAttribute('data-code', item.code);
-
-                card.innerHTML = `
-                    <div class="outlet-header">
-                        <div class="outlet-title-area">
-                            <div class="outlet-code-row">
-                                <span class="outlet-code">${escapeHtml(item.code)}</span>
-                                <span class="visited-badge" style="display: ${item.visited ? 'inline-block' : 'none'};">Visited</span>
-                            </div>
-                            <span class="rso-text">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></span>
-                        </div>
-                        <div class="dist-pill">
-                            <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-                            <span class="dist-val">${item.distance < 900000 ? `${item.distance}m` : 'N/A'}</span>
-                        </div>
-                    </div>
-                    <div><span class="status-tag ${statusClass}">STATUS: ${escapeHtml(item.status)}</span></div>
-                    <div class="card-footer">
-                        <label class="check-container">
-                            <input type="checkbox" class="visit-input" ${item.visited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
-                            <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div>
-                            Visited
-                        </label>
-                        <div class="btn-action-group">
-                            <button class="btn-sm" onclick="openNotesModal('${escapeHtml(item.code)}')">
-                                <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg> Details
-                            </button>
-                            <button class="btn-sm btn-nav" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">
-                                <svg width="11" height="11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg> Nav
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }
-            listContainer.appendChild(card);
+        let filtered = retailers.map(r => {
+            const dist = (currentLat && currentLon) ? calculateDistance(currentLat, currentLon, r.lat, r.lon) : Infinity;
+            return { ...r, distance: dist };
         });
 
-        existingCards.forEach(card => card.remove());
-    }
-
-    function updateMapView(data) {
-        if (!map) return;
-
-        if (currentLat !== null && currentLon !== null) {
-            const userIcon = L.divIcon({
-                className: 'user-gps-marker',
-                html: `
-                    <div class="user-gps-container">
-                        <div class="user-heading-cone" style="transform: rotate(${currentHeading}deg);"></div>
-                        <div class="user-gps-dot"></div>
-                    </div>`,
-                iconSize: [24, 24],
-                iconAnchor: [12, 12]
-            });
-
-            if (!userMarker) {
-                userMarker = L.marker([currentLat, currentLon], { icon: userIcon }).addTo(map);
-                map.panTo([currentLat, currentLon]);
-            } else {
-                userMarker.setLatLng([currentLat, currentLon]);
-                userMarker.setIcon(userIcon);
-            }
-
-            if (!userAccuracyCircle) {
-                userAccuracyCircle = L.circle([currentLat, currentLon], {
-                    radius: currentAccuracy || 15,
-                    color: '#6366f1',
-                    fillColor: '#6366f1',
-                    fillOpacity: 0.1,
-                    weight: 1
-                }).addTo(map);
-            } else {
-                userAccuracyCircle.setLatLng([currentLat, currentLon]);
-                userAccuracyCircle.setRadius(currentAccuracy || 15);
-            }
+        if (targetRadius < 50000) {
+            filtered = filtered.filter(r => r.distance <= targetRadius);
         }
 
-        if (activePopupMarker) return;
+        if (statusFilter === 'UNVISITED') filtered = filtered.filter(r => !r.visited);
+        else if (statusFilter === 'VISITED') filtered = filtered.filter(r => r.visited);
+        else if (statusFilter === 'STATUS_Y') filtered = filtered.filter(r => r.status === 'Y');
+        else if (statusFilter === 'STATUS_N') filtered = filtered.filter(r => r.status === 'N');
 
-        const stores = data || getNearbyFilteredData();
+        if (searchVal) {
+            filtered = filtered.filter(r => 
+                r.code.toLowerCase().includes(searchVal) || 
+                r.rsoCode.toLowerCase().includes(searchVal) ||
+                r.status.toLowerCase().includes(searchVal)
+            );
+        }
+
+        filtered.sort((a, b) => a.distance - b.distance);
+
+        if (filtered.length === 0) {
+            listEl.innerHTML = `<div style="text-align:center; padding: 20px; color: #ea580c; font-size:0.8rem;">No outlets match current filters.</div>`;
+            return;
+        }
+
+        listEl.innerHTML = filtered.map(r => {
+            const distText = isFinite(r.distance) ? `${Math.round(r.distance)}m away` : 'GPS Searching...';
+            const statusClass = r.status === 'Y' ? 'status-y' : (r.status === 'N' ? 'status-n' : '');
+            
+            return `
+                <div class="outlet-card ${r.visited ? 'visited' : ''}">
+                    <div class="outlet-header">
+                        <div>
+                            <div class="outlet-code-row">
+                                <span class="outlet-code">${r.code}</span>
+                                ${r.visited ? '<span class="visited-badge">Visited</span>' : ''}
+                            </div>
+                            <p class="rso-text">RSO: <strong>${r.rsoCode}</strong></p>
+                        </div>
+                        <span class="status-tag ${statusClass}">Status ${r.status}</span>
+                    </div>
+                    <div>
+                        <span class="dist-pill">${distText}</span>
+                    </div>
+                    <div class="card-footer">
+                        <label class="check-container">
+                            <input type="checkbox" ${r.visited ? 'checked' : ''} onchange="toggleVisited('${r.code}', this.checked)">
+                            <div class="custom-check">
+                                <svg viewBox="0 0 24 24"><path fill="none" stroke="currentColor" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            Mark Visited
+                        </label>
+                        <div class="btn-action-group">
+                            <button class="btn-sm btn-nav" onclick="openNavModal(${r.lat}, ${r.lon}, '${r.code}')">Navigate</button>
+                            <button class="btn-sm" onclick="openNotesModal('${r.code}')">Details</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        if (activeView === 'map') updateMapView();
+    }
+
+    function updateMapView() {
+        if (!map || !storeClusterLayer) return;
         storeClusterLayer.clearLayers();
 
-        stores.forEach(item => {
-            const pinColor = item.visited ? '#10b981' : '#ea4335';
+        retailers.forEach(r => {
+            if (statusFilter === 'UNVISITED' && r.visited) return;
+            if (statusFilter === 'VISITED' && !r.visited) return;
+            if (statusFilter === 'STATUS_Y' && r.status !== 'Y') return;
+            if (statusFilter === 'STATUS_N' && r.status !== 'N') return;
 
-            const customPin = L.divIcon({
-                className: 'store-pin',
-                html: `<div style="background:${pinColor};width:22px;height:22px;border-radius:50%;border:2px solid white;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 8px rgba(0,0,0,0.4);font-size:10px;font-weight:800;color:#fff;">${item.visited ? '✓' : ''}</div>`,
-                iconSize: [22, 22]
+            const color = r.visited ? '#10b981' : '#f97316';
+            const customIcon = L.divIcon({
+                className: 'custom-map-pin',
+                html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 6px ${color};"></div>`,
+                iconSize: [12, 12]
             });
 
-            const marker = L.marker([item.lat, item.lon], { icon: customPin });
-            const popupContent = `
-                <div style="font-size:0.82rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)}</div>
-                <div style="font-size:0.72rem; color:#64748b; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
-                <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">${item.visited ? 'Unmark Visited' : 'Mark Visited'}</button>
-                <button class="map-popup-btn" style="background:#06b6d4; color:#fff;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
-            `;
-            marker.bindPopup(popupContent);
+            const marker = L.marker([r.lat, r.lon], { icon: customIcon });
+            marker.bindPopup(`
+                <strong style="font-size:0.85rem; color:#0f0b08;">${r.code}</strong><br>
+                <span style="font-size:0.75rem; color:#ea580c;">RSO: ${r.rsoCode} | Status: ${r.status}</span><br>
+                <button class="map-popup-btn" onclick="openNavModal(${r.lat}, ${r.lon}, '${r.code}')">Navigate Here</button>
+            `);
             storeClusterLayer.addLayer(marker);
         });
     }
 
-    function toggleVisited(code) {
+    function toggleVisited(code, isVisited) {
         const item = retailers.find(r => r.code === code);
-        if (!item) return;
+        if (item) {
+            item.visited = isVisited;
+            item.visitTimestamp = isVisited ? new Date().toISOString() : null;
+            saveAllOutletsToDB();
+            updateCounters();
+            updateNearbyList();
+            showToast(isVisited ? "Marked as Visited" : "Marked Unvisited");
+        }
+    }
 
-        item.visited = !item.visited;
-        item.visitedAt = item.visited ? new Date().toISOString() : null;
-
-        saveAllOutletsToDB();
-        updateCounters();
-        showToast(item.visited ? `Marked ${code} Visited` : `Unmarked ${code}`);
-        
-        activePopupMarker = null;
-        updateNearbyList();
-        if (activeView === 'map') updateMapView();
+    function updateCounters() {
+        document.getElementById('retailerCount').innerText = `${retailers.length} Outlets`;
+        const visited = retailers.filter(r => r.visited).length;
+        document.getElementById('visitedCount').innerText = `${visited} visited this month`;
     }
 
     function openNavModal(lat, lon, code) {
-        document.getElementById('navModalSub').innerText = `Target: ${code}`;
+        document.getElementById('navModalSub').innerText = `Navigate to Outlet: ${code}`;
         document.getElementById('gmapsLink').href = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lon}`;
         document.getElementById('wazeLink').href = `https://waze.com/ul?ll=${lat},${lon}&navigate=yes`;
-        document.getElementById('appleLink').href = `https://maps.apple.com/?daddr=${lat},${lon}`;
-        
-        document.getElementById('drawRouteBtn').onclick = () => {
-            closeModal('navModal');
-            drawOSRMRoute(lat, lon);
-        };
+        document.getElementById('appleLink').href = `maps://maps.apple.com/?daddr=${lat},${lon}`;
+        document.getElementById('drawRouteBtn').onclick = () => drawOSRMRoute(lat, lon);
         document.getElementById('navModal').classList.add('active');
     }
 
     function drawOSRMRoute(destLat, destLon) {
-        if (!currentLat || !currentLon) { showToast("GPS location missing!"); return; }
+        closeModal('navModal');
+        if (!currentLat || !currentLon) {
+            showToast("Waiting for GPS position...");
+            return;
+        }
         switchView('map');
-        
-        const url = `https://router.project-osrm.org/route/v1/driving/${currentLon},${currentLat};${destLon},${destLat}?overview=full&geometries=geojson`;
-        fetch(url)
+
+        fetch(`https://router.project-osrm.org/route/v1/driving/${currentLon},${currentLat};${destLon},${destLat}?overview=full&geometries=geojson`)
             .then(res => res.json())
             .then(data => {
-                if (data.routes && data.routes.length > 0) {
-                    if (osrmPolyline) map.removeLayer(osrmPolyline);
-                    const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                    osrmPolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.8 }).addTo(map);
-                    map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
-                    showToast("Route drawn on Map");
-                }
+                if (!data.routes || data.routes.length === 0) return;
+                const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+                if (osrmPolyline) map.removeLayer(osrmPolyline);
+                osrmPolyline = L.polyline(coords, { color: '#f97316', weight: 5, opacity: 0.8 }).addTo(map);
+                map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
+                showToast("Route Drawn");
             })
             .catch(() => showToast("Failed to fetch route"));
     }
@@ -1041,130 +913,200 @@
     function openNotesModal(code) {
         activeNoteStoreCode = code;
         const item = retailers.find(r => r.code === code);
-        if (!item) return;
-
-        document.getElementById('notesModalTitle').innerText = `Details - ${code}`;
-        document.getElementById('noteInput').value = item.notes || '';
-        tempPhotoBase64 = item.photo || null;
-
-        if (tempPhotoBase64) {
-            document.getElementById('photoPreview').src = tempPhotoBase64;
-            document.getElementById('photoPreviewContainer').style.display = 'block';
+        document.getElementById('notesModalTitle').innerText = `Outlet ${code} Details`;
+        document.getElementById('noteInput').value = item ? item.notes || '' : '';
+        
+        const previewContainer = document.getElementById('photoPreviewContainer');
+        const previewImg = document.getElementById('photoPreview');
+        if (item && item.photo) {
+            previewImg.src = item.photo;
+            previewContainer.style.display = 'block';
         } else {
-            document.getElementById('photoPreviewContainer').style.display = 'none';
+            previewContainer.style.display = 'none';
+            previewImg.src = '';
         }
-
+        tempPhotoBase64 = item ? item.photo : null;
         document.getElementById('notesModal').classList.add('active');
     }
 
-    function handleWatermarkedPhotoUpload(e) {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = evt => {
-            const img = new Image();
-            img.onload = () => {
-                const canvas = document.createElement('canvas');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                const ctx = canvas.getContext('2d');
-
-                ctx.drawImage(img, 0, 0);
-
-                const bannerHeight = Math.max(50, img.height * 0.07);
-                ctx.fillStyle = "rgba(0, 0, 0, 0.65)";
-                ctx.fillRect(0, img.height - bannerHeight, img.width, bannerHeight);
-
-                ctx.fillStyle = "#ffffff";
-                ctx.font = `bold ${Math.max(14, bannerHeight * 0.35)}px sans-serif`;
-                
-                const timeStr = new Date().toLocaleString();
-                const gpsStr = (currentLat && currentLon) ? `GPS: ${currentLat.toFixed(5)}, ${currentLon.toFixed(5)}` : 'GPS: Off';
-                
-                ctx.fillText(`Outlet: ${activeNoteStoreCode} | ${timeStr}`, 16, img.height - (bannerHeight * 0.5));
-                ctx.fillText(gpsStr, 16, img.height - (bannerHeight * 0.18));
-
-                tempPhotoBase64 = canvas.toDataURL('image/jpeg', 0.85);
-                document.getElementById('photoPreview').src = tempPhotoBase64;
-                document.getElementById('photoPreviewContainer').style.display = 'block';
-                showToast("Photo Watermarked");
-            };
-            img.src = evt.target.result;
-        };
-        reader.readAsDataURL(file);
-    }
-
     function saveNotes() {
-        if (!activeNoteStoreCode) return;
         const item = retailers.find(r => r.code === activeNoteStoreCode);
         if (item) {
             item.notes = document.getElementById('noteInput').value;
             item.photo = tempPhotoBase64;
             saveAllOutletsToDB();
             showToast("Details Saved");
-            closeModal('notesModal');
         }
+        closeModal('notesModal');
     }
 
-    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+    function handleWatermarkedPhotoUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = e => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0);
+
+                const timeStr = new Date().toLocaleString();
+                const watermarkText = `${activeNoteStoreCode} | ${timeStr}`;
+                
+                ctx.font = `${Math.floor(canvas.height / 25)}px sans-serif`;
+                ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
+                ctx.fillRect(10, canvas.height - 50, ctx.measureText(watermarkText).width + 20, 40);
+                ctx.fillStyle = "#000";
+                ctx.fillText(watermarkText, 20, canvas.height - 20);
+
+                tempPhotoBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                document.getElementById('photoPreview').src = tempPhotoBase64;
+                document.getElementById('photoPreviewContainer').style.display = 'block';
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMsg').innerText = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2500);
+    }
 
     function exportVisitReport() {
-        if (retailers.length === 0) { showToast("No outlets loaded!"); return; }
-
-        let csvContent = "data:text/csv;charset=utf-8,Outlet Code,RSO Code,Status,Visited,Visit Timestamp,Notes\n";
-
-        retailers.forEach(item => {
-            const visitedStr = item.visited ? "YES" : "NO";
-            const timestamp = item.visitedAt || "N/A";
-            const cleanNotes = (item.notes || "").replace(/"/g, '""');
-            csvContent += `"${item.code}","${item.rsoCode}","${item.status}","${visitedStr}","${timestamp}","${cleanNotes}"\n`;
+        if (retailers.length === 0) {
+            showToast("No data to export");
+            return;
+        }
+        let csvContent = "data:text/csv;charset=utf-8,Code,RSO,Status,Visited,Timestamp,Notes\n";
+        retailers.forEach(r => {
+            csvContent += `"${r.code}","${r.rsoCode}","${r.status}","${r.visited ? 'YES' : 'NO'}","${r.visitTimestamp || ''}","${(r.notes || '').replace(/"/g, '""')}"\n`;
         });
-
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement("a");
         link.setAttribute("href", encodedUri);
-        link.setAttribute("download", `Outlet_Report_${new Date().toISOString().slice(0,10)}.csv`);
+        link.setAttribute("download", `Visit_Report_${new Date().toISOString().slice(0,10)}.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     }
 
     function clearVisitHistory() {
-        if (confirm("Reset all check-ins for the new month? (Store data stays saved)")) {
-            retailers.forEach(item => {
-                item.visited = false;
-                item.visitedAt = null;
-                item.notes = "";
-                item.photo = null;
+        if (confirm("Reset visit history for all outlets this month?")) {
+            retailers.forEach(r => {
+                r.visited = false;
+                r.visitTimestamp = null;
+                r.notes = '';
+                r.photo = null;
             });
             saveAllOutletsToDB();
-            if (osrmPolyline) map.removeLayer(osrmPolyline);
             updateCounters();
-            showToast("Month reset completed");
-            activePopupMarker = null;
             updateNearbyList();
-            if (activeView === 'map') updateMapView();
+            showToast("History Reset");
         }
     }
 
-    function updateCounters() {
-        const visitedCount = retailers.filter(r => r.visited).length;
-        document.getElementById('retailerCount').innerText = `${retailers.length} Outlets`;
-        document.getElementById('visitedCount').innerText = `${visitedCount} visited (${retailers.length - visitedCount} unvisited)`;
+    /* Device Orientation / Compass Heading Handler */
+    function updateHeadingArrow(heading) {
+        deviceHeading = heading;
+        const cone = document.getElementById('userHeadingCone');
+        if (cone) {
+            cone.style.transform = `rotate(${heading}deg)`;
+        }
     }
 
-    let toastTimer;
-    function showToast(msg) {
-        const t = document.getElementById('toast');
-        document.getElementById('toastMsg').innerText = msg;
-        t.classList.add('show');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+    function handleOrientation(event) {
+        let heading = null;
+        if (event.webkitCompassHeading) {
+            // iOS Safari
+            heading = event.webkitCompassHeading;
+        } else if (event.alpha !== null) {
+            // Android Chrome
+            heading = 360 - event.alpha;
+        }
+        
+        if (heading !== null) {
+            updateHeadingArrow(heading);
+        }
     }
 
-    function escapeHtml(str) {
-        return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    function requestCompassPermission() {
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+            DeviceOrientationEvent.requestPermission()
+                .then(response => {
+                    if (response === 'granted') {
+                        window.addEventListener('deviceorientation', handleOrientation, true);
+                        showToast("Compass active");
+                    } else {
+                        showToast("Compass permission denied");
+                    }
+                })
+                .catch(console.error);
+        } else if ('ondeviceorientationabsolute' in window) {
+            window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+            showToast("Compass active");
+        } else if ('ondeviceorientation' in window) {
+            window.addEventListener('deviceorientation', handleOrientation, true);
+            showToast("Compass active");
+        } else {
+            showToast("Compass not supported on device");
+        }
+    }
+
+    // Auto-listen to device orientation if allowed
+    if ('ondeviceorientationabsolute' in window) {
+        window.addEventListener('deviceorientationabsolute', handleOrientation, true);
+    } else if ('ondeviceorientation' in window) {
+        window.addEventListener('deviceorientation', handleOrientation, true);
+    }
+
+    if ('geolocation' in navigator) {
+        navigator.geolocation.watchPosition(
+            pos => {
+                currentLat = pos.coords.latitude;
+                currentLon = pos.coords.longitude;
+                currentAccuracy = pos.coords.accuracy;
+                currentHeading = pos.coords.heading || currentHeading;
+
+                document.getElementById('statusDot').classList.add('active');
+                document.getElementById('statusText').innerText = `${Math.round(currentAccuracy)}m`;
+
+                if (map) {
+                    if (!userMarker) {
+                        const icon = L.divIcon({
+                            className: 'user-gps-marker',
+                            html: `<div class="user-gps-container">
+                                    <div id="userHeadingCone" class="user-heading-cone" style="transform: rotate(${deviceHeading || currentHeading}deg);"></div>
+                                    <div class="user-gps-dot"></div>
+                                   </div>`,
+                            iconSize: [24, 24]
+                        });
+                        userMarker = L.marker([currentLat, currentLon], { icon }).addTo(map);
+                        userAccuracyCircle = L.circle([currentLat, currentLon], { radius: currentAccuracy, color: '#f97316', weight: 1, opacity: 0.4, fillColor: '#f97316', fillOpacity: 0.15 }).addTo(map);
+                    } else {
+                        userMarker.setLatLng([currentLat, currentLon]);
+                        userAccuracyCircle.setLatLng([currentLat, currentLon]);
+                        userAccuracyCircle.setRadius(currentAccuracy);
+                    }
+                }
+                updateNearbyList();
+            },
+            err => {
+                document.getElementById('statusDot').classList.remove('active');
+                document.getElementById('statusText').innerText = "GPS Err";
+            },
+            { enableHighAccuracy: true, timeout: 10000, maximumAge: 1000 }
+        );
     }
 </script>
 </body>
