@@ -16,22 +16,24 @@
 
     <style>
         :root {
-            --bg-dark: #0f0b08;
-            --surface-glass: rgba(28, 20, 15, 0.85);
-            --surface-card: rgba(38, 27, 20, 0.85);
+            /* Modern Deep Slate & Modern Indigo Theme */
+            --bg-dark: #0f172a;
+            --surface-glass: rgba(30, 41, 59, 0.85);
+            --surface-card: rgba(30, 41, 59, 0.95);
             --border-glass: rgba(255, 255, 255, 0.1);
-            --border-highlight: rgba(249, 115, 22, 0.3);
+            --border-highlight: rgba(99, 102, 241, 0.4);
             
-            --primary: #f97316;
-            --primary-glow: rgba(249, 115, 22, 0.35);
-            --accent-cyan: #fb923c;
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-glow: rgba(99, 102, 241, 0.35);
+            --accent-cyan: #38bdf8;
             --accent-green: #10b981;
             --accent-green-glow: rgba(16, 185, 129, 0.25);
             --accent-rose: #f43f5e;
             
-            --text-primary: #fff7ed;
-            --text-secondary: #fdba74;
-            --text-muted: #9a3412;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
         }
 
         * {
@@ -45,8 +47,8 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(249, 115, 22, 0.15) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(251, 146, 60, 0.08) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
@@ -65,7 +67,7 @@
             z-index: 500;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            background: rgba(15, 11, 8, 0.85);
+            background: rgba(15, 23, 42, 0.85);
             border-bottom: 1px solid var(--border-glass);
             display: flex;
             flex-direction: column;
@@ -83,7 +85,7 @@
         .brand-icon {
             width: 32px; height: 32px;
             border-radius: 8px;
-            background: linear-gradient(135deg, var(--primary) 0%, #ea580c 100%);
+            background: linear-gradient(135deg, var(--primary) 0%, #4338ca 100%);
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 12px var(--primary-glow);
         }
@@ -93,7 +95,7 @@
         h1 {
             font-size: 1rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff 0%, #ffedd5 100%);
+            background: linear-gradient(135deg, #fff 0%, #e2e8f0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -101,9 +103,9 @@
         .header-actions { display: flex; align-items: center; gap: 8px; }
 
         .btn-upload-compact {
-            background: rgba(249, 115, 22, 0.15);
-            color: #fdba74;
-            border: 1px solid rgba(249, 115, 22, 0.4);
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border: 1px solid rgba(99, 102, 241, 0.4);
             padding: 5px 10px;
             border-radius: 8px;
             font-size: 0.72rem;
@@ -116,7 +118,7 @@
         }
 
         .btn-upload-compact:hover {
-            background: rgba(249, 115, 22, 0.3);
+            background: rgba(99, 102, 241, 0.3);
             border-color: var(--primary);
             color: #fff;
         }
@@ -124,7 +126,7 @@
         .gps-status-pill {
             display: flex; align-items: center; gap: 5px;
             padding: 4px 8px; border-radius: 20px;
-            background: rgba(28, 20, 15, 0.6);
+            background: rgba(30, 41, 59, 0.6);
             border: 1px solid var(--border-glass);
             font-size: 0.7rem; font-weight: 600;
             color: var(--text-secondary);
@@ -153,7 +155,7 @@
 
         .view-toggle-bar {
             display: flex;
-            background: rgba(15, 11, 8, 0.6);
+            background: rgba(15, 23, 42, 0.6);
             padding: 3px; border-radius: 10px;
             border: 1px solid var(--border-glass);
             gap: 4px;
@@ -161,7 +163,7 @@
 
         .tab-btn {
             flex: 1; padding: 6px 0; border: none;
-            background: transparent; color: #c2410c;
+            background: transparent; color: var(--text-secondary);
             font-size: 0.78rem; font-weight: 700; border-radius: 7px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
             gap: 5px; transition: all 0.25s ease;
@@ -171,14 +173,14 @@
         .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 10px var(--primary-glow); }
 
         .filter-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-        .filter-label { font-size: 0.7rem; color: #ea580c; font-weight: 600; white-space: nowrap; }
+        .filter-label { font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; white-space: nowrap; }
 
         .filter-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
         .filter-chips::-webkit-scrollbar { display: none; }
 
         .chip {
             padding: 3px 8px; border-radius: 14px;
-            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-glass);
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border-glass);
             font-size: 0.7rem; font-weight: 600; color: var(--text-secondary);
             cursor: pointer; white-space: nowrap; transition: all 0.2s ease;
         }
@@ -195,7 +197,7 @@
         }
 
         .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
-        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: #ea580c; }
+        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: var(--text-muted); }
 
         .outlet-card {
             background: var(--surface-card); border: 1px solid var(--border-glass);
@@ -205,15 +207,15 @@
 
         .outlet-card:active { transform: scale(0.988); }
         .outlet-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
-        .outlet-card.visited { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2); }
+        .outlet-card.visited { background: rgba(16, 185, 129, 0.08); border-color: rgba(16, 185, 129, 0.3); }
         .outlet-card.visited::before { background: var(--accent-green); }
 
         .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
         .outlet-code-row { display: flex; align-items: center; gap: 6px; }
-        .outlet-code { font-size: 1rem; font-weight: 800; color: #fb923c; }
+        .outlet-code { font-size: 1rem; font-weight: 800; color: var(--accent-cyan); }
 
         .visited-badge {
-            background: var(--accent-green); color: #06110d;
+            background: var(--accent-green); color: #022c22;
             font-size: 0.62rem; font-weight: 800; padding: 2px 6px;
             border-radius: 20px; text-transform: uppercase;
         }
@@ -223,8 +225,8 @@
 
         .dist-pill {
             display: inline-flex; align-items: center; gap: 4px;
-            background: rgba(249, 115, 22, 0.15); border: 1px solid rgba(249, 115, 22, 0.3);
-            color: #fdba74; padding: 3px 7px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
+            background: rgba(99, 102, 241, 0.15); border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #a5b4fc; padding: 3px 7px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
         }
 
         .status-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 5px; }
@@ -249,7 +251,7 @@
 
         .check-container input { display: none; }
         .check-container input:checked ~ .custom-check { background: var(--accent-green); border-color: var(--accent-green); }
-        .custom-check svg { width: 9px; height: 9px; stroke: #0f0b08; stroke-width: 3; opacity: 0; }
+        .custom-check svg { width: 9px; height: 9px; stroke: #0f172a; stroke-width: 3; opacity: 0; }
         .check-container input:checked ~ .custom-check svg { opacity: 1; }
 
         .btn-action-group { display: flex; gap: 5px; }
@@ -264,8 +266,8 @@
         .btn-sm:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
 
         .btn-nav {
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.2) 100%);
-            color: #fb923c; border: 1px solid rgba(249, 115, 22, 0.4);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(67, 56, 202, 0.2) 100%);
+            color: #a5b4fc; border: 1px solid rgba(99, 102, 241, 0.4);
         }
 
         /* Map View Container */
@@ -276,7 +278,7 @@
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); position: relative;
         }
 
-        #map { width: 100%; height: 100%; background: #e5e3df; }
+        #map { width: 100%; height: 100%; background: #0f172a; }
 
         .user-gps-container { 
             position: relative; 
@@ -293,7 +295,7 @@
             height: 0;
             border-left: 8px solid transparent; 
             border-right: 8px solid transparent;
-            border-bottom: 22px solid rgba(249, 115, 22, 0.85); 
+            border-bottom: 22px solid rgba(99, 102, 241, 0.85); 
             top: -12px;
             transform-origin: 50% 100%; 
             pointer-events: none;
@@ -302,16 +304,16 @@
         }
 
         .user-gps-dot {
-            width: 14px; height: 14px; background: #f97316;
+            width: 14px; height: 14px; background: var(--primary);
             border: 2px solid white; border-radius: 50%;
-            box-shadow: 0 0 12px #f97316; z-index: 2;
+            box-shadow: 0 0 12px var(--primary); z-index: 2;
         }
 
         /* Bottom Control Bar */
         .bottom-bar {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 520px;
-            background: rgba(28, 20, 15, 0.85); backdrop-filter: blur(20px);
+            background: rgba(30, 41, 59, 0.85); backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-highlight);
             border-radius: 14px; padding: 8px 12px; display: flex;
             align-items: center; justify-content: space-between;
@@ -320,7 +322,7 @@
 
         .counter-info { display: flex; flex-direction: column; }
         .counter-num { font-size: 0.82rem; font-weight: 800; color: var(--text-primary); }
-        .counter-label { font-size: 0.65rem; color: #c2410c; }
+        .counter-label { font-size: 0.65rem; color: var(--text-secondary); }
 
         .btn-group-bottom { display: flex; gap: 6px; }
 
@@ -339,7 +341,7 @@
         /* Modals & Popups */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000;
+            background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(8px); z-index: 1000;
             display: flex; align-items: flex-end; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
@@ -356,7 +358,7 @@
         .modal-overlay.active .modal-card { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; }
         .modal-title { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); }
-        .modal-close { background: transparent; border: none; color: #ea580c; font-size: 1.1rem; cursor: pointer; }
+        .modal-close { background: transparent; border: none; color: var(--text-secondary); font-size: 1.1rem; cursor: pointer; }
 
         .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
 
@@ -381,9 +383,9 @@
 
         .toast {
             position: fixed; top: 60px; left: 50%; transform: translateX(-50%) translateY(-20px);
-            background: rgba(249, 115, 22, 0.95); color: #fff;
+            background: var(--primary); color: #fff;
             padding: 6px 14px; border-radius: 30px; font-weight: 700; font-size: 0.78rem;
-            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.3); z-index: 1000;
+            box-shadow: 0 10px 25px var(--primary-glow); z-index: 1000;
             opacity: 0; pointer-events: none; transition: all 0.3s ease;
         }
 
@@ -459,7 +461,7 @@
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
                 <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
-                <p style="font-size: 0.75rem; color: #ea580c; margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
+                <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
             </div>
         </div>
     </div>
@@ -487,18 +489,18 @@
             <span class="modal-title">Navigate To Outlet</span>
             <button class="modal-close" onclick="closeModal('navModal')">&times;</button>
         </div>
-        <p style="font-size:0.75rem; color:#ea580c;" id="navModalSub">Select preferred map provider:</p>
+        <p style="font-size:0.75rem; color:var(--text-secondary);" id="navModalSub">Select preferred map provider:</p>
         <div class="app-picker-grid">
             <a id="gmapsLink" target="_blank" class="app-opt">
-                <svg width="20" height="20" fill="none" stroke="#f97316" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                <svg width="20" height="20" fill="none" stroke="var(--primary)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                 Google
             </a>
             <a id="wazeLink" target="_blank" class="app-opt">
-                <svg width="20" height="20" fill="none" stroke="#fb923c" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                <svg width="20" height="20" fill="none" stroke="var(--accent-cyan)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                 Waze
             </a>
             <a id="appleLink" target="_blank" class="app-opt">
-                <svg width="20" height="20" fill="none" stroke="#ea580c" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+                <svg width="20" height="20" fill="none" stroke="var(--primary)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                 Apple
             </a>
         </div>
@@ -536,7 +538,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-orange-v1';
+            const CACHE_NAME = 'outlet-ultra-indigo-v1';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -762,7 +764,7 @@
             listEl.innerHTML = `
                 <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
                     <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
-                    <p style="font-size: 0.75rem; color: #ea580c; margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Tap "Import CSV" at the top right to start.</p>
                 </div>`;
             return;
         }
@@ -792,7 +794,7 @@
         filtered.sort((a, b) => a.distance - b.distance);
 
         if (filtered.length === 0) {
-            listEl.innerHTML = `<div style="text-align:center; padding: 20px; color: #ea580c; font-size:0.8rem;">No outlets match current filters.</div>`;
+            listEl.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--text-secondary); font-size:0.8rem;">No outlets match current filters.</div>`;
             return;
         }
 
@@ -845,7 +847,7 @@
             if (statusFilter === 'STATUS_Y' && r.status !== 'Y') return;
             if (statusFilter === 'STATUS_N' && r.status !== 'N') return;
 
-            const color = r.visited ? '#10b981' : '#f97316';
+            const color = r.visited ? '#10b981' : '#6366f1';
             const customIcon = L.divIcon({
                 className: 'custom-map-pin',
                 html: `<div style="background-color: ${color}; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 6px ${color};"></div>`,
@@ -854,8 +856,8 @@
 
             const marker = L.marker([r.lat, r.lon], { icon: customIcon });
             marker.bindPopup(`
-                <strong style="font-size:0.85rem; color:#0f0b08;">${r.code}</strong><br>
-                <span style="font-size:0.75rem; color:#ea580c;">RSO: ${r.rsoCode} | Status: ${r.status}</span><br>
+                <strong style="font-size:0.85rem; color:#0f172a;">${r.code}</strong><br>
+                <span style="font-size:0.75rem; color:#475569;">RSO: ${r.rsoCode} | Status: ${r.status}</span><br>
                 <button class="map-popup-btn" onclick="openNavModal(${r.lat}, ${r.lon}, '${r.code}')">Navigate Here</button>
             `);
             storeClusterLayer.addLayer(marker);
@@ -903,7 +905,7 @@
                 if (!data.routes || data.routes.length === 0) return;
                 const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
                 if (osrmPolyline) map.removeLayer(osrmPolyline);
-                osrmPolyline = L.polyline(coords, { color: '#f97316', weight: 5, opacity: 0.8 }).addTo(map);
+                osrmPolyline = L.polyline(coords, { color: '#6366f1', weight: 5, opacity: 0.8 }).addTo(map);
                 map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
                 showToast("Route Drawn");
             })
@@ -1092,7 +1094,7 @@
                             iconSize: [24, 24]
                         });
                         userMarker = L.marker([currentLat, currentLon], { icon }).addTo(map);
-                        userAccuracyCircle = L.circle([currentLat, currentLon], { radius: currentAccuracy, color: '#f97316', weight: 1, opacity: 0.4, fillColor: '#f97316', fillOpacity: 0.15 }).addTo(map);
+                        userAccuracyCircle = L.circle([currentLat, currentLon], { radius: currentAccuracy, color: '#6366f1', weight: 1, opacity: 0.4, fillColor: '#6366f1', fillOpacity: 0.15 }).addTo(map);
                     } else {
                         userMarker.setLatLng([currentLat, currentLon]);
                         userAccuracyCircle.setLatLng([currentLat, currentLon]);
