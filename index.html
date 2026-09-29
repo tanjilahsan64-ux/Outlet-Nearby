@@ -153,7 +153,6 @@
             flex-direction: column; gap: 10px;
         }
 
-        /* Target Route Active Bar */
         .route-banner {
             display: none;
             background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
@@ -167,10 +166,8 @@
         .route-banner-info { display: flex; flex-direction: column; }
         .route-banner-title { font-size: 0.8rem; font-weight: 800; color: #fbbf24; }
         .route-banner-sub { font-size: 0.68rem; color: var(--text-secondary); }
-
         .route-banner-actions { display: flex; gap: 6px; }
 
-        /* Compact Controls Card */
         .glass-card-compact {
             background: var(--surface-glass);
             backdrop-filter: blur(16px);
@@ -307,7 +304,6 @@
             color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
-        /* Map View Container */
         #mapView {
             display: none; width: 100%; height: 68vh;
             border-radius: 14px; overflow: hidden;
@@ -317,7 +313,6 @@
 
         #map { width: 100%; height: 100%; background: #e5e3df; }
 
-        /* GPS Marker Styling */
         .user-gps-container { position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
 
         .user-heading-cone {
@@ -333,7 +328,6 @@
             box-shadow: 0 0 12px #6366f1; z-index: 2;
         }
 
-        /* Bottom Control Bar */
         .bottom-bar {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 520px;
@@ -362,7 +356,6 @@
             border-radius: 7px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
         }
 
-        /* Visit Timer & Stats Analytics Banner */
         .analytics-card {
             background: var(--surface-glass);
             backdrop-filter: blur(16px);
@@ -410,7 +403,6 @@
             font-weight: 600;
         }
 
-        /* Modals & Popups */
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000;
@@ -491,7 +483,11 @@
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                 Plan Route
             </button>
-            <label for="csvFileInput" class="btn-header">
+            <button class="btn-header" onclick="fetchDatabaseFromGitHub()" title="Sync with GitHub Repo">
+                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                Sync GitHub
+            </button>
+            <label for="csvFileInput" class="btn-header" title="Manual Backup Import">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                 Import
             </label>
@@ -505,7 +501,6 @@
 </header>
 
 <div class="container">
-    <!-- Active Target Plan Banner -->
     <div id="routeBanner" class="route-banner">
         <div class="route-banner-info">
             <span class="route-banner-title" id="routeBannerTitle">Target Plan Active (0/15)</span>
@@ -517,7 +512,6 @@
         </div>
     </div>
 
-    <!-- Visit Timer & Average Gap Analytics Card -->
     <div class="analytics-card">
         <div class="analytics-side">
             <span class="analytics-label">Current Visit Stop Timer</span>
@@ -531,7 +525,6 @@
         </div>
     </div>
 
-    <!-- Compact View & Filter Controls -->
     <div class="glass-card-compact">
         <div class="view-toggle-bar">
             <button id="listViewTab" class="tab-btn active" onclick="switchView('list')">
@@ -576,8 +569,8 @@
     <div id="listView">
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
-                <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No Outlets Loaded</p>
-                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Tap "Import" at the top right to load store CSV.</p>
+                <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Loading Database from GitHub...</p>
+                <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Please wait a moment.</p>
             </div>
         </div>
     </div>
@@ -677,7 +670,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v3';
+            const CACHE_NAME = 'outlet-ultra-v4';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -703,7 +696,7 @@
     }
 
     let retailers = [];
-    let plannedTargetCodes = []; // Array of codes for current target plan
+    let plannedTargetCodes = [];
     let currentLat = null, currentLon = null, currentAccuracy = 0, currentHeading = 0;
     let targetRadius = 50;
     let statusFilter = 'ALL';
@@ -714,17 +707,53 @@
     let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
     let activeNoteStoreCode = null, tempPhotoBase64 = null;
 
+    const GITHUB_CSV_URL = "https://raw.githubusercontent.com/tanjilahsan64-ux/Outlet-Nearby/refs/heads/main/retailers.csv";
+
     function loadOutletsFromStorage() {
         if (!db) return;
         const tx = db.transaction("outlets", "readonly");
         const store = tx.objectStore("outlets");
         const req = store.getAll();
         req.onsuccess = () => {
-            retailers = req.result || [];
-            updateCounters();
-            updateNearbyList();
-            updateAnalyticsDisplay();
+            const data = req.result || [];
+            if (data.length > 0) {
+                retailers = data;
+                updateCounters();
+                updateNearbyList();
+                updateAnalyticsDisplay();
+                showToast("Loaded database from local cache");
+            } else {
+                // If local storage is empty on first open, fetch automatically from GitHub
+                fetchDatabaseFromGitHub();
+            }
         };
+    }
+
+    function fetchDatabaseFromGitHub() {
+        showToast("Syncing database from GitHub...");
+        const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(GITHUB_CSV_URL)}`;
+        
+        fetch(proxyUrl)
+            .then(res => {
+                if (!res.ok) throw new Error("Network response was not ok");
+                return res.text();
+            })
+            .then(text => {
+                parseCSV(text, true);
+                showToast("Successfully synced with GitHub!");
+            })
+            .catch(() => {
+                // Fallback direct attempt if proxy fails
+                fetch(GITHUB_CSV_URL)
+                    .then(res => res.text())
+                    .then(text => {
+                        parseCSV(text, true);
+                        showToast("Successfully synced with GitHub!");
+                    })
+                    .catch(() => {
+                        showToast("Failed to sync GitHub. Use manual import.");
+                    });
+            });
     }
 
     function saveAllOutletsToDB() {
@@ -835,7 +864,7 @@
     }
 
     function openPlannerModal() {
-        if (retailers.length === 0) { showToast("Import outlets first!"); return; }
+        if (retailers.length === 0) { showToast("No outlets loaded!"); return; }
         if (!currentLat || !currentLon) { showToast("Waiting for GPS position..."); return; }
         document.getElementById('plannerModal').classList.add('active');
     }
@@ -844,7 +873,6 @@
         closeModal('plannerModal');
         if (!currentLat || !currentLon) return;
 
-        // Filter: Status 'Y' & Unvisited
         const eligible = retailers.filter(r => r.status === 'Y' && !r.visited);
 
         if (eligible.length === 0) {
@@ -852,7 +880,6 @@
             return;
         }
 
-        // Nearest Neighbor TSP optimization from current location
         const pool = [...eligible];
         let startLat = currentLat;
         let startLon = currentLon;
@@ -920,7 +947,6 @@
             if (item) points.push(`${item.lon},${item.lat}`);
         });
 
-        // Limit OSRM waypoint query size if necessary
         const url = `https://router.project-osrm.org/route/v1/driving/${points.join(';')}?overview=full&geometries=geojson`;
 
         fetch(url)
@@ -956,18 +982,22 @@
         const file = e.target.files[0];
         if (!file) return;
         const reader = new FileReader();
-        reader.onload = evt => parseCSV(evt.target.result);
+        reader.onload = evt => parseCSV(evt.target.result, true);
         reader.readAsText(file);
     });
 
-    function parseCSV(text) {
+    function parseCSV(text, overwriteStorage = false) {
         const lines = text.split(/\r\n|\n/);
         if (lines.length < 2) return;
         const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase());
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
 
-        retailers = [];
+        // Preserve existing visit states & notes if syncing over an existing dataset
+        const existingMap = new Map();
+        retailers.forEach(r => existingMap.set(r.code, { visited: r.visited, visitedAt: r.visitedAt, notes: r.notes, photo: r.photo }));
+
+        const parsedRetailers = [];
         for (let i = 1; i < lines.length; i++) {
             const line = lines[i].trim();
             if (!line) continue;
@@ -997,21 +1027,23 @@
             }
 
             if (!isNaN(lat) && !isNaN(lon) && retailerCode) {
-                retailers.push({ 
+                const prev = existingMap.get(retailerCode) || {};
+                parsedRetailers.push({ 
                     code: retailerCode, 
                     rsoCode: rsoCode, 
                     lat: lat, 
                     lon: lon, 
                     status: statusVal,
-                    visited: false,
-                    visitedAt: null,
-                    notes: '',
-                    photo: null
+                    visited: prev.visited || false,
+                    visitedAt: prev.visitedAt || null,
+                    notes: prev.notes || '',
+                    photo: prev.photo || null
                 });
             }
         }
 
-        saveAllOutletsToDB();
+        retailers = parsedRetailers;
+        if (overwriteStorage) saveAllOutletsToDB();
         updateCounters();
         showToast(`Loaded ${retailers.length} outlets`);
         updateNearbyList();
@@ -1258,7 +1290,6 @@
         if (activeView === 'map') updateMapView();
     }
 
-    // Timer & Analytics Logic
     setInterval(() => {
         updateAnalyticsDisplay();
     }, 1000);
@@ -1276,7 +1307,6 @@
             return;
         }
 
-        // 1. Current stop stopwatch (since last visited timestamp)
         const lastVisitedTime = new Date(visitedList[visitedList.length - 1].visitedAt).getTime();
         const now = Date.now();
         const diffSecs = Math.max(0, Math.floor((now - lastVisitedTime) / 1000));
@@ -1285,7 +1315,6 @@
         const stopSecs = String(diffSecs % 60).padStart(2, '0');
         document.getElementById('currentStopTimer').innerText = `${stopMins}:${stopSecs}`;
 
-        // 2. Whole visit duration (from first visit timestamp to now)
         const firstVisitedTime = new Date(visitedList[0].visitedAt).getTime();
         const totalDiffSecs = Math.max(0, Math.floor((now - firstVisitedTime) / 1000));
         const wholeHrs = String(Math.floor(totalDiffSecs / 3600)).padStart(2, '0');
@@ -1293,7 +1322,6 @@
         const wholeSecs = String(totalDiffSecs % 60).padStart(2, '0');
         document.getElementById('wholeVisitDuration').innerText = `Total Duration: ${wholeHrs}:${wholeMins}:${wholeSecs}`;
 
-        // 3. Average time gap between retailer visits
         if (totalVisited < 2) {
             document.getElementById('avgGapTime').innerText = "0 min";
         } else {
