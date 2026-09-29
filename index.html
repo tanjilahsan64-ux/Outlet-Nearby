@@ -133,6 +133,12 @@
             color: #fff;
         }
 
+        .status-pill-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
         .gps-status-pill {
             display: flex; align-items: center; gap: 5px;
             padding: 4px 8px; border-radius: 20px;
@@ -144,6 +150,13 @@
 
         .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-rose); }
         .status-dot.active { background: var(--accent-green); box-shadow: 0 0 8px var(--accent-green); }
+        .status-dot.syncing { background: var(--accent-amber); box-shadow: 0 0 8px var(--accent-amber); animation: pulse 1.2s infinite; }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
 
         input[type="file"] { display: none; }
 
@@ -496,9 +509,18 @@
                 Import
             </label>
             <input type="file" id="csvFileInput" accept=".csv">
-            <div class="gps-status-pill">
-                <span id="statusDot" class="status-dot"></span>
-                <span id="statusText">GPS</span>
+            
+            <div class="status-pill-group">
+                <!-- Local Sync Status Indicator -->
+                <div class="gps-status-pill" id="syncStatusPill" title="IndexedDB Local Sync Status">
+                    <span id="syncDot" class="status-dot active"></span>
+                    <span id="syncText">Saved</span>
+                </div>
+                <!-- GPS Status Indicator -->
+                <div class="gps-status-pill">
+                    <span id="statusDot" class="status-dot"></span>
+                    <span id="statusText">GPS</span>
+                </div>
             </div>
         </div>
     </div>
@@ -677,7 +699,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v3';
+            const CACHE_NAME = 'outlet-ultra-v4';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -697,13 +719,16 @@
         db = e.target.result;
         loadOutletsFromStorage();
     };
+    dbReq.onerror = () => {
+        setSyncStatus('error', 'DB Error');
+    };
 
     if (navigator.storage && navigator.storage.persist) {
         navigator.storage.persist();
     }
 
     let retailers = [];
-    let plannedTargetCodes = []; // Array of codes for current target plan
+    let plannedTargetCodes = [];
     let currentLat = null, currentLon = null, currentAccuracy = 0, currentHeading = 0;
     let targetRadius = 50;
     let statusFilter = 'ALL';
@@ -714,8 +739,29 @@
     let activePopupMarker = null, popupTimer = null, osrmPolyline = null;
     let activeNoteStoreCode = null, tempPhotoBase64 = null;
 
+    function setSyncStatus(state, label) {
+        const dot = document.getElementById('syncDot');
+        const text = document.getElementById('syncText');
+        const pill = document.getElementById('syncStatusPill');
+
+        dot.className = 'status-dot';
+        if (state === 'saved') {
+            dot.classList.add('active');
+            text.innerText = label || "Saved";
+            pill.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+        } else if (state === 'syncing') {
+            dot.classList.add('syncing');
+            text.innerText = label || "Saving...";
+            pill.style.borderColor = 'rgba(245, 158, 11, 0.4)';
+        } else if (state === 'error') {
+            text.innerText = label || "Error";
+            pill.style.borderColor = 'rgba(244, 63, 94, 0.4)';
+        }
+    }
+
     function loadOutletsFromStorage() {
         if (!db) return;
+        setSyncStatus('syncing', 'Loading');
         const tx = db.transaction("outlets", "readonly");
         const store = tx.objectStore("outlets");
         const req = store.getAll();
@@ -724,15 +770,34 @@
             updateCounters();
             updateNearbyList();
             updateAnalyticsDisplay();
+            setSyncStatus('saved', 'Saved');
+        };
+        req.onerror = () => {
+            setSyncStatus('error', 'Load Failed');
         };
     }
 
     function saveAllOutletsToDB() {
-        if (!db) return;
+        if (!db) {
+            setSyncStatus('error', 'No DB');
+            return;
+        }
+        setSyncStatus('syncing', 'Saving');
         const tx = db.transaction("outlets", "readwrite");
         const store = tx.objectStore("outlets");
-        store.clear();
-        retailers.forEach(item => store.put(item));
+        
+        const clearReq = store.clear();
+        clearReq.onsuccess = () => {
+            retailers.forEach(item => store.put(item));
+        };
+
+        tx.oncomplete = () => {
+            setSyncStatus('saved', 'Saved');
+        };
+        tx.onerror = () => {
+            setSyncStatus('error', 'Save Error');
+            showToast("Warning: Local storage write failed!");
+        };
     }
 
     function switchView(view) {
@@ -844,7 +909,6 @@
         closeModal('plannerModal');
         if (!currentLat || !currentLon) return;
 
-        // Filter: Status 'Y' & Unvisited
         const eligible = retailers.filter(r => r.status === 'Y' && !r.visited);
 
         if (eligible.length === 0) {
@@ -852,7 +916,6 @@
             return;
         }
 
-        // Nearest Neighbor TSP optimization from current location
         const pool = [...eligible];
         let startLat = currentLat;
         let startLon = currentLon;
@@ -920,7 +983,6 @@
             if (item) points.push(`${item.lon},${item.lat}`);
         });
 
-        // Limit OSRM waypoint query size if necessary
         const url = `https://router.project-osrm.org/route/v1/driving/${points.join(';')}?overview=full&geometries=geojson`;
 
         fetch(url)
@@ -1276,7 +1338,6 @@
             return;
         }
 
-        // 1. Current stop stopwatch (since last visited timestamp)
         const lastVisitedTime = new Date(visitedList[visitedList.length - 1].visitedAt).getTime();
         const now = Date.now();
         const diffSecs = Math.max(0, Math.floor((now - lastVisitedTime) / 1000));
@@ -1285,7 +1346,6 @@
         const stopSecs = String(diffSecs % 60).padStart(2, '0');
         document.getElementById('currentStopTimer').innerText = `${stopMins}:${stopSecs}`;
 
-        // 2. Whole visit duration (from first visit timestamp to now)
         const firstVisitedTime = new Date(visitedList[0].visitedAt).getTime();
         const totalDiffSecs = Math.max(0, Math.floor((now - firstVisitedTime) / 1000));
         const wholeHrs = String(Math.floor(totalDiffSecs / 3600)).padStart(2, '0');
@@ -1293,7 +1353,6 @@
         const wholeSecs = String(totalDiffSecs % 60).padStart(2, '0');
         document.getElementById('wholeVisitDuration').innerText = `Total Duration: ${wholeHrs}:${wholeMins}:${wholeSecs}`;
 
-        // 3. Average time gap between retailer visits
         if (totalVisited < 2) {
             document.getElementById('avgGapTime').innerText = "0 min";
         } else {
