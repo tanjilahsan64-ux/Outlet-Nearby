@@ -601,7 +601,7 @@
     </div>
     <div class="btn-group-bottom">
         <button class="btn-export" onclick="exportVisitReport()">Export CSV</button>
-        <button class="btn-reset-small" onclick="clearVisitHistory()">Reset History</button>
+        <button class="btn-reset-small" onclick="clearVisitHistory()">Reset Month</button>
     </div>
 </div>
 
@@ -684,7 +684,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v6';
+            const CACHE_NAME = 'outlet-ultra-v4';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -693,7 +693,7 @@
     }
 
     let db;
-    const dbReq = indexedDB.open("OutletUltraDB", 4);
+    const dbReq = indexedDB.open("OutletUltraDB", 2);
     dbReq.onupgradeneeded = e => {
         db = e.target.result;
         if (!db.objectStoreNames.contains("outlets")) {
@@ -724,23 +724,45 @@
     const GITHUB_CSV_URL = "https://raw.githubusercontent.com/tanjilahsan64-ux/Outlet-Nearby/refs/heads/main/retailers.csv";
 
     function loadOutletsFromStorage() {
-        // First check local backup/IndexedDB for instant persistence while preserving past visited status
-        if (db) {
-            const tx = db.transaction("outlets", "readonly");
-            const store = tx.objectStore("outlets");
-            const req = store.getAll();
-            req.onsuccess = () => {
-                const data = req.result || [];
-                if (data.length > 0) {
-                    retailers = data;
+        // First check localStorage backup for instant persistence across tab minimization / background suspension
+        try {
+            const backup = localStorage.getItem("outlet_ultra_backup");
+            if (backup) {
+                const parsed = JSON.parse(backup);
+                if (parsed && parsed.length > 0) {
+                    retailers = parsed;
                     updateCounters();
                     updateNearbyList();
                     updateAnalyticsDisplay();
                 }
-            };
+            }
+        } catch(e) {}
+
+        if (!db) {
+            if (retailers.length === 0) fetchDatabaseFromGitHub();
+            return;
         }
-        // Automatically sync fresh retailer coordinates/data from GitHub in the background without erasing visit history
-        fetchDatabaseFromGitHub();
+
+        const tx = db.transaction("outlets", "readonly");
+        const store = tx.objectStore("outlets");
+        const req = store.getAll();
+        req.onsuccess = () => {
+            const data = req.result || [];
+            if (data.length > 0) {
+                if (data.length >= retailers.length) {
+                    retailers = data;
+                }
+                updateCounters();
+                updateNearbyList();
+                updateAnalyticsDisplay();
+                showToast("Loaded database from local cache");
+            } else if (retailers.length === 0) {
+                fetchDatabaseFromGitHub();
+            }
+        };
+        req.onerror = () => {
+            if (retailers.length === 0) fetchDatabaseFromGitHub();
+        };
     }
 
     function fetchDatabaseFromGitHub() {
@@ -757,6 +779,7 @@
                 showToast("Successfully synced with GitHub!");
             })
             .catch(() => {
+                // Fallback direct attempt if proxy fails
                 fetch(GITHUB_CSV_URL)
                     .then(res => res.text())
                     .then(text => {
@@ -764,7 +787,7 @@
                         showToast("Successfully synced with GitHub!");
                     })
                     .catch(() => {
-                        showToast("Using local saved data.");
+                        showToast("Failed to sync GitHub. Use manual import.");
                     });
             });
     }
@@ -1012,7 +1035,7 @@
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
 
-        // Preserve previous visited states & notes for each store code
+        // Preserve existing visit states & notes if syncing over an existing dataset
         const existingMap = new Map();
         retailers.forEach(r => existingMap.set(r.code, { visited: r.visited, visitedAt: r.visitedAt, notes: r.notes, photo: r.photo }));
 
@@ -1489,7 +1512,7 @@
     }
 
     function clearVisitHistory() {
-        if (confirm("Reset all check-in history?")) {
+        if (confirm("Reset all check-ins for the new month? (Store data stays saved)")) {
             retailers.forEach(item => {
                 item.visited = false;
                 item.visitedAt = null;
@@ -1502,13 +1525,14 @@
             updateCounters();
             updateRouteBanner();
             updateAnalyticsDisplay();
-            showToast("Visit history reset");
+            showToast("Month reset completed");
             activePopupMarker = null;
             updateNearbyList();
             if (activeView === 'map') updateMapView();
         }
     }
 
+    
     function centerOnUserGPS() {
         if (currentLat !== null && currentLon !== null && map) {
             map.setView([currentLat, currentLon], 18, { animate: true });
@@ -1521,7 +1545,7 @@
     function updateCounters() {
         const visitedCount = retailers.filter(r => r.visited).length;
         document.getElementById('retailerCount').innerText = `${retailers.length} Outlets`;
-        document.getElementById('visitedCount').innerText = `${visitedCount} visited (${retailers.length - visitedCount} left)`;
+        document.getElementById('visitedCount').innerText = `${visitedCount} visited (${retailers.length - visitedCount} unvisited)`;
     }
 
     let toastTimer;
