@@ -508,10 +508,6 @@
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                 Plan
             </button>
-            <button class="btn-header" onclick="fetchDatabaseFromGitHub()" title="Force Sync">
-                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                Sync
-            </button>
             <label for="csvFileInput" class="btn-header" title="Backup Import">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
                 Import
@@ -594,7 +590,7 @@
     <div id="listView">
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 36px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 22px;">
-                <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">Automatically loading retailers from repository...</p>
+                <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">Automatically fetching retailers from repository...</p>
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Please hold on a second.</p>
             </div>
         </div>
@@ -698,7 +694,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v6';
+            const CACHE_NAME = 'outlet-ultra-v7';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -738,6 +734,7 @@
     const GITHUB_CSV_URL = "https://raw.githubusercontent.com/tanjilahsan64-ux/Outlet-Nearby/refs/heads/main/retailers.csv";
 
     function loadOutletsFromStorage() {
+        // Fast UI load from local storage backup if available
         try {
             const backup = localStorage.getItem("outlet_ultra_backup");
             if (backup) {
@@ -751,36 +748,11 @@
             }
         } catch(e) {}
 
-        if (!db) {
-            fetchDatabaseFromGitHub();
-            return;
-        }
-
-        const tx = db.transaction("outlets", "readonly");
-        const store = tx.objectStore("outlets");
-        const req = store.getAll();
-        req.onsuccess = () => {
-            const data = req.result || [];
-            if (data.length > 0) {
-                if (data.length >= retailers.length) {
-                    retailers = data;
-                }
-                updateCounters();
-                updateNearbyList();
-                updateAnalyticsDisplay();
-                // Automatically fetch latest updates from GitHub in the background
-                fetchDatabaseFromGitHub(true);
-            } else {
-                fetchDatabaseFromGitHub();
-            }
-        };
-        req.onerror = () => {
-            fetchDatabaseFromGitHub();
-        };
+        // ALWAYS automatically fetch the freshest CSV file directly from the GitHub repository on start
+        fetchDatabaseFromGitHub();
     }
 
-    function fetchDatabaseFromGitHub(isBackground = false) {
-        if (!isBackground) showToast("Fetching retailers from repository...");
+    function fetchDatabaseFromGitHub() {
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(GITHUB_CSV_URL)}`;
         
         fetch(proxyUrl)
@@ -790,17 +762,20 @@
             })
             .then(text => {
                 parseCSV(text, true);
-                if (!isBackground) showToast("Successfully loaded retailers!");
+                showToast("Retailers automatically synced!");
             })
             .catch(() => {
+                // Direct fallback attempt if proxy fails
                 fetch(GITHUB_CSV_URL)
                     .then(res => res.text())
                     .then(text => {
                         parseCSV(text, true);
-                        if (!isBackground) showToast("Successfully loaded retailers!");
+                        showToast("Retailers automatically synced!");
                     })
                     .catch(() => {
-                        if (!isBackground) showToast("Network offline. Loaded from local cache.");
+                        if (retailers.length === 0) {
+                            showToast("Offline mode: Using cached data.");
+                        }
                     });
             });
     }
