@@ -16,14 +16,14 @@
 
     <style>
         :root {
-            --bg-dark: #090d16;
-            --surface-glass: rgba(18, 24, 38, 0.85);
-            --surface-card: rgba(26, 34, 53, 0.85);
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --border-highlight: rgba(255, 255, 255, 0.2);
+            --bg-dark: #060b14;
+            --surface-glass: rgba(13, 20, 36, 0.75);
+            --surface-card: rgba(18, 27, 48, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(255, 255, 255, 0.15);
             
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.35);
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.3);
             --accent-cyan: #06b6d4;
             --accent-green: #10b981;
             --accent-green-glow: rgba(16, 185, 129, 0.25);
@@ -46,12 +46,12 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
+                radial-gradient(circle at 15% 15%, rgba(29, 78, 216, 0.18) 0px, transparent 55%),
+                radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.12) 0px, transparent 55%);
             background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
-            padding-bottom: 90px;
+            padding-bottom: 95px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -60,17 +60,17 @@
         header {
             width: 100%;
             max-width: 560px;
-            padding: 12px 16px;
+            padding: 16px 20px;
             position: sticky;
             top: 0;
             z-index: 500;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            background: rgba(9, 13, 22, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            background: rgba(6, 11, 20, 0.8);
             border-bottom: 1px solid var(--border-glass);
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .header-top {
@@ -79,22 +79,23 @@
             align-items: center;
         }
 
-        .brand { display: flex; align-items: center; gap: 8px; }
+        .brand { display: flex; align-items: center; gap: 10px; }
 
         .brand-icon {
-            width: 32px; height: 32px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
+            width: 36px; height: 36px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
             display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 12px var(--primary-glow);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35);
         }
 
-        .brand-icon svg { width: 16px; height: 16px; stroke: #fff; }
+        .brand-icon svg { width: 18px; height: 18px; stroke: #fff; }
 
         h1 {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #fff 0%, #cbd5e1 100%);
+            letter-spacing: -0.01em;
+            background: linear-gradient(135deg, #fff 0%, #93c5fd 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -102,41 +103,41 @@
         .header-actions { display: flex; align-items: center; gap: 6px; }
 
         .btn-header {
-            background: rgba(99, 102, 241, 0.12);
-            color: #a5b4fc;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            padding: 5px 9px;
-            border-radius: 8px;
+            background: rgba(59, 130, 246, 0.1);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+            padding: 6px 10px;
+            border-radius: 10px;
             font-size: 0.72rem;
             font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 5px;
             transition: all 0.2s ease;
         }
 
         .btn-header:hover {
-            background: rgba(99, 102, 241, 0.25);
+            background: rgba(59, 130, 246, 0.2);
             border-color: var(--primary);
             color: #fff;
         }
 
         .btn-plan {
-            background: rgba(245, 158, 11, 0.15);
+            background: rgba(245, 158, 11, 0.12);
             color: #fbbf24;
-            border-color: rgba(245, 158, 11, 0.35);
+            border-color: rgba(245, 158, 11, 0.3);
         }
 
         .btn-plan:hover {
-            background: rgba(245, 158, 11, 0.3);
+            background: rgba(245, 158, 11, 0.25);
             color: #fff;
         }
 
         .gps-status-pill {
-            display: flex; align-items: center; gap: 5px;
-            padding: 4px 8px; border-radius: 20px;
-            background: rgba(15, 23, 42, 0.6);
+            display: flex; align-items: center; gap: 6px;
+            padding: 5px 10px; border-radius: 20px;
+            background: rgba(13, 20, 36, 0.6);
             border: 1px solid var(--border-glass);
             font-size: 0.7rem; font-weight: 600;
             color: var(--text-secondary);
@@ -149,108 +150,111 @@
 
         .container {
             width: 100%; max-width: 560px;
-            padding: 12px 16px; display: flex;
-            flex-direction: column; gap: 10px;
+            padding: 16px 20px; display: flex;
+            flex-direction: column; gap: 12px;
         }
 
         .route-banner {
             display: none;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
-            border: 1px solid rgba(245, 158, 11, 0.4);
-            border-radius: 12px;
-            padding: 10px 12px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.12) 0%, rgba(37, 99, 235, 0.12) 100%);
+            border: 1px solid rgba(245, 158, 11, 0.35);
+            border-radius: 16px;
+            padding: 12px 16px;
             align-items: center;
             justify-content: space-between;
         }
 
-        .route-banner-info { display: flex; flex-direction: column; }
-        .route-banner-title { font-size: 0.8rem; font-weight: 800; color: #fbbf24; }
-        .route-banner-sub { font-size: 0.68rem; color: var(--text-secondary); }
-        .route-banner-actions { display: flex; gap: 6px; }
+        .route-banner-info { display: flex; flex-direction: column; gap: 2px; }
+        .route-banner-title { font-size: 0.82rem; font-weight: 800; color: #fbbf24; }
+        .route-banner-sub { font-size: 0.7rem; color: var(--text-secondary); }
+        .route-banner-actions { display: flex; gap: 8px; }
 
         .glass-card-compact {
             background: var(--surface-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-glass);
-            border-radius: 14px; padding: 10px 12px;
-            display: flex; flex-direction: column; gap: 8px;
+            border-radius: 20px; padding: 14px 16px;
+            display: flex; flex-direction: column; gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
         .view-toggle-bar {
             display: flex;
-            background: rgba(10, 15, 26, 0.6);
-            padding: 3px; border-radius: 10px;
+            background: rgba(6, 11, 20, 0.5);
+            padding: 4px; border-radius: 12px;
             border: 1px solid var(--border-glass);
             gap: 4px;
         }
 
         .tab-btn {
-            flex: 1; padding: 6px 0; border: none;
+            flex: 1; padding: 8px 0; border: none;
             background: transparent; color: var(--text-muted);
-            font-size: 0.78rem; font-weight: 700; border-radius: 7px;
+            font-size: 0.78rem; font-weight: 700; border-radius: 9px;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            gap: 5px; transition: all 0.25s ease;
+            gap: 6px; transition: all 0.25s ease;
         }
 
         .tab-btn svg { width: 14px; height: 14px; stroke: currentColor; }
-        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 2px 10px var(--primary-glow); }
+        .tab-btn.active { background: var(--primary); color: #fff; box-shadow: 0 4px 12px var(--primary-glow); }
 
-        .filter-row { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
-        .filter-label { font-size: 0.7rem; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
+        .filter-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .filter-label { font-size: 0.72rem; color: var(--text-muted); font-weight: 700; white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .filter-chips { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; }
+        .filter-chips { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
         .filter-chips::-webkit-scrollbar { display: none; }
 
         .chip {
-            padding: 3px 8px; border-radius: 14px;
-            background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border-glass);
-            font-size: 0.7rem; font-weight: 600; color: var(--text-secondary);
+            padding: 5px 10px; border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass);
+            font-size: 0.72rem; font-weight: 600; color: var(--text-secondary);
             cursor: pointer; white-space: nowrap; transition: all 0.2s ease;
         }
 
-        .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px var(--primary-glow); }
-        .chip.target-chip { border-color: rgba(245, 158, 11, 0.4); }
+        .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 3px 10px var(--primary-glow); }
+        .chip.target-chip { border-color: rgba(245, 158, 11, 0.35); }
         .chip.target-chip.active { background: var(--accent-amber); border-color: var(--accent-amber); color: #000; }
 
         .search-box { position: relative; }
 
         .search-input {
-            width: 100%; padding: 8px 12px 8px 36px;
+            width: 100%; padding: 10px 14px 10px 40px;
             background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 10px; color: var(--text-primary); font-size: 0.82rem; outline: none;
+            border-radius: 14px; color: var(--text-primary); font-size: 0.85rem; outline: none;
             transition: all 0.25s ease;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow); }
-        .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: var(--text-muted); }
+        .search-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-glow), inset 0 2px 4px rgba(0,0,0,0.2); }
+        .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; stroke: var(--text-muted); }
 
         .outlet-card {
             background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 12px; padding: 12px; margin-bottom: 8px;
+            border-radius: 16px; padding: 14px; margin-bottom: 10px;
             position: relative; overflow: hidden; transition: transform 0.2s ease, background 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
         }
 
         .outlet-card:active { transform: scale(0.988); }
         .outlet-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
-        .outlet-card.visited { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2); }
+        .outlet-card.visited { background: rgba(16, 185, 129, 0.04); border-color: rgba(16, 185, 129, 0.2); }
         .outlet-card.visited::before { background: var(--accent-green); }
-        .outlet-card.target-planned { border: 1px solid rgba(245, 158, 11, 0.4); }
+        .outlet-card.target-planned { border: 1px solid rgba(245, 158, 11, 0.35); }
         .outlet-card.target-planned::before { background: var(--accent-amber); }
 
-        .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-        .outlet-code-row { display: flex; align-items: center; gap: 6px; }
-        .outlet-code { font-size: 1rem; font-weight: 800; color: #38bdf8; }
+        .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+        .outlet-code-row { display: flex; align-items: center; gap: 8px; }
+        .outlet-code { font-size: 1.05rem; font-weight: 800; color: #60a5fa; letter-spacing: -0.01em; }
 
         .target-order-badge {
             background: var(--accent-amber); color: #000;
-            font-size: 0.65rem; font-weight: 800; padding: 2px 6px;
+            font-size: 0.65rem; font-weight: 800; padding: 2px 8px;
             border-radius: 20px; text-transform: uppercase;
         }
 
         .visited-badge {
             background: var(--accent-green); color: #06110d;
-            font-size: 0.62rem; font-weight: 800; padding: 2px 6px;
+            font-size: 0.65rem; font-weight: 800; padding: 2px 8px;
             border-radius: 20px; text-transform: uppercase;
         }
 
@@ -259,164 +263,170 @@
 
         .dist-pill {
             display: inline-flex; align-items: center; gap: 4px;
-            background: rgba(16, 185, 129, 0.12); border: 1px solid var(--accent-green-glow);
-            color: #34d399; padding: 3px 7px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;
+            background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-green-glow);
+            color: #34d399; padding: 4px 8px; border-radius: 8px; font-size: 0.72rem; font-weight: 700;
         }
 
-        .status-tag { font-size: 0.65rem; font-weight: 700; padding: 2px 6px; border-radius: 5px; }
-        .status-y { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-        .status-n { background: rgba(244, 63, 94, 0.15); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.3); }
+        .status-tag { font-size: 0.65rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; letter-spacing: 0.5px; }
+        .status-y { background: rgba(16, 185, 129, 0.12); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.25); }
+        .status-n { background: rgba(244, 63, 94, 0.12); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.25); }
 
         .card-footer {
             display: flex; justify-content: space-between; align-items: center;
-            margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-glass); gap: 6px;
+            margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-glass); gap: 8px;
         }
 
         .check-container {
-            display: flex; align-items: center; gap: 6px;
+            display: flex; align-items: center; gap: 8px;
             font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); cursor: pointer;
         }
 
         .custom-check {
-            width: 16px; height: 16px; border-radius: 5px;
+            width: 18px; height: 18px; border-radius: 6px;
             border: 2px solid var(--border-highlight); display: flex; align-items: center;
-            justify-content: center; background: rgba(0, 0, 0, 0.2); transition: all 0.2s ease;
+            justify-content: center; background: rgba(0, 0, 0, 0.3); transition: all 0.2s ease;
         }
 
         .check-container input { display: none; }
         .check-container input:checked ~ .custom-check { background: var(--accent-green); border-color: var(--accent-green); }
-        .custom-check svg { width: 9px; height: 9px; stroke: #090d16; stroke-width: 3; opacity: 0; }
+        .custom-check svg { width: 10px; height: 10px; stroke: #060b14; stroke-width: 3; opacity: 0; }
         .check-container input:checked ~ .custom-check svg { opacity: 1; }
 
-        .btn-action-group { display: flex; gap: 5px; }
+        .btn-action-group { display: flex; gap: 6px; }
 
         .btn-sm {
-            background: rgba(255, 255, 255, 0.05); color: var(--text-secondary);
-            border: 1px solid var(--border-glass); padding: 4px 8px; border-radius: 6px;
+            background: rgba(255, 255, 255, 0.04); color: var(--text-secondary);
+            border: 1px solid var(--border-glass); padding: 5px 10px; border-radius: 8px;
             font-size: 0.72rem; font-weight: 700; cursor: pointer; display: flex;
-            align-items: center; gap: 3px; transition: all 0.2s ease;
+            align-items: center; gap: 4px; transition: all 0.2s ease;
         }
 
-        .btn-sm:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
+        .btn-sm:hover { background: rgba(255, 255, 255, 0.08); color: var(--text-primary); }
 
         .btn-nav {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
-            color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.15) 0%, rgba(37, 99, 235, 0.15) 100%);
+            color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.25);
         }
 
         #mapView {
             display: none; width: 100%; height: 68vh;
-            border-radius: 14px; overflow: hidden;
+            border-radius: 20px; overflow: hidden;
             border: 1px solid var(--border-glass);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); position: relative;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); position: relative;
         }
 
         .map-locate-fab {
             position: absolute; bottom: 20px; right: 20px;
-            width: 44px; height: 44px; border-radius: 50%;
+            width: 46px; height: 46px; border-radius: 50%;
             background: var(--surface-card); border: 1px solid var(--border-highlight);
             color: var(--text-primary); display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.5); z-index: 1000;
+            cursor: pointer; box-shadow: 0 8px 24px rgba(0,0,0,0.5); z-index: 1000;
             transition: all 0.2s ease;
         }
         .map-locate-fab:hover { background: var(--primary); border-color: var(--primary); }
         .map-locate-fab svg { width: 20px; height: 20px; stroke: currentColor; }
 
-        #map { width: 100%; height: 100%; background: #e5e3df; }
+        #map { width: 100%; height: 100%; background: #060b14; }
 
         .user-gps-container { position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
 
         .user-heading-cone {
             position: absolute; width: 0; height: 0;
             border-left: 10px solid transparent; border-right: 10px solid transparent;
-            border-bottom: 24px solid rgba(99, 102, 241, 0.4); top: -16px;
+            border-bottom: 24px solid rgba(59, 130, 246, 0.4); top: -16px;
             transform-origin: bottom center; pointer-events: none;
         }
 
         .user-gps-dot {
-            width: 14px; height: 14px; background: #6366f1;
+            width: 14px; height: 14px; background: #3b82f6;
             border: 2px solid white; border-radius: 50%;
-            box-shadow: 0 0 12px #6366f1; z-index: 2;
+            box-shadow: 0 0 12px #3b82f6; z-index: 2;
         }
 
         .bottom-bar {
-            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 24px); max-width: 520px;
-            background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-highlight);
-            border-radius: 14px; padding: 8px 12px; display: flex;
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 32px); max-width: 520px;
+            background: rgba(13, 20, 36, 0.85); backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px); border: 1px solid var(--border-highlight);
+            border-radius: 18px; padding: 10px 16px; display: flex;
             align-items: center; justify-content: space-between;
-            box-shadow: 0 16px 36px rgba(0,0,0,0.6); z-index: 500;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 500;
         }
 
-        .counter-info { display: flex; flex-direction: column; }
-        .counter-num { font-size: 0.82rem; font-weight: 800; color: var(--text-primary); }
-        .counter-label { font-size: 0.65rem; color: var(--text-muted); }
+        .counter-info { display: flex; flex-direction: column; gap: 1px; }
+        .counter-num { font-size: 0.85rem; font-weight: 800; color: var(--text-primary); }
+        .counter-label { font-size: 0.65rem; color: var(--text-muted); font-weight: 600; }
 
-        .btn-group-bottom { display: flex; gap: 6px; }
+        .btn-group-bottom { display: flex; gap: 8px; }
 
         .btn-export {
-            background: rgba(16, 185, 129, 0.15); color: var(--accent-green);
-            border: 1px solid rgba(16, 185, 129, 0.3); padding: 5px 10px;
-            border-radius: 7px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
+            background: rgba(16, 185, 129, 0.12); color: var(--accent-green);
+            border: 1px solid rgba(16, 185, 129, 0.25); padding: 6px 12px;
+            border-radius: 10px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
+            transition: all 0.2s ease;
         }
+        .btn-export:hover { background: rgba(16, 185, 129, 0.25); color: #fff; }
 
         .btn-reset-small {
             background: rgba(244, 63, 94, 0.1); color: var(--accent-rose);
-            border: 1px solid rgba(244, 63, 94, 0.25); padding: 5px 10px;
-            border-radius: 7px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
+            border: 1px solid rgba(244, 63, 94, 0.25); padding: 6px 12px;
+            border-radius: 10px; font-size: 0.72rem; font-weight: 700; cursor: pointer;
+            transition: all 0.2s ease;
         }
+        .btn-reset-small:hover { background: rgba(244, 63, 94, 0.25); color: #fff; }
 
         .analytics-card {
             background: var(--surface-glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid var(--border-glass);
-            border-radius: 14px;
-            padding: 10px 14px;
+            border-radius: 20px;
+            padding: 14px 18px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
         }
 
         .analytics-side {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 3px;
         }
 
         .analytics-side.right {
             text-align: right;
             border-left: 1px solid var(--border-glass);
-            padding-left: 10px;
+            padding-left: 14px;
         }
 
         .analytics-label {
-            font-size: 0.65rem;
+            font-size: 0.68rem;
             color: var(--text-muted);
-            font-weight: 600;
+            font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .analytics-value {
-            font-size: 0.95rem;
+            font-size: 1.05rem;
             font-weight: 800;
             color: var(--text-primary);
             font-variant-numeric: tabular-nums;
+            letter-spacing: -0.01em;
         }
 
         .analytics-sub {
-            font-size: 0.62rem;
+            font-size: 0.65rem;
             color: var(--accent-cyan);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .modal-overlay {
             position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 1000;
+            background: rgba(3, 7, 18, 0.75); backdrop-filter: blur(10px); z-index: 1000;
             display: flex; align-items: flex-end; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
@@ -425,53 +435,62 @@
 
         .modal-card {
             background: var(--bg-dark); border: 1px solid var(--border-highlight);
-            border-radius: 18px 18px 0 0; width: 100%; max-width: 560px;
-            padding: 16px; transform: translateY(100%); transition: transform 0.3s ease;
-            display: flex; flex-direction: column; gap: 10px; max-height: 85vh; overflow-y: auto;
+            border-radius: 24px 24px 0 0; width: 100%; max-width: 560px;
+            padding: 20px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; gap: 12px; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
         }
 
         .modal-overlay.active .modal-card { transform: translateY(0); }
         .modal-header { display: flex; justify-content: space-between; align-items: center; }
-        .modal-title { font-size: 0.95rem; font-weight: 800; color: var(--text-primary); }
-        .modal-close { background: transparent; border: none; color: var(--text-muted); font-size: 1.1rem; cursor: pointer; }
+        .modal-title { font-size: 1rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.01em; }
+        .modal-close { background: rgba(255,255,255,0.05); border: 1px solid var(--border-glass); width: 28px; height: 28px; border-radius: 50%; color: var(--text-muted); font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .modal-close:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
-        .plan-options { display: flex; gap: 10px; margin-top: 8px; }
+        .plan-options { display: flex; gap: 12px; margin-top: 8px; }
 
         .plan-btn-option {
             flex: 1; background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 12px; padding: 14px 10px; text-align: center; cursor: pointer;
+            border-radius: 16px; padding: 16px 12px; text-align: center; cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         }
 
-        .plan-btn-option:hover { border-color: var(--accent-amber); background: rgba(245, 158, 11, 0.08); }
-        .plan-btn-num { font-size: 1.2rem; font-weight: 800; color: #fbbf24; }
-        .plan-btn-text { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; }
+        .plan-btn-option:hover { border-color: var(--accent-amber); background: rgba(245, 158, 11, 0.08); transform: translateY(-2px); }
+        .plan-btn-num { font-size: 1.25rem; font-weight: 800; color: #fbbf24; }
+        .plan-btn-text { font-size: 0.72rem; color: var(--text-secondary); margin-top: 3px; font-weight: 600; }
 
-        .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
+        .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 8px; }
 
         .app-opt {
             background: var(--surface-card); border: 1px solid var(--border-glass);
-            border-radius: 10px; padding: 10px 6px; display: flex; flex-direction: column;
-            align-items: center; gap: 5px; cursor: pointer; text-decoration: none;
-            color: var(--text-primary); font-size: 0.72rem; font-weight: 700;
+            border-radius: 14px; padding: 14px 8px; display: flex; flex-direction: column;
+            align-items: center; gap: 6px; cursor: pointer; text-decoration: none;
+            color: var(--text-primary); font-size: 0.75rem; font-weight: 700;
+            transition: all 0.2s ease;
         }
+        .app-opt:hover { border-color: var(--primary); background: rgba(59,130,246,0.1); }
 
         .map-popup-btn {
-            width: 100%; margin-top: 5px; padding: 5px; border-radius: 6px;
+            width: 100%; margin-top: 6px; padding: 8px; border-radius: 10px;
             border: none; background: var(--primary); color: #fff; font-weight: 700;
-            font-size: 0.72rem; cursor: pointer;
+            font-size: 0.75rem; cursor: pointer; box-shadow: 0 4px 12px var(--primary-glow);
+            transition: all 0.2s;
         }
+        .map-popup-btn:hover { filter: brightness(1.1); }
 
         .notes-input {
-            width: 100%; height: 75px; background: var(--surface-card);
-            border: 1px solid var(--border-glass); border-radius: 8px; padding: 8px;
-            color: #fff; font-size: 0.82rem; outline: none; resize: none;
+            width: 100%; height: 85px; background: var(--surface-card);
+            border: 1px solid var(--border-glass); border-radius: 12px; padding: 10px;
+            color: #fff; font-size: 0.85rem; outline: none; resize: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
         }
+        .notes-input:focus { border-color: var(--primary); }
 
         .toast {
-            position: fixed; top: 60px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            position: fixed; top: 70px; left: 50%; transform: translateX(-50%) translateY(-20px);
             background: rgba(16, 185, 129, 0.95); color: #042f2e;
-            padding: 6px 14px; border-radius: 30px; font-weight: 700; font-size: 0.78rem;
+            padding: 8px 16px; border-radius: 30px; font-weight: 700; font-size: 0.78rem;
             box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); z-index: 1000;
             opacity: 0; pointer-events: none; transition: all 0.3s ease;
         }
@@ -492,11 +511,11 @@
         <div class="header-actions">
             <button class="btn-header btn-plan" onclick="openPlannerModal()">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                Plan Route
+                Plan
             </button>
             <button class="btn-header" onclick="fetchDatabaseFromGitHub()" title="Sync with GitHub Repo">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                Sync GitHub
+                Sync
             </button>
             <label for="csvFileInput" class="btn-header" title="Manual Backup Import">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
@@ -540,11 +559,11 @@
         <div class="view-toggle-bar">
             <button id="listViewTab" class="tab-btn active" onclick="switchView('list')">
                 <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-                List
+                List View
             </button>
             <button id="mapViewTab" class="tab-btn" onclick="switchView('map')">
                 <svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
-                Map
+                Map View
             </button>
         </div>
 
@@ -579,8 +598,8 @@
 
     <div id="listView">
         <div id="retailerList">
-            <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
-                <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Loading Database from GitHub...</p>
+            <div class="empty-card" style="text-align: center; padding: 32px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 20px;">
+                <p style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">Loading Database from GitHub...</p>
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Please wait a moment.</p>
             </div>
         </div>
@@ -612,7 +631,7 @@
             <span class="modal-title">Multi-Stop Route Planner</span>
             <button class="modal-close" onclick="closeModal('plannerModal')">&times;</button>
         </div>
-        <p style="font-size:0.75rem; color:var(--text-muted);">
+        <p style="font-size:0.75rem; color:var(--text-secondary); line-height: 1.4;">
             Select target count. The app will automatically pick nearest unvisited <strong>Status 'Y'</strong> outlets and generate an optimized route.
         </p>
         <div class="plan-options">
@@ -635,7 +654,7 @@
             <span class="modal-title">Navigate To Outlet</span>
             <button class="modal-close" onclick="closeModal('navModal')">&times;</button>
         </div>
-        <p style="font-size:0.75rem; color:var(--text-muted);" id="navModalSub">Select preferred map provider:</p>
+        <p style="font-size:0.75rem; color:var(--text-secondary);" id="navModalSub">Select preferred map provider:</p>
         <div class="app-picker-grid">
             <a id="gmapsLink" target="_blank" class="app-opt">
                 <svg width="20" height="20" fill="none" stroke="#06b6d4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
@@ -663,15 +682,15 @@
         </div>
         <textarea id="noteInput" class="notes-input" placeholder="Type visit details, order notes..."></textarea>
         <div style="display:flex; gap:8px; align-items:center;">
-            <label class="btn-sm" style="flex:1; justify-content:center; cursor:pointer;">
+            <label class="btn-sm" style="flex:1; justify-content:center; cursor:pointer; padding: 10px;">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 Watermarked Photo
                 <input type="file" id="photoInput" accept="image/*" capture="environment" onchange="handleWatermarkedPhotoUpload(event)">
             </label>
-            <button class="map-popup-btn" style="flex:1; margin:0;" onclick="saveNotes()">Save Details</button>
+            <button class="map-popup-btn" style="flex:1; margin:0; padding: 10px;" onclick="saveNotes()">Save Details</button>
         </div>
         <div id="photoPreviewContainer" style="display:none; margin-top:6px;">
-            <img id="photoPreview" style="width:100%; height:110px; object-fit:cover; border-radius:8px; border:1px solid var(--border-glass);" src="" alt="Preview">
+            <img id="photoPreview" style="width:100%; height:120px; object-fit:cover; border-radius:12px; border:1px solid var(--border-glass);" src="" alt="Preview">
         </div>
     </div>
 </div>
@@ -684,7 +703,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v4';
+            const CACHE_NAME = 'outlet-ultra-v5';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -724,7 +743,6 @@
     const GITHUB_CSV_URL = "https://raw.githubusercontent.com/tanjilahsan64-ux/Outlet-Nearby/refs/heads/main/retailers.csv";
 
     function loadOutletsFromStorage() {
-        // First check localStorage backup for instant persistence across tab minimization / background suspension
         try {
             const backup = localStorage.getItem("outlet_ultra_backup");
             if (backup) {
@@ -779,7 +797,6 @@
                 showToast("Successfully synced with GitHub!");
             })
             .catch(() => {
-                // Fallback direct attempt if proxy fails
                 fetch(GITHUB_CSV_URL)
                     .then(res => res.text())
                     .then(text => {
@@ -876,10 +893,10 @@
         if (!radiusCircle) {
             radiusCircle = L.circle([currentLat, currentLon], {
                 radius: targetRadius,
-                color: '#6366f1',
+                color: '#3b82f6',
                 weight: 2,
                 dashArray: '4, 4',
-                fillColor: '#6366f1',
+                fillColor: '#3b82f6',
                 fillOpacity: 0.08,
                 interactive: false
             }).addTo(map);
@@ -1035,7 +1052,6 @@
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
 
-        // Preserve existing visit states & notes if syncing over an existing dataset
         const existingMap = new Map();
         retailers.forEach(r => existingMap.set(r.code, { visited: r.visited, visitedAt: r.visitedAt, notes: r.notes, photo: r.photo }));
 
@@ -1172,8 +1188,8 @@
         const listContainer = document.getElementById('retailerList');
         if (nearby.length === 0) {
             listContainer.innerHTML = `
-                <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
-                    <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">No stores match active filters</p>
+                <div class="empty-card" style="text-align: center; padding: 32px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 20px;">
+                    <p style="font-size: 0.88rem; font-weight: 700; color: var(--text-primary);">No stores match active filters</p>
                     <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Adjust distance or filter options.</p>
                 </div>`;
             return;
@@ -1227,7 +1243,7 @@
                     <div class="card-footer">
                         <label class="check-container">
                             <input type="checkbox" class="visit-input" ${item.visited ? 'checked' : ''} onchange="toggleVisited('${escapeHtml(item.code)}')">
-                            <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="d" M5 13l4 4L19 7"/></svg></div>
+                            <div class="custom-check"><svg fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div>
                             Visited
                         </label>
                         <div class="btn-action-group">
@@ -1273,8 +1289,8 @@
             if (!userAccuracyCircle) {
                 userAccuracyCircle = L.circle([currentLat, currentLon], {
                     radius: currentAccuracy || 15,
-                    color: '#6366f1',
-                    fillColor: '#6366f1',
+                    color: '#3b82f6',
+                    fillColor: '#3b82f6',
                     fillOpacity: 0.1,
                     weight: 1
                 }).addTo(map);
@@ -1411,7 +1427,7 @@
                 if (data.routes && data.routes.length > 0) {
                     if (osrmPolyline) map.removeLayer(osrmPolyline);
                     const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                    osrmPolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.8 }).addTo(map);
+                    osrmPolyline = L.polyline(coords, { color: '#3b82f6', weight: 5, opacity: 0.8 }).addTo(map);
                     map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
                     showToast("Route drawn on Map");
                 }
@@ -1532,7 +1548,6 @@
         }
     }
 
-    
     function centerOnUserGPS() {
         if (currentLat !== null && currentLon !== null && map) {
             map.setView([currentLat, currentLon], 18, { animate: true });
