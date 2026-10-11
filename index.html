@@ -16,21 +16,21 @@
 
     <style>
         :root {
-            --bg-dark: #090d16;
-            --surface-glass: rgba(18, 24, 38, 0.85);
-            --surface-card: rgba(26, 34, 53, 0.85);
-            --border-glass: rgba(255, 255, 255, 0.1);
-            --border-highlight: rgba(255, 255, 255, 0.2);
+            --bg-dark: #070b12;
+            --surface-glass: rgba(15, 23, 42, 0.88);
+            --surface-card: rgba(30, 41, 59, 0.85);
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(255, 255, 255, 0.18);
             
-            --primary: #6366f1;
-            --primary-glow: rgba(99, 102, 241, 0.35);
-            --accent-cyan: #06b6d4;
+            --primary: #3b82f6;
+            --primary-glow: rgba(59, 130, 246, 0.35);
+            --accent-cyan: #38bdf8;
             --accent-green: #10b981;
             --accent-green-glow: rgba(16, 185, 129, 0.25);
             --accent-rose: #f43f5e;
-            --accent-amber: #f59e0b;
+            --accent-amber: #fbbf24;
             
-            --text-primary: #f8fafc;
+            --text-primary: #f1f5f9;
             --text-secondary: #94a3b8;
             --text-muted: #64748b;
         }
@@ -46,8 +46,8 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.12) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(6, 182, 212, 0.08) 0px, transparent 50%);
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.12) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.08) 0px, transparent 50%);
             background-attachment: fixed;
             color: var(--text-primary);
             min-height: 100vh;
@@ -66,7 +66,7 @@
             z-index: 500;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            background: rgba(9, 13, 22, 0.85);
+            background: rgba(7, 11, 18, 0.88);
             border-bottom: 1px solid var(--border-glass);
             display: flex;
             flex-direction: column;
@@ -102,9 +102,9 @@
         .header-actions { display: flex; align-items: center; gap: 6px; }
 
         .btn-header {
-            background: rgba(99, 102, 241, 0.12);
-            color: #a5b4fc;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(59, 130, 246, 0.12);
+            color: #93c5fd;
+            border: 1px solid rgba(59, 130, 246, 0.3);
             padding: 5px 9px;
             border-radius: 8px;
             font-size: 0.72rem;
@@ -117,19 +117,19 @@
         }
 
         .btn-header:hover {
-            background: rgba(99, 102, 241, 0.25);
+            background: rgba(59, 130, 246, 0.25);
             border-color: var(--primary);
             color: #fff;
         }
 
         .btn-plan {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-            border-color: rgba(245, 158, 11, 0.35);
+            background: rgba(251, 191, 36, 0.15);
+            color: #fde047;
+            border-color: rgba(251, 191, 36, 0.35);
         }
 
         .btn-plan:hover {
-            background: rgba(245, 158, 11, 0.3);
+            background: rgba(251, 191, 36, 0.3);
             color: #fff;
         }
 
@@ -155,8 +155,8 @@
 
         .route-banner {
             display: none;
-            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(99, 102, 241, 0.15) 100%);
-            border: 1px solid rgba(245, 158, 11, 0.4);
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(59, 130, 246, 0.15) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.4);
             border-radius: 12px;
             padding: 10px 12px;
             align-items: center;
@@ -164,7 +164,7 @@
         }
 
         .route-banner-info { display: flex; flex-direction: column; }
-        .route-banner-title { font-size: 0.8rem; font-weight: 800; color: #fbbf24; }
+        .route-banner-title { font-size: 0.8rem; font-weight: 800; color: #fde047; }
         .route-banner-sub { font-size: 0.68rem; color: var(--text-secondary); }
         .route-banner-actions { display: flex; gap: 6px; }
 
@@ -210,7 +210,7 @@
         }
 
         .chip.active { background: var(--primary); border-color: var(--primary); color: #fff; box-shadow: 0 2px 8px var(--primary-glow); }
-        .chip.target-chip { border-color: rgba(245, 158, 11, 0.4); }
+        .chip.target-chip { border-color: rgba(251, 191, 36, 0.4); }
         .chip.target-chip.active { background: var(--accent-amber); border-color: var(--accent-amber); color: #000; }
 
         .search-box { position: relative; }
@@ -233,9 +233,9 @@
 
         .outlet-card:active { transform: scale(0.988); }
         .outlet-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); }
-        .outlet-card.visited { background: rgba(16, 185, 129, 0.05); border-color: rgba(16, 185, 129, 0.2); }
+        .outlet-card.visited { background: rgba(16, 185, 129, 0.06); border-color: rgba(16, 185, 129, 0.25); }
         .outlet-card.visited::before { background: var(--accent-green); }
-        .outlet-card.target-planned { border: 1px solid rgba(245, 158, 11, 0.4); }
+        .outlet-card.target-planned { border: 1px solid rgba(251, 191, 36, 0.4); }
         .outlet-card.target-planned::before { background: var(--accent-amber); }
 
         .outlet-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
@@ -249,7 +249,7 @@
         }
 
         .visited-badge {
-            background: var(--accent-green); color: #06110d;
+            background: var(--accent-green); color: #042f2e;
             font-size: 0.62rem; font-weight: 800; padding: 2px 6px;
             border-radius: 20px; text-transform: uppercase;
         }
@@ -285,7 +285,7 @@
 
         .check-container input { display: none; }
         .check-container input:checked ~ .custom-check { background: var(--accent-green); border-color: var(--accent-green); }
-        .custom-check svg { width: 9px; height: 9px; stroke: #090d16; stroke-width: 3; opacity: 0; }
+        .custom-check svg { width: 9px; height: 9px; stroke: #070b12; stroke-width: 3; opacity: 0; }
         .check-container input:checked ~ .custom-check svg { opacity: 1; }
 
         .btn-action-group { display: flex; gap: 5px; }
@@ -300,7 +300,7 @@
         .btn-sm:hover { background: rgba(255, 255, 255, 0.1); color: var(--text-primary); }
 
         .btn-nav {
-            background: linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%);
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
             color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3);
         }
 
@@ -329,20 +329,20 @@
         .user-heading-cone {
             position: absolute; width: 0; height: 0;
             border-left: 10px solid transparent; border-right: 10px solid transparent;
-            border-bottom: 24px solid rgba(99, 102, 241, 0.4); top: -16px;
+            border-bottom: 24px solid rgba(59, 130, 246, 0.4); top: -16px;
             transform-origin: bottom center; pointer-events: none;
         }
 
         .user-gps-dot {
-            width: 14px; height: 14px; background: #6366f1;
+            width: 14px; height: 14px; background: #3b82f6;
             border: 2px solid white; border-radius: 50%;
-            box-shadow: 0 0 12px #6366f1; z-index: 2;
+            box-shadow: 0 0 12px #3b82f6; z-index: 2;
         }
 
         .bottom-bar {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 520px;
-            background: rgba(18, 24, 38, 0.85); backdrop-filter: blur(20px);
+            background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border-highlight);
             border-radius: 14px; padding: 8px 12px; display: flex;
             align-items: center; justify-content: space-between;
@@ -443,8 +443,8 @@
             transition: all 0.2s ease;
         }
 
-        .plan-btn-option:hover { border-color: var(--accent-amber); background: rgba(245, 158, 11, 0.08); }
-        .plan-btn-num { font-size: 1.2rem; font-weight: 800; color: #fbbf24; }
+        .plan-btn-option:hover { border-color: var(--accent-amber); background: rgba(251, 191, 36, 0.08); }
+        .plan-btn-num { font-size: 1.2rem; font-weight: 800; color: #fde047; }
         .plan-btn-text { font-size: 0.72rem; color: var(--text-secondary); margin-top: 2px; }
 
         .app-picker-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 6px; }
@@ -494,9 +494,9 @@
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                 Plan Route
             </button>
-            <button class="btn-header" onclick="fetchDatabaseFromGitHub()" title="Sync with GitHub Repo">
+            <button class="btn-header" onclick="fetchDatabaseFromGitHub()" title="Force Refresh GitHub">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                Sync GitHub
+                Refresh Data
             </button>
             <label for="csvFileInput" class="btn-header" title="Manual Backup Import">
                 <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
@@ -580,7 +580,7 @@
     <div id="listView">
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 28px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 14px;">
-                <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Loading Database from GitHub...</p>
+                <p style="font-size: 0.85rem; font-weight: 700; color: var(--text-primary);">Loading Database...</p>
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 4px;">Please wait a moment.</p>
             </div>
         </div>
@@ -638,7 +638,7 @@
         <p style="font-size:0.75rem; color:var(--text-muted);" id="navModalSub">Select preferred map provider:</p>
         <div class="app-picker-grid">
             <a id="gmapsLink" target="_blank" class="app-opt">
-                <svg width="20" height="20" fill="none" stroke="#06b6d4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+                <svg width="20" height="20" fill="none" stroke="#38bdf8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
                 Google
             </a>
             <a id="wazeLink" target="_blank" class="app-opt">
@@ -684,7 +684,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v4';
+            const CACHE_NAME = 'outlet-ultra-v6';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -693,7 +693,7 @@
     }
 
     let db;
-    const dbReq = indexedDB.open("OutletUltraDB", 2);
+    const dbReq = indexedDB.open("OutletUltraDB", 4);
     dbReq.onupgradeneeded = e => {
         db = e.target.result;
         if (!db.objectStoreNames.contains("outlets")) {
@@ -724,7 +724,7 @@
     const GITHUB_CSV_URL = "https://raw.githubusercontent.com/tanjilahsan64-ux/Outlet-Nearby/refs/heads/main/retailers.csv";
 
     function loadOutletsFromStorage() {
-        // First check localStorage backup for instant persistence across tab minimization / background suspension
+        // Load local backup first for instant persistent state across sessions
         try {
             const backup = localStorage.getItem("outlet_ultra_backup");
             if (backup) {
@@ -738,35 +738,35 @@
             }
         } catch(e) {}
 
-        if (!db) {
-            if (retailers.length === 0) fetchDatabaseFromGitHub();
-            return;
-        }
-
-        const tx = db.transaction("outlets", "readonly");
-        const store = tx.objectStore("outlets");
-        const req = store.getAll();
-        req.onsuccess = () => {
-            const data = req.result || [];
-            if (data.length > 0) {
-                if (data.length >= retailers.length) {
-                    retailers = data;
+        if (db) {
+            const tx = db.transaction("outlets", "readonly");
+            const store = tx.objectStore("outlets");
+            const req = store.getAll();
+            req.onsuccess = () => {
+                const data = req.result || [];
+                if (data.length > 0) {
+                    if (data.length >= retailers.length) {
+                        retailers = data;
+                    }
+                    updateCounters();
+                    updateNearbyList();
+                    updateAnalyticsDisplay();
                 }
-                updateCounters();
-                updateNearbyList();
-                updateAnalyticsDisplay();
-                showToast("Loaded database from local cache");
-            } else if (retailers.length === 0) {
-                fetchDatabaseFromGitHub();
-            }
-        };
-        req.onerror = () => {
-            if (retailers.length === 0) fetchDatabaseFromGitHub();
-        };
+                // Automatically fetch latest dataset from GitHub in background if needed or on first load
+                if (retailers.length === 0) {
+                    fetchDatabaseFromGitHub();
+                }
+            };
+            req.onerror = () => {
+                if (retailers.length === 0) fetchDatabaseFromGitHub();
+            };
+        } else if (retailers.length === 0) {
+            fetchDatabaseFromGitHub();
+        }
     }
 
     function fetchDatabaseFromGitHub() {
-        showToast("Syncing database from GitHub...");
+        showToast("Loading database from repository...");
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(GITHUB_CSV_URL)}`;
         
         fetch(proxyUrl)
@@ -776,18 +776,17 @@
             })
             .then(text => {
                 parseCSV(text, true);
-                showToast("Successfully synced with GitHub!");
+                showToast("Database loaded successfully!");
             })
             .catch(() => {
-                // Fallback direct attempt if proxy fails
                 fetch(GITHUB_CSV_URL)
                     .then(res => res.text())
                     .then(text => {
                         parseCSV(text, true);
-                        showToast("Successfully synced with GitHub!");
+                        showToast("Database loaded successfully!");
                     })
                     .catch(() => {
-                        showToast("Failed to sync GitHub. Use manual import.");
+                        showToast("Failed to load from repo. Use manual import.");
                     });
             });
     }
@@ -876,10 +875,10 @@
         if (!radiusCircle) {
             radiusCircle = L.circle([currentLat, currentLon], {
                 radius: targetRadius,
-                color: '#6366f1',
+                color: '#3b82f6',
                 weight: 2,
                 dashArray: '4, 4',
-                fillColor: '#6366f1',
+                fillColor: '#3b82f6',
                 fillOpacity: 0.08,
                 interactive: false
             }).addTo(map);
@@ -997,7 +996,7 @@
                 if (data.routes && data.routes.length > 0) {
                     if (osrmPolyline) map.removeLayer(osrmPolyline);
                     const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                    osrmPolyline = L.polyline(coords, { color: '#f59e0b', weight: 5, opacity: 0.85, dashArray: '6, 6' }).addTo(map);
+                    osrmPolyline = L.polyline(coords, { color: '#fbbf24', weight: 5, opacity: 0.85, dashArray: '6, 6' }).addTo(map);
                     map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
                     showToast("Optimized Target Route Drawn");
                 }
@@ -1035,9 +1034,23 @@
         let latIdx = headers.findIndex(h => h.includes('lat'));
         let lonIdx = headers.findIndex(h => h.includes('lon') || h.includes('lng'));
 
-        // Preserve existing visit states & notes if syncing over an existing dataset
         const existingMap = new Map();
-        retailers.forEach(r => existingMap.set(r.code, { visited: r.visited, visitedAt: r.visitedAt, notes: r.notes, photo: r.photo }));
+        retailers.forEach(r => {
+            if (r.visited) {
+                existingMap.set(r.code, { visited: r.visited, visitedAt: r.visitedAt, notes: r.notes, photo: r.photo });
+            }
+        });
+        try {
+            const backup = localStorage.getItem("outlet_ultra_backup");
+            if (backup) {
+                const parsed = JSON.parse(backup);
+                parsed.forEach(r => {
+                    if (r.visited && !existingMap.has(r.code)) {
+                        existingMap.set(r.code, { visited: r.visited, visitedAt: r.visitedAt, notes: r.notes, photo: r.photo });
+                    }
+                });
+            }
+        } catch(e) {}
 
         const parsedRetailers = [];
         for (let i = 1; i < lines.length; i++) {
@@ -1087,7 +1100,6 @@
         retailers = parsedRetailers;
         if (overwriteStorage) saveAllOutletsToDB();
         updateCounters();
-        showToast(`Loaded ${retailers.length} outlets`);
         updateNearbyList();
         updateAnalyticsDisplay();
     }
@@ -1273,8 +1285,8 @@
             if (!userAccuracyCircle) {
                 userAccuracyCircle = L.circle([currentLat, currentLon], {
                     radius: currentAccuracy || 15,
-                    color: '#6366f1',
-                    fillColor: '#6366f1',
+                    color: '#3b82f6',
+                    fillColor: '#3b82f6',
                     fillOpacity: 0.1,
                     weight: 1
                 }).addTo(map);
@@ -1292,8 +1304,8 @@
         storeClusterLayer.clearLayers();
 
         stores.forEach(item => {
-            let pinColor = item.visited ? '#10b981' : '#ea4335';
-            if (item.isPlanned && !item.visited) pinColor = '#f59e0b';
+            let pinColor = item.visited ? '#10b981' : '#3b82f6';
+            if (item.isPlanned && !item.visited) pinColor = '#fbbf24';
 
             const customPin = L.divIcon({
                 className: 'store-pin',
@@ -1303,10 +1315,10 @@
 
             const marker = L.marker([item.lat, item.lon], { icon: customPin });
             const popupContent = `
-                <div style="font-size:0.82rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)} ${item.isPlanned ? `<span style="color:#f59e0b;">(Stop #${item.planOrder})</span>` : ''}</div>
+                <div style="font-size:0.82rem; font-weight:800; color:#1e293b; margin-bottom:2px;">${escapeHtml(item.code)} ${item.isPlanned ? `<span style="color:#d97706;">(Stop #${item.planOrder})</span>` : ''}</div>
                 <div style="font-size:0.72rem; color:#64748b; margin-bottom:6px;">RSO: <strong>${escapeHtml(item.rsoCode)}</strong></div>
                 <button class="map-popup-btn" onclick="toggleVisited('${escapeHtml(item.code)}')">${item.visited ? 'Unmark Visited' : 'Mark Visited'}</button>
-                <button class="map-popup-btn" style="background:#06b6d4; color:#fff;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
+                <button class="map-popup-btn" style="background:#0ea5e9; color:#fff;" onclick="openNavModal(${item.lat}, ${item.lon}, '${escapeHtml(item.code)}')">Directions</button>
             `;
             marker.bindPopup(popupContent);
             storeClusterLayer.addLayer(marker);
@@ -1411,7 +1423,7 @@
                 if (data.routes && data.routes.length > 0) {
                     if (osrmPolyline) map.removeLayer(osrmPolyline);
                     const coords = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
-                    osrmPolyline = L.polyline(coords, { color: '#2563eb', weight: 5, opacity: 0.8 }).addTo(map);
+                    osrmPolyline = L.polyline(coords, { color: '#3b82f6', weight: 5, opacity: 0.8 }).addTo(map);
                     map.fitBounds(osrmPolyline.getBounds(), { padding: [30, 30] });
                     showToast("Route drawn on Map");
                 }
@@ -1532,7 +1544,6 @@
         }
     }
 
-    
     function centerOnUserGPS() {
         if (currentLat !== null && currentLon !== null && map) {
             map.setView([currentLat, currentLon], 18, { animate: true });
