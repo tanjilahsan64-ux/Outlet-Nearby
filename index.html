@@ -590,7 +590,7 @@
     <div id="listView">
         <div id="retailerList">
             <div class="empty-card" style="text-align: center; padding: 36px 16px; background: var(--surface-glass); border: 1px dashed var(--border-glass); border-radius: 22px;">
-                <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">Automatically fetching retailers from repository...</p>
+                <p style="font-size: 0.9rem; font-weight: 700; color: var(--text-primary);">Automatically loading retailers from repository...</p>
                 <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 6px;">Please hold on a second.</p>
             </div>
         </div>
@@ -694,7 +694,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         const swCode = `
-            const CACHE_NAME = 'outlet-ultra-v7';
+            const CACHE_NAME = 'outlet-ultra-v8';
             self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(['/']))));
             self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));
         `;
@@ -734,7 +734,6 @@
     const GITHUB_CSV_URL = "https://raw.githubusercontent.com/tanjilahsan64-ux/Outlet-Nearby/refs/heads/main/retailers.csv";
 
     function loadOutletsFromStorage() {
-        // Fast UI load from local storage backup if available
         try {
             const backup = localStorage.getItem("outlet_ultra_backup");
             if (backup) {
@@ -748,11 +747,12 @@
             }
         } catch(e) {}
 
-        // ALWAYS automatically fetch the freshest CSV file directly from the GitHub repository on start
+        // AUTOMATICALLY FETCH ON STARTUP (NO BUTTON PRESS REQUIRED)
         fetchDatabaseFromGitHub();
     }
 
     function fetchDatabaseFromGitHub() {
+        // Use allorigins CORS proxy to securely fetch the raw GitHub CSV content instantly
         const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(GITHUB_CSV_URL)}`;
         
         fetch(proxyUrl)
@@ -762,15 +762,15 @@
             })
             .then(text => {
                 parseCSV(text, true);
-                showToast("Retailers automatically synced!");
+                showToast("Retailers loaded automatically!");
             })
             .catch(() => {
-                // Direct fallback attempt if proxy fails
+                // Direct fetch fallback attempt
                 fetch(GITHUB_CSV_URL)
                     .then(res => res.text())
                     .then(text => {
                         parseCSV(text, true);
-                        showToast("Retailers automatically synced!");
+                        showToast("Retailers loaded automatically!");
                     })
                     .catch(() => {
                         if (retailers.length === 0) {
